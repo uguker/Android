@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Android</string>
+
+    <string-array name="about">
+        <item>设置</item>
+        <item>关于</item>
+    </string-array>
+
+</resources>

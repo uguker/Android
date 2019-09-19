@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/android_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 标题部分 -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/android_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <com.uguke.android.widget.Toolbar
+            android:id="@+id/android_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar"
+            app:backIcon="@drawable/def_back_common_dark"
+            app:backIconVisible="true"
+            app:rippleEffect="false">
+
+        </com.uguke.android.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- 内容部分 -->
+    <RelativeLayout
+        android:id="@+id/android_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- 头部布局 -->
+        <FrameLayout
+            android:id="@+id/android_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </FrameLayout>
+
+        <!-- 底部布局 -->
+        <FrameLayout
+            android:id="@+id/android_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+        </FrameLayout>
+
+        <!-- 刷新界面 -->
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/android_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/android_footer"
+            android:layout_below="@id/android_header"
+            android:overScrollMode="never"
+            app:srlEnablePureScrollMode="true"
+            app:srlEnableScrollContentWhenRefreshed="false"
+            app:srlFixedFooterViewId="@id/footer_fixed"
+            app:srlFixedHeaderViewId="@id/header_fixed"
+            app:srlFooterTranslationViewId="@id/footer_translation"
+            app:srlHeaderTranslationViewId="@id/header_translation">
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

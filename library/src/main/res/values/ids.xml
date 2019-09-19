@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="header_fixed" type="id" />
+    <item name="footer_fixed" type="id" />
+    <item name="header_translation" type="id" />
+    <item name="footer_translation" type="id" />
+
+
+    <!-- RowView部分 -->
+    <item name="android_row_top" type="id" />
+    <item name="android_row_bottom" type="id" />
+    <item name="leftViewId" type="id" />
+    <item name="centerViewId" type="id" />
+    <item name="rightViewId" type="id" />
+    <item name="leftImgId" type="id" />
+    <item name="rightImgId" type="id" />
+    <item name="rightCheckBoxId" type="id" />
+    <item name="rightSwitchId" type="id" />
+
+    <!-- Toolbar ID资源 -->
+    <item name="android_toolbar_title" type="id" />
+    <item name="android_toolbar_back_text" type="id" />
+    <item name="android_toolbar_back_icon" type="id" />
+    <item name="android_toolbar_back_container" type="id" />
+    <item name="android_toolbar_action_container" type="id" />
+    <item name="android_toolbar_action_text" type="id" />
+    <item name="android_toolbar_divider" type="id" />
+
+    <item name="android_header" type="id"/>
+    <item name="android_footer" type="id"/>
+    <!-- 布局父容器ID -->
+    <item name="android_parent_container" type="id" />
+
+    <item name="android_input_delete" type="id" />
+    <item name="android_input_toggle" type="id" />
+    <item name="hierarchy" type="id" />
+    <item name="isexpand" type="id" />
+</resources>

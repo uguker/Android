@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 标题容器 -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/android_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <com.uguke.android.widget.Toolbar
+            android:id="@+id/android_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar"
+            app:backIcon="@drawable/def_back_common_dark"
+            app:backIconVisible="true">
+
+        </com.uguke.android.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/android_tab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tabbed"
+            android:background="@color/foreground"
+            app:tl_indicator_color="@color/colorAccent"
+            app:tl_indicator_height="2dp"
+            app:tl_indicator_style="NORMAL"
+            app:tl_textSelectColor="@color/colorAccent"
+            app:tl_textUnselectColor="@color/text"
+            app:tl_textsize="@dimen/body"
+            app:tl_underline_color="@color/divider"
+            app:tl_underline_gravity="BOTTOM"
+            app:tl_underline_height="1dp">
+
+        </com.flyco.tablayout.SlidingTabLayout>
+
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/android_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never">
+
+        </androidx.viewpager.widget.ViewPager>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

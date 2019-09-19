@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 主题 -->
+<resources>
+
+    <!-- 前景 -->
+    <attr name="foreground" format="reference" />
+    <attr name="toolbarSize" format="dimension" />
+    <attr name="tabBarSize" format="dimension" />
+    <attr name="material" format="boolean" />
+
+    <!-- 主题 -->
+    <style name="AndroidTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>

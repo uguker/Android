@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按钮"
+            android:padding="16dp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    </FrameLayout>
+
+    <com.uguke.android.widget.SimpleInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        app:inputIcon="@mipmap/ic_launcher"
+        app:inputType="password"
+        app:inputPadding="8dp">
+
+    </com.uguke.android.widget.SimpleInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        android:layout_marginTop="100dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+</RelativeLayout>

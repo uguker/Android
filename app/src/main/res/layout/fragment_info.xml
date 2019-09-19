@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.allen.library.SuperTextView
+        android:id="@+id/setting"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        app:sLeftIconRes="@mipmap/ic_launcher"
+        app:sRightTextString="牛逼">
+
+    </com.allen.library.SuperTextView>
+
+    <com.allen.library.SuperTextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:id="@+id/about"
+        app:sRightTextString="牛逼"
+        app:sRightTvDrawableWidth="40dp"
+        app:sRightTvDrawableHeight="40dp"
+        app:sRightTvDrawableRight="@mipmap/ic_launcher_round">
+
+    </com.allen.library.SuperTextView>
+</LinearLayout>

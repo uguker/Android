@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SimpleInputLayout">
+        <attr name="inputType" format="enum">
+            <enum name="text" value="0" />
+            <enum name="number" value="1" />
+            <enum name="password" value="2" />
+        </attr>
+        <!--<attr name="inputStyle" format="enum">-->
+            <!--<enum name="default" value="0" />-->
+            <!--<enum name="center" value="1" />-->
+        <!--</attr>-->
+
+        <attr name="inputCenter" format="boolean"/>
+        <attr name="inputPadding" format="dimension"/>
+        <attr name="inputIcon" format="reference" />
+        <attr name="inputBackground" format="reference" />
+        <attr name="inputHint" format="string" />
+        <attr name="inputText" format="string" />
+        <attr name="inputTextSize" format="dimension" />
+        <attr name="inputTextColor" format="color" />
+        <attr name="inputHintColor" format="color" />
+        <attr name="inputMaxLength" format="integer" />
+        <attr name="inputDeleteIcon" format="reference" />
+        <attr name="inputToggleVisibleIcon" format="reference" />
+        <attr name="inputToggleInvisibleIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
+        <attr name="borderOverlay" format="boolean" />
+        <attr name="circleBackgroundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="DrawableTextView">
+        <attr name="leftDrawable" format="reference|color" />
+        <attr name="rightDrawable" format="reference|color" />
+        <attr name="topDrawable" format="reference|color" />
+        <attr name="bottomDrawable" format="reference|color" />
+
+        <attr name="leftDrawableWidth" format="reference|dimension" />
+        <attr name="rightDrawableWidth" format="reference|dimension" />
+        <attr name="topDrawableWidth" format="reference|dimension" />
+        <attr name="bottomDrawableWidth" format="reference|dimension" />
+
+        <attr name="leftDrawableHeight" format="reference|dimension" />
+        <attr name="rightDrawableHeight" format="reference|dimension" />
+        <attr name="topDrawableHeight" format="reference|dimension" />
+        <attr name="bottomDrawableHeight" format="reference|dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CodeView">
+        <attr name="formatText" format="string" />
+        <attr name="duration" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="AToolbar">
+        <!-- 内部间隔 -->
+        <attr name="innerSpace" format="dimension" />
+        <!-- 水波纹效果 -->
+        <attr name="rippleEffect" format="boolean" />
+        <!-- Material样式 -->
+        <attr name="materialStyle" format="boolean" />
+        <!-- 标题 -->
+        <attr name="title" format="string" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="titleTextBold" format="boolean" />
+        <attr name="titleSpace" format="dimension" />
+        <!-- 返回 -->
+        <attr name="backIcon" format="reference" />
+        <attr name="backIconEnable" format="boolean" />
+        <attr name="backIconVisible" format="boolean" />
+        <attr name="backText" format="string" />
+        <attr name="backTextColor" format="color" />
+        <attr name="backTextSize" format="dimension" />
+        <attr name="backTextBold" format="boolean" />
+        <attr name="backTextVisible" format="boolean" />
+        <!-- 行为文字 -->
+        <attr name="actionText" format="string" />
+        <attr name="actionTextColor" format="color" />
+        <attr name="actionTextSize" format="dimension" />
+        <attr name="actionTextBold" format="boolean" />
+        <attr name="actionTextVisible" format="boolean" />
+        <attr name="actionSpace" format="dimension" />
+        <!-- 分割线 -->
+        <!-- 分割线 -->
+        <!-- 分割线 -->
+        <attr name="dividerColor"/>
+        <attr name="dividerHeight"/>
+        <attr name="dividerSpace"/>
+        <attr name="dividerVisible" />
+    </declare-styleable>
+
+    <attr name="dividerColor" format="dimension" />
+    <attr name="dividerHeight" format="dimension" />
+    <attr name="dividerSpace" format="dimension" />
+    <attr name="dividerVisible" format="dimension" />
+</resources>

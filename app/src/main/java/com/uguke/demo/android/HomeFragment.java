@@ -41,6 +41,6 @@ public class HomeFragment extends BaseTabbedFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        //unbinder.unbind();
     }
 }

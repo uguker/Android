@@ -29,24 +29,18 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.flyco.tablayout.SlidingTabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/android_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
             android:background="@color/foreground"
-            app:tl_indicator_color="@color/colorAccent"
-            app:tl_indicator_height="2dp"
-            app:tl_indicator_style="NORMAL"
-            app:tl_textSelectColor="@color/colorAccent"
-            app:tl_textUnselectColor="@color/text"
-            app:tl_textsize="@dimen/body"
-            app:tl_underline_color="@color/divider"
-            app:tl_underline_gravity="BOTTOM"
-            app:tl_underline_height="1dp">
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextColor="@color/text"
+            app:tabRippleColor="@color/transparent"
+            app:tabMode="scrollable"
+            app:tabBackground="@color/foreground">
 
-        </com.flyco.tablayout.SlidingTabLayout>
-
-
+        </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/android_fragment"

@@ -43,8 +43,4 @@ dependencies {
     //noinspection GradleDependency
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
 
-    // Java工具包
-    //api 'com.github.uguker:javautils:0.0.1'
-
-
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:ignore="UseCompoundDrawables">
+
+    <LinearLayout
+        android:id="@+id/android_tab_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/android_tab_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
+
+        <ImageView
+            android:id="@+id/android_tab_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name" />
+
+    </LinearLayout>
+
+    <com.uguke.android.widget.DotView
+        android:id="@+id/android_tab_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/android_tab_container"
+        android:layout_toRightOf="@+id/android_tab_container"
+        android:gravity="center"
+        android:textColor="@color/foreground"
+        android:textSize="@dimen/min"
+        android:visibility="gone"
+        app:mv_backgroundColor="#FD481F"
+        app:mv_radiusHalfHeight="true"
+        app:mv_strokeColor="@color/foreground"
+        app:mv_strokeWidth="1dp" />
+</RelativeLayout>

@@ -2,7 +2,7 @@ package com.uguke.android.app;
 
 import android.os.Bundle;
 
-import com.flyco.tablayout.listener.CustomTabEntity;
+import com.uguke.android.listener.CustomTabEntity;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 

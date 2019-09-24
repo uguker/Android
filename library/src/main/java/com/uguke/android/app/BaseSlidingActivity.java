@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.uguke.android.R;
+import com.uguke.android.listener.OnTabSelectedListener;
+import com.uguke.android.widget.SlidingTabLayout;
 
 /**
  * 基础标签活动
@@ -17,7 +18,7 @@ import com.uguke.android.R;
  */
 public abstract class BaseSlidingActivity extends BaseActivity {
 
-    protected TabLayout mTabLayout;
+    protected SlidingTabLayout mTabLayout;
     protected BaseFragment[] mFragments;
     private int mCurrentTab;
     private boolean mSupport;
@@ -31,24 +32,22 @@ public abstract class BaseSlidingActivity extends BaseActivity {
         }
         mPager = findViewById(R.id.android_fragment);
         mTabLayout = findViewById(R.id.android_tab);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                showHideFragment(mFragments[tab.getPosition()]);
+            public void onTabSelected(int position) {
+                showHideFragment(mFragments[position]);
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabReselected(int position) {}
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("currentTab", mTabLayout.getSelectedTabPosition());
+        outState.putInt("currentTab", mCurrentTab);
     }
 
     /**
@@ -70,7 +69,7 @@ public abstract class BaseSlidingActivity extends BaseActivity {
             mFragments[i] = tabs[i].newFragment();
         }
         // 设置数据适配
-        mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), 0) {
+        mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -88,9 +87,15 @@ public abstract class BaseSlidingActivity extends BaseActivity {
                 return tabs[position].getTitle();
             }
         });
-        mTabLayout.setupWithViewPager(mPager);
+        String [] titles = new String[tabs.length];
+        for(int i = 0; i < tabs.length; i++) {
+            titles[i] = tabs[i].getTitle();
+        }
+
+        mTabLayout.setupWithViewPager(mPager, titles);
+        mTabLayout.setCurrentTab(mCurrentTab);
         // 设置当前选项
-        mTabLayout.selectTab(mTabLayout.getTabAt(position == -1 ? mCurrentTab : position));
+        //mTabLayout.selectTab(mTabLayout.getTabAt(position == -1 ? mCurrentTab : position));
         mPager.setOffscreenPageLimit(3);
     }
 

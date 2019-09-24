@@ -16,4 +16,9 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="TabTextAppearance">
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

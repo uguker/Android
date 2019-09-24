@@ -27,7 +27,7 @@
 
         </FrameLayout>
 
-        <com.flyco.tablayout.CommonTabLayout
+        <com.uguke.android.widget.CommonTabLayout
             android:id="@+id/android_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
@@ -40,10 +40,11 @@
             app:tl_textSelectColor="@color/colorAccent"
             app:tl_textUnselectColor="@color/hint"
             app:tl_textsize="12sp"
+            app:tl_iconGravity="BOTTOM"
             app:tl_underline_color="@color/divider"
             app:tl_underline_gravity="TOP"
             app:tl_underline_height="1dp">
 
-        </com.flyco.tablayout.CommonTabLayout>
+        </com.uguke.android.widget.CommonTabLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

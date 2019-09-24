@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 
 
 import androidx.annotation.LayoutRes;
-import androidx.core.view.ViewCompat;
 
-import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.listener.CustomTabEntity;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.android.material.appbar.AppBarLayout;
+import com.uguke.android.listener.CustomTabEntity;
+import com.uguke.android.listener.OnTabSelectedListener;
 import com.uguke.android.util.ResUtils;
+import com.uguke.android.widget.CommonTabLayout;
 import com.uguke.android.widget.Toolbar;
 import com.uguke.android.R;
 
@@ -42,15 +41,15 @@ public abstract class BaseTabbedActivity extends BaseActivity {
         }
         mTabLayout = findViewById(R.id.android_tab);
         // 监听事件
-        mTabLayout.addOnTabSelectListener(new OnTabSelectListener() {
+        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
                 @Override
-                public void onTabSelect(int position) {
+                public void onTabSelected(int position) {
                     BaseTabbedActivity.super.showHideFragment(mFragments[position]);
                     mCurrentTab = position;
                 }
 
                 @Override
-                public void onTabReselect(int position) {
+                public void onTabReselected(int position) {
                     mCurrentTab = position;
                 }
             });
@@ -89,9 +88,9 @@ public abstract class BaseTabbedActivity extends BaseActivity {
         }
         mTabLayout.setCurrentTab(mCurrentTab);
         // CommonTabLayout有一个Bug，3个的时候的有点击效果
-        for (int i = 0, len = tabs.length; i < len; i++) {
-            ViewCompat.setBackground((View) mTabLayout.getMsgView(i).getParent(), null);
-        }
+//        for (int i = 0, len = tabs.length; i < len; i++) {
+//            ViewCompat.setBackground((View) mTabLayout.getBadgeView(i).getParent(), null);
+//        }
     }
 
     @Override

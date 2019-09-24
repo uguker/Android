@@ -29,18 +29,16 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.google.android.material.tabs.TabLayout
+        <com.uguke.android.widget.SlidingTabLayout
             android:id="@+id/android_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
             android:background="@color/foreground"
-            app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@color/text"
-            app:tabRippleColor="@color/transparent"
-            app:tabMode="scrollable"
-            app:tabBackground="@color/foreground">
+            app:tl_textSelectColor="@color/colorPrimary"
+            app:tl_textUnselectColor="@color/hint"
+            app:tl_textsize="@dimen/caption">
 
-        </com.google.android.material.tabs.TabLayout>
+        </com.uguke.android.widget.SlidingTabLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/android_fragment"

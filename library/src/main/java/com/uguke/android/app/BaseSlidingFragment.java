@@ -6,15 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.flyco.tablayout.SlidingTabLayout;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.uguke.android.R;
+import com.uguke.android.listener.OnTabSelectedListener;
+import com.uguke.android.widget.SlidingTabLayout;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -43,15 +42,15 @@ public abstract class BaseSlidingFragment extends BaseFragment {
         mTabLayout = findViewById(R.id.android_tab);
         mPager.setOffscreenPageLimit(2);
 
-        mTabLayout.addOnTabSelectListener(new OnTabSelectListener() {
+        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
-            public void onTabSelect(int position) {
+            public void onTabSelected(int position) {
                 showHideFragment(mFragments[position]);
                 mCurrentTab = position;
             }
 
             @Override
-            public void onTabReselect(int position) {
+            public void onTabReselected(int position) {
                 mCurrentTab = position;
             }
         });
@@ -110,7 +109,7 @@ public abstract class BaseSlidingFragment extends BaseFragment {
                     return mFragments.length;
                 }
             });
-            mTabLayout.setViewPager(mPager, FragmentTab.toStrArray(tabs));
+            //mTabLayout.setViewPager(mPager, FragmentTab.toStrArray(tabs));
         } else {
             for (int i = 0, len = tabs.length; i < len; i++) {
                 mFragments[i] = findChildFragmentByTag(tabs[i].getTabTitle() + tabs[i].getFragmentClass().getName());
@@ -141,7 +140,7 @@ public abstract class BaseSlidingFragment extends BaseFragment {
                 return mFragments.length;
             }
         });
-        mTabLayout.setViewPager(mPager, FragmentTab.toStrArray(tabs));
+//        mTabLayout.setViewPager(mPager, FragmentTab.toStrArray(tabs));
         // 设置当前选项
         mTabLayout.setCurrentTab(mCurrentTab);
         mPager.setOffscreenPageLimit(tabs.length);

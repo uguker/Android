@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -329,8 +330,9 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         // position:当前View的位置
         // mCurrentPositionOffset:当前View的偏移量比例.[0,1)
-        this.mCurrentTab = position;
-        this.mCurrentPositionOffset = positionOffset;
+        Log.e("数据", "当前位置：" + position);
+        mCurrentTab = position;
+        mCurrentPositionOffset = positionOffset;
         scrollToCurrentTab();
         invalidate();
     }

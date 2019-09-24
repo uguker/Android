@@ -69,7 +69,7 @@ public abstract class BaseSlidingActivity extends BaseActivity {
             mFragments[i] = tabs[i].newFragment();
         }
         // 设置数据适配
-        mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+        mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), 0) {
             @NonNull
             @Override
             public Fragment getItem(int position) {

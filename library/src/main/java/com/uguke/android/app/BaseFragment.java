@@ -35,7 +35,7 @@ import me.yokeyword.fragmentation.SupportHelper;
  *
  * @author LeiJue
  */
-public class BaseFragment extends SupportFragment implements ViewCallback, BaseView {
+public class BaseFragment extends SupportFragment implements ViewCallback, BaseView, SwipBackProvider {
 
     final ViewFragmentDelegate mViewDelegate = new ViewFragmentDelegate(this, this);
 
@@ -178,20 +178,34 @@ public class BaseFragment extends SupportFragment implements ViewCallback, BaseV
     public void onCreating(@Nullable Bundle savedInstanceState) {}
 
 
+    @Override
     public SwipeBackLayout getSwipeBackLayout() {
         return mViewDelegate.getSwipeBackLayout();
     }
 
+    @Override
     public void setSwipeBackEnable(boolean enable) {
         mViewDelegate.setSwipeBackEnable(enable);
     }
 
+    @Override
     public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
         mViewDelegate.setEdgeLevel(edgeLevel);
     }
 
+    @Override
     public void setEdgeLevel(int widthPixel) {
         mViewDelegate.setEdgeLevel(widthPixel);
+    }
+
+    @Override
+    public boolean onSwipeBackPriority() {
+        return false;
+    }
+
+    @Override
+    public boolean onSwipeBackSupport() {
+        return false;
     }
 
     public void setParallaxOffset(@FloatRange(from = 0.0f, to = 1.0f) float offset) {

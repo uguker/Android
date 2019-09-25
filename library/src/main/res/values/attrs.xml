@@ -132,14 +132,14 @@
     <attr name="tl_indicator_corner_radius" format="dimension"/>
     <!-- 设置显示器上方还是下方,只对圆角矩形有用-->
     <attr name="tl_indicator_gravity" format="enum">
-        <enum name="TOP" value="48"/>
-        <enum name="BOTTOM" value="80"/>
+        <enum name="top" value="48"/>
+        <enum name="bottom" value="80"/>
     </attr>
     <!-- 设置显示器为常规|三角形|背景色块|-->
     <attr name="tl_indicator_style" format="enum">
-        <enum name="NORMAL" value="0"/>
-        <enum name="TRIANGLE" value="1"/>
-        <enum name="BLOCK" value="2"/>
+        <enum name="normal" value="0"/>
+        <enum name="triangle" value="1"/>
+        <enum name="block" value="2"/>
     </attr>
     <!-- 设置显示器长度与title一样长,只有在STYLE_NORMAL并且indicatorWidth小于零有效-->
     <attr name="tl_indicator_width_equal_title" format="boolean"/>
@@ -157,8 +157,8 @@
     <attr name="tl_underline_height" format="dimension"/>
     <!-- 设置下划线上方还是下方-->
     <attr name="tl_underline_gravity" format="enum">
-        <enum name="TOP" value="48"/>
-        <enum name="BOTTOM" value="80"/>
+        <enum name="top" value="48"/>
+        <enum name="bottom" value="80"/>
     </attr>
 
     <!-- divider -->
@@ -179,11 +179,11 @@
 
     <!-- title -->
     <!-- 设置字体大小 -->
-    <attr name="tl_textsize" format="dimension"/>
+    <attr name="tl_textSize" format="dimension"/>
     <!-- 设置字体选中颜色 -->
-    <attr name="tl_textSelectColor" format="color"/>
+    <attr name="tl_textSelectedColor" format="color"/>
     <!-- 设置字体未选中颜色 -->
-    <attr name="tl_textUnselectColor" format="color"/>
+    <attr name="tl_textUnselectedColor" format="color"/>
     <!-- 设置字体加粗 -->
     <attr name="tl_textBold" format="enum">
         <enum name="NONE" value="0"/>
@@ -223,9 +223,9 @@
         <attr name="tl_tab_width"/>
 
         <!-- title -->
-        <attr name="tl_textsize"/>
-        <attr name="tl_textSelectColor"/>
-        <attr name="tl_textUnselectColor"/>
+        <attr name="tl_textSize"/>
+        <attr name="tl_textSelectedColor"/>
+        <attr name="tl_textUnselectedColor"/>
         <attr name="tl_textBold"/>
         <attr name="tl_textAllCaps"/>
 
@@ -263,9 +263,9 @@
         <attr name="tl_tab_width"/>
 
         <!-- title -->
-        <attr name="tl_textsize"/>
-        <attr name="tl_textSelectColor"/>
-        <attr name="tl_textUnselectColor"/>
+        <attr name="tl_textSize"/>
+        <attr name="tl_textSelectedColor"/>
+        <attr name="tl_textUnselectedColor"/>
         <attr name="tl_textBold"/>
         <attr name="tl_textAllCaps"/>
 
@@ -278,10 +278,10 @@
         <attr name="tl_iconVisible" format="boolean"/>
         <!-- 设置icon显示位置,对应Gravity中常量值 -->
         <attr name="tl_iconGravity" format="enum">
-            <enum name="LEFT" value="3"/>
-            <enum name="TOP" value="48"/>
-            <enum name="RIGHT" value="5"/>
-            <enum name="BOTTOM" value="80"/>
+            <enum name="left" value="3"/>
+            <enum name="top" value="48"/>
+            <enum name="right" value="5"/>
+            <enum name="bottom" value="80"/>
         </attr>
         <!-- 设置icon与文字间距 -->
         <attr name="tl_iconMargin" format="dimension"/>
@@ -311,9 +311,9 @@
         <attr name="tl_tab_width"/>
 
         <!-- title -->
-        <attr name="tl_textsize"/>
-        <attr name="tl_textSelectColor"/>
-        <attr name="tl_textUnselectColor"/>
+        <attr name="tl_textSize"/>
+        <attr name="tl_textSelectedColor"/>
+        <attr name="tl_textUnselectedColor"/>
         <attr name="tl_textBold"/>
         <attr name="tl_textAllCaps"/>
 

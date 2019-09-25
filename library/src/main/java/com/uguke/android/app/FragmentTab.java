@@ -1,63 +1,195 @@
 package com.uguke.android.app;
 
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.SparseArray;
 
-import com.uguke.android.listener.CustomTabEntity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import me.yokeyword.fragmentation.ISupportFragment;
+import com.uguke.android.widget.TabEntity;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
- * Tab项
+ * Fragment tab项
  * @author LeiJue
  */
-public class FragmentTab implements CustomTabEntity {
+public class FragmentTab implements TabEntity {
 
     private String mTitle;
-    private int mSelectedRes;
-    private int mUnselectedRes;
+    private int mSelectedIcon;
+    private int mUnselectedIcon;
     private Bundle mArguments;
     private Class<? extends BaseFragment> mFragmentClass;
 
-
-    public FragmentTab(String title) {
-        this.mTitle = title;
+    public FragmentTab(String title, Class<? extends BaseFragment> fragmentClass) {
+        mTitle = title;
+        mFragmentClass = fragmentClass;
+        mArguments = new Bundle();
     }
 
-
-    public FragmentTab(String title, Class<? extends BaseFragment> clazz) {
-        this.mTitle = title;
-        this.mFragmentClass = clazz;
+    public FragmentTab selectedIcon(int selectedIcon) {
+        mSelectedIcon = selectedIcon;
+        return this;
     }
 
-    public FragmentTab(String title, Class<? extends BaseFragment> clazz, Bundle arguments) {
-        this.mTitle = title;
-        this.mFragmentClass = clazz;
-        this.mArguments = arguments;
+    public FragmentTab unselectedIcon(int unselectedIcon) {
+        mUnselectedIcon = unselectedIcon;
+        return this;
     }
+
+    public FragmentTab withString(@Nullable String key, @Nullable String value) {
+        mArguments.putString(key, value);
+        return this;
+    }
+
+    public FragmentTab withBoolean(@Nullable String key, boolean value) {
+        mArguments.putBoolean(key, value);
+        return this;
+    }
+
+    public FragmentTab withShort(@Nullable String key, short value) {
+        mArguments.putShort(key, value);
+        return this;
+    }
+
+    public FragmentTab withInt(@Nullable String key, int value) {
+        mArguments.putInt(key, value);
+        return this;
+    }
+
+    public FragmentTab withLong(@Nullable String key, long value) {
+        mArguments.putLong(key, value);
+        return this;
+    }
+
+    public FragmentTab withDouble(@Nullable String key, double value) {
+        mArguments.putDouble(key, value);
+        return this;
+    }
+
+    public FragmentTab withByte(@Nullable String key, byte value) {
+        mArguments.putByte(key, value);
+        return this;
+    }
+
+    public FragmentTab withChar(@Nullable String key, char value) {
+        mArguments.putChar(key, value);
+        return this;
+    }
+
+    public FragmentTab withFloat(@Nullable String key, float value) {
+        mArguments.putFloat(key, value);
+        return this;
+    }
+
+    public FragmentTab withCharSequence(@Nullable String key, @Nullable CharSequence value) {
+        mArguments.putCharSequence(key, value);
+        return this;
+    }
+
+    public FragmentTab withParcelable(@Nullable String key, @Nullable Parcelable value) {
+        mArguments.putParcelable(key, value);
+        return this;
+    }
+
+    public FragmentTab withParcelableArray(@Nullable String key, @Nullable Parcelable[] value) {
+        mArguments.putParcelableArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withParcelableArrayList(@Nullable String key, @Nullable ArrayList<? extends Parcelable> value) {
+        mArguments.putParcelableArrayList(key, value);
+        return this;
+    }
+
+    public FragmentTab withSparseParcelableArray(@Nullable String key, @Nullable SparseArray<? extends Parcelable> value) {
+        mArguments.putSparseParcelableArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withIntegerArrayList(@Nullable String key, @Nullable ArrayList<Integer> value) {
+        mArguments.putIntegerArrayList(key, value);
+        return this;
+    }
+
+    public FragmentTab withStringArrayList(@Nullable String key, @Nullable ArrayList<String> value) {
+        mArguments.putStringArrayList(key, value);
+        return this;
+    }
+
+    public FragmentTab withCharSequenceArrayList(@Nullable String key, @Nullable ArrayList<CharSequence> value) {
+        mArguments.putCharSequenceArrayList(key, value);
+        return this;
+    }
+
+    public FragmentTab withSerializable(@Nullable String key, @Nullable Serializable value) {
+        mArguments.putSerializable(key, value);
+        return this;
+    }
+
+    public FragmentTab withByteArray(@Nullable String key, @Nullable byte[] value) {
+        mArguments.putByteArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withShortArray(@Nullable String key, @Nullable short[] value) {
+        mArguments.putShortArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withCharArray(@Nullable String key, @Nullable char[] value) {
+        mArguments.putCharArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withFloatArray(@Nullable String key, @Nullable float[] value) {
+        mArguments.putFloatArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withCharSequenceArray(@Nullable String key, @Nullable CharSequence[] value) {
+        mArguments.putCharSequenceArray(key, value);
+        return this;
+    }
+
+    public FragmentTab withBundle(@Nullable String key, @Nullable Bundle value) {
+        mArguments.putBundle(key, value);
+        return this;
+    }
+
 
     @Override
-    public String getTabTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
     @Override
-    public int getTabSelectedIcon() {
-        return mSelectedRes;
+    public int getSelectedIcon() {
+        return mSelectedIcon;
     }
 
     @Override
-    public int getTabUnselectedIcon() {
-        return mUnselectedRes;
+    public int getUnselectedIcon() {
+        return mUnselectedIcon;
     }
 
-    public Class getFragmentClass() {
+    public String getTag() {
+        return mTitle + mFragmentClass.getName();
+    }
+
+    public Class<? extends Fragment> getFragmentClass() {
         return mFragmentClass;
     }
 
-    public ISupportFragment newFragment() {
+    public BaseFragment newFragment() {
         try {
-            BaseFragment fragment =  mFragmentClass.newInstance();
-            fragment.setArguments(mArguments);
+            BaseFragment fragment = mFragmentClass.newInstance();
+            if (!mArguments.isEmpty()) {
+                fragment.setArguments(mArguments);
+            }
             return fragment;
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -66,60 +198,4 @@ public class FragmentTab implements CustomTabEntity {
         }
         return null;
     }
-
-    public static ISupportFragment [] toFragmentArray() {
-
-        return null;
-    }
-
-    public static String [] toStrArray(FragmentTab[] tabs) {
-        String [] array = new String[tabs.length];
-        for(int i = 0; i < tabs.length; i++) {
-            array[i] = tabs[i].mTitle;
-        }
-        return array;
-    }
-
-    public static class Builder {
-        private String mTitle;
-        private int mSelectedRes;
-        private int mUnselectedRes;
-        private Bundle mArguments;
-        private Class<? extends BaseFragment> mFragmentClass;
-
-        public Builder(String title) {
-            mTitle = title;
-        }
-
-        public Builder setSelectedRes(int selectedRes) {
-            mSelectedRes = selectedRes;
-            return this;
-        }
-
-        public Builder setUnselectedRes(int unselectedRes) {
-            mUnselectedRes = unselectedRes;
-            return this;
-        }
-
-        public Builder setArguments(Bundle arguments) {
-            mArguments = arguments;
-            return this;
-        }
-
-        public Builder setFragmentClass(Class<? extends BaseFragment> fragmentClass) {
-            mFragmentClass = fragmentClass;
-            return this;
-        }
-
-        public FragmentTab build() {
-            FragmentTab tab = new FragmentTab(null);
-            tab.mTitle = mTitle;
-            tab.mArguments = mArguments;
-            tab.mSelectedRes = mSelectedRes;
-            tab.mUnselectedRes = mUnselectedRes;
-            tab.mFragmentClass = mFragmentClass;
-            return tab;
-        }
-    }
-
 }

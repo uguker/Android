@@ -5,10 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.BaseSlidingActivity;
 import com.uguke.android.app.BaseTabbedActivity;
 import com.uguke.android.app.FragmentTab;
-import com.uguke.android.app.FragmentTabs;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -21,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * @author LeiJue
  */
-public class MainActivity extends BaseSlidingActivity {
+public class MainActivity extends BaseTabbedActivity {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
@@ -50,22 +48,33 @@ public class MainActivity extends BaseSlidingActivity {
         });
 
 
+        loadMultipleRootFragment(
+                new FragmentTab("首页", HomeFragment.class),
+                new FragmentTab("其他", SSFragment.class),
+                new FragmentTab("ta的", InfoFragment.class),
+                new FragmentTab("我的", MineFragment.class));
 
         loadMultipleRootFragment(
-                new FragmentTabs("首页", HomeFragment.class),
-                new FragmentTabs("其他", SSFragment.class),
-                new FragmentTabs("我的", MineFragment.class));
-
+                new FragmentTab("首页", HomeFragment.class),
+                new FragmentTab("其他", SSFragment.class),
+                new FragmentTab("我的", MineFragment.class));
 //        loadMultipleRootFragment(
 //                new FragmentTab.Builder("首页").setFragmentClass(HomeFragment.class).build(),
 //                new FragmentTab.Builder("其他").setFragmentClass(SSFragment.class).build(),
 //                new FragmentTab.Builder("我的").setFragmentClass(MineFragment.class).build());
         //mTabLayout.setIconVisible(false);
-        mTabLayout.showDot(0, 10);
-        mTabLayout.setDotOffset(0, 10, 10);
+        //mTabLayout.showDot(0, 10);
+        //mTabLayout.setDotOffset(0, 10, 10);
         hideToolbar();
 
+        setSwipeBackEnable(true);
     }
+
+    @Override
+    public boolean onSwipeBackSupport() {
+        return true;
+    }
+
 
     public Observable<String> test() {
         return Observable.<String>create(new ObservableOnSubscribe<String>() {

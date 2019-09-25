@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.uguke.android.listener.CustomTabEntity;
-import com.uguke.android.listener.OnTabSelectedListener;
+import com.uguke.android.widget.OnTabSelectedListener;
 import com.uguke.android.util.ResUtils;
 import com.uguke.android.widget.CommonTabLayout;
 import com.uguke.android.widget.Toolbar;
 import com.uguke.android.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -30,11 +28,10 @@ public abstract class BaseTabbedActivity extends BaseActivity {
     protected CommonTabLayout mTabLayout;
     protected ISupportFragment [] mFragments;
     private int mCurrentTab = 0;
-    private boolean mSupport;
 
     @Override
     public void onCreating(Bundle savedInstanceState) {
-        setContentView(R.layout.android_layout_tabbed, mSupport ? Style.NATIVE_SWIPE : Style.NATIVE);
+        setContentView(R.layout.android_layout_tabbed, onSwipeBackSupport() ? Style.NATIVE_SWIPE : Style.NATIVE);
         // 恢复选项位置
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
@@ -61,36 +58,27 @@ public abstract class BaseTabbedActivity extends BaseActivity {
         outState.putInt("currentTab", mCurrentTab);
     }
 
-    /**
-     * 是否支持滑动返回，在super.onCreating()之前调用
-     * @param support 是否支持
-     */
-    public void setSwipeBackSupport(boolean support) {
-        mSupport = support;
+    public void loadMultipleRootFragment(FragmentTab... tabs) {
+        loadMultipleRootFragment(mCurrentTab, tabs);
     }
 
-    public void loadMultipleRootFragment(FragmentTab... tabs) {
+    public void loadMultipleRootFragment(int position, FragmentTab... tabs) {
         if (tabs == null || tabs.length == 0) {
             return;
         }
         mFragments = new BaseFragment[tabs.length];
-        ArrayList<CustomTabEntity> tabEntities = new ArrayList<CustomTabEntity>(Arrays.asList(tabs));
-        mTabLayout.setTabData(tabEntities);
-        if (findFragment(tabs[0].getFragmentClass()) == null) {
+        if (findFragmentByTag(tabs[0].getTag()) == null) {
             for (int i = 0, len = tabs.length; i < len; i++) {
                 mFragments[i] = tabs[i].newFragment();
             }
             loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
         } else {
             for (int i = 0, len = tabs.length; i < len; i++) {
-                mFragments[i] = findFragment(tabs[i].getFragmentClass());
+                mFragments[i] = findFragmentByTag(tabs[0].getTag());
             }
         }
-        mTabLayout.setCurrentTab(mCurrentTab);
-        // CommonTabLayout有一个Bug，3个的时候的有点击效果
-//        for (int i = 0, len = tabs.length; i < len; i++) {
-//            ViewCompat.setBackground((View) mTabLayout.getBadgeView(i).getParent(), null);
-//        }
+        mTabLayout.setTabData(Arrays.asList(tabs));
+        mTabLayout.setCurrentTab(position);
     }
 
     @Override

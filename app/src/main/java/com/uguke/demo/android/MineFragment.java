@@ -25,6 +25,8 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
 
+        super.onCreating(savedInstanceState);
+        setContentView(R.layout.fragment_info);
     }
 
 //    @Override

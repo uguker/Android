@@ -6,13 +6,12 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.BaseTabbedFragment;
-import com.uguke.android.app.FragmentTab;
+import com.uguke.android.app.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.Unbinder;
 
-public class HomeFragment extends BaseTabbedFragment {
+public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.content)
     FrameLayout mContent;
@@ -21,13 +20,15 @@ public class HomeFragment extends BaseTabbedFragment {
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
 
+        super.onCreating(savedInstanceState);
+        setContentView(R.layout.bottom);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadMultipleRootFragment(new FragmentTab("真实", MineFragment.class));
-        setSwipeBackEnable(true);
+        //loadMultipleRootFragment(new FragmentTab("真实", MineFragment.class));
+        //setSwipeBackEnable(true);
     }
 
 //    @Override

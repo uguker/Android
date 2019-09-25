@@ -34,9 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
             android:background="@color/foreground"
-            app:tl_textSelectColor="@color/colorPrimary"
-            app:tl_textUnselectColor="@color/hint"
-            app:tl_textsize="@dimen/caption">
+            app:tl_textSelectedColor="@color/colorPrimary"
+            app:tl_textUnselectedColor="@color/hint"
+            app:tl_textSize="@dimen/body"
+            app:tl_indicator_color="@color/colorPrimary">
 
         </com.uguke.android.widget.SlidingTabLayout>
 

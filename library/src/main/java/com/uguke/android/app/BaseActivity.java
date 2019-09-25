@@ -30,7 +30,7 @@ import me.yokeyword.fragmentation.SupportHelper;
  * 基础Activity
  * @author LeiJue
  */
-public class BaseActivity extends SupportActivity implements ViewCallback, BaseView {
+public class BaseActivity extends SupportActivity implements ViewCallback, BaseView, SwipBackProvider {
 
     final ViewActivityDelegate mViewDelegate = new ViewActivityDelegate(this, this);
 
@@ -131,20 +131,35 @@ public class BaseActivity extends SupportActivity implements ViewCallback, BaseV
      */
     public void onCreating(@Nullable Bundle savedInstanceState) {}
 
+    @Override
     public SwipeBackLayout getSwipeBackLayout() {
         return mViewDelegate.getSwipeBackLayout();
     }
 
+    @Override
     public void setSwipeBackEnable(boolean enable) {
         mViewDelegate.setSwipeBackEnable(enable);
+
     }
 
+    @Override
     public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
         mViewDelegate.setEdgeLevel(edgeLevel);
     }
 
+    @Override
     public void setEdgeLevel(int widthPixel) {
         mViewDelegate.setEdgeLevel(widthPixel);
+    }
+
+    @Override
+    public boolean onSwipeBackPriority() {
+        return mViewDelegate.swipeBackPriority();
+    }
+
+    @Override
+    public boolean onSwipeBackSupport() {
+        return false;
     }
 
     /**

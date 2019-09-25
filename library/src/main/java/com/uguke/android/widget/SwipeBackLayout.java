@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentationMagician;
 
 import com.uguke.android.R;
@@ -32,7 +31,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yokeyword.fragmentation.ISupportFragment;
+import me.yokeyword.fragmentation.SupportActivity;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Thx https://github.com/ikew0ng/SwipeBackLayout.
@@ -90,10 +90,10 @@ public class SwipeBackLayout extends FrameLayout {
     private float mScrollPercent;
     private float mScrimOpacity;
 
-    private FragmentActivity mActivity;
     private View mContentView;
-    private ISupportFragment mFragment;
     private Fragment mPreFragment;
+    private SupportActivity mActivity;
+    private SupportFragment mFragment;
 
     private Drawable mShadowLeft;
     private Drawable mShadowRight;
@@ -120,7 +120,9 @@ public class SwipeBackLayout extends FrameLayout {
     private Context mContext;
 
     public enum EdgeLevel {
-        MAX, MIN, MED
+        MAX,
+        MIN,
+        MED
     }
 
     public SwipeBackLayout(Context context) {
@@ -133,7 +135,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     public SwipeBackLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mContext = context;
+        mContext = context;
         init();
     }
 
@@ -166,7 +168,7 @@ public class SwipeBackLayout extends FrameLayout {
      * @param threshold
      */
     public void setScrollThresHold(@FloatRange(from = 0.0f, to = 1.0f) float threshold) {
-        if (threshold >= 1.0f || threshold <= 0) {
+        if (threshold >= 1 || threshold <= 0) {
             throw new IllegalArgumentException("Threshold value should be between 0 and 1.0");
         }
         mScrollFinishThreshold = threshold;
@@ -358,18 +360,13 @@ public class SwipeBackLayout extends FrameLayout {
         mCallOnDestroyView = true;
     }
 
-    public void setFragment(final ISupportFragment fragment, View view) {
-        this.mFragment = fragment;
-        mContentView = view;
-    }
-
     public void hiddenFragment() {
         if (mPreFragment != null && mPreFragment.getView() != null) {
             mPreFragment.getView().setVisibility(GONE);
         }
     }
 
-    public void attachToActivity(FragmentActivity activity) {
+    public void attachToActivity(SupportActivity activity) {
         mActivity = activity;
         TypedArray a = activity.getTheme().obtainStyledAttributes(new int[]{
                 android.R.attr.windowBackground
@@ -386,9 +383,10 @@ public class SwipeBackLayout extends FrameLayout {
         decor.addView(this);
     }
 
-    public void attachToFragment(ISupportFragment fragment, View view) {
+    public void attachToFragment(SupportFragment fragment, View view) {
         addView(view);
-        setFragment(fragment, view);
+        mFragment = fragment;
+        mContentView = view;
     }
 
     private void setContentView(View view) {
@@ -435,7 +433,7 @@ public class SwipeBackLayout extends FrameLayout {
     private class ViewDragCallback extends ViewDragHelper.Callback {
 
         @Override
-        public boolean tryCaptureView(View child, int pointerId) {
+        public boolean tryCaptureView(@NonNull View child, int pointerId) {
             boolean dragEnable = mHelper.isEdgeTouched(mEdgeFlag, pointerId);
             if (dragEnable) {
                 if (mHelper.isEdgeTouched(EDGE_LEFT, pointerId)) {
@@ -451,13 +449,13 @@ public class SwipeBackLayout extends FrameLayout {
                 }
 
                 if (mPreFragment == null) {
-                    if (mFragment != null) {
-                        List<Fragment> fragmentList = FragmentationMagician.getActiveFragments(((Fragment) mFragment).getFragmentManager());
+                    if (mFragment != null && mFragment.getFragmentManager() != null) {
+                        List<Fragment> fragmentList = FragmentationMagician.getActiveFragments(mFragment.getFragmentManager());
                         if (fragmentList != null && fragmentList.size() > 1) {
                             int index = fragmentList.indexOf(mFragment);
                             for (int i = index - 1; i >= 0; i--) {
                                 Fragment fragment = fragmentList.get(i);
-                                if (fragment != null && fragment.getView() != null) {
+                                if (fragment != null && fragment.getView() != null && fragment instanceof SupportFragment) {
                                     fragment.getView().setVisibility(VISIBLE);
                                     mPreFragment = fragment;
                                     break;
@@ -476,7 +474,7 @@ public class SwipeBackLayout extends FrameLayout {
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
+        public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
             int ret = 0;
             if ((mCurrentSwipeOrientation & EDGE_LEFT) != 0) {
                 ret = Math.min(child.getWidth(), Math.max(left, 0));
@@ -487,7 +485,7 @@ public class SwipeBackLayout extends FrameLayout {
         }
 
         @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+        public void onViewPositionChanged(@NonNull View changedView, int left, int top, int dx, int dy) {
             super.onViewPositionChanged(changedView, left, top, dx, dy);
 
             if ((mCurrentSwipeOrientation & EDGE_LEFT) != 0) {
@@ -536,7 +534,7 @@ public class SwipeBackLayout extends FrameLayout {
         }
 
         @Override
-        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+        public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
             final int childWidth = releasedChild.getWidth();
 
             int left = 0, top = 0;

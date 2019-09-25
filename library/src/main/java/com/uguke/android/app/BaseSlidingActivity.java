@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.uguke.android.R;
-import com.uguke.android.listener.OnTabSelectedListener;
 import com.uguke.android.widget.SlidingTabLayout;
 
 /**
@@ -21,27 +20,16 @@ public abstract class BaseSlidingActivity extends BaseActivity {
     protected SlidingTabLayout mTabLayout;
     protected BaseFragment[] mFragments;
     private int mCurrentTab;
-    private boolean mSupport;
-    private ViewPager mPager;
+    private ViewPager mViewPager;
 
     @Override
     public void onCreating(Bundle savedInstanceState) {
-        setContentView(R.layout.android_layout_sliding, mSupport ? Style.NATIVE_SWIPE : Style.NATIVE);
+        setContentView(R.layout.android_layout_sliding, onSwipeBackSupport() ? Style.NATIVE_SWIPE : Style.NATIVE);
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
         }
-        mPager = findViewById(R.id.android_fragment);
+        mViewPager = findViewById(R.id.android_fragment);
         mTabLayout = findViewById(R.id.android_tab);
-        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(int position) {
-                showHideFragment(mFragments[position]);
-            }
-
-            @Override
-            public void onTabReselected(int position) {}
-
-        });
     }
 
     @Override
@@ -50,26 +38,18 @@ public abstract class BaseSlidingActivity extends BaseActivity {
         outState.putInt("currentTab", mCurrentTab);
     }
 
-    /**
-     * 是否支持滑动返回，在super.onCreating()之前调用
-     * @param support 是否支持
-     */
-    public void setSwipeBackSupport(boolean support) {
-        mSupport = support;
+    public void loadMultipleRootFragment(FragmentTab... tabs) {
+        loadMultipleRootFragment(mCurrentTab, tabs);
     }
 
-    public void loadMultipleRootFragment(FragmentTabs... tabs) {
-        loadMultipleRootFragment(-1, tabs);
-    }
-
-    public void loadMultipleRootFragment(int position, final FragmentTabs... tabs) {
+    public void loadMultipleRootFragment(int position, final FragmentTab... tabs) {
         mFragments = new BaseFragment[tabs.length];
         // 初始化数组
         for (int i = 0, len = tabs.length; i < len; i++) {
             mFragments[i] = tabs[i].newFragment();
         }
         // 设置数据适配
-        mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), 0) {
+        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), 0) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -86,17 +66,11 @@ public abstract class BaseSlidingActivity extends BaseActivity {
             public CharSequence getPageTitle(int position) {
                 return tabs[position].getTitle();
             }
-        });
-        String [] titles = new String[tabs.length];
-        for(int i = 0; i < tabs.length; i++) {
-            titles[i] = tabs[i].getTitle();
-        }
 
-        mTabLayout.setupWithViewPager(mPager, titles);
-        mTabLayout.setCurrentTab(mCurrentTab);
+        });
         // 设置当前选项
-        //mTabLayout.selectTab(mTabLayout.getTabAt(position == -1 ? mCurrentTab : position));
-        mPager.setOffscreenPageLimit(3);
+        mTabLayout.setViewPager(mViewPager);
+        mTabLayout.setCurrentTab(position);
     }
 
     public BaseFragment [] getFragments() {

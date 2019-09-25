@@ -1,6 +1,7 @@
 package com.uguke.android.app.delegate;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,7 @@ public final class ViewActivityDelegate extends ViewDelegate {
 
     private void attachSwipeBackLayout() {
         if (mSwipeBackLayout != null && !mViewAttached) {
+            Log.e("数据", "加入");
             mViewAttached = true;
             mSwipeBackLayout.attachToActivity(mActivity);
         }

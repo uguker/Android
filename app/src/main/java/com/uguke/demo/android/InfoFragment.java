@@ -25,7 +25,8 @@ public class InfoFragment extends BaseFragment {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
-
+        super.onCreating(savedInstanceState);
+        setContentView(R.layout.fragment_info);
     }
 
 

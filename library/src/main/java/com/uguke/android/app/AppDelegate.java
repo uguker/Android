@@ -35,6 +35,8 @@ public class AppDelegate {
     private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
     private ToastAdapter mToastAdapter = new DefaultToastAdapter();
 
+    private boolean mSwipeBackSupport = false;
+
     public static AppDelegate getInstance() {
         if (sInstance == null) {
             sInstance = new AppDelegate();
@@ -75,6 +77,14 @@ public class AppDelegate {
         return this;
     }
 
+    public AppDelegate setSwipeBackSupport(boolean support) {
+        mSwipeBackSupport = support;
+        return this;
+    }
+
+    public boolean isSwipeBackSupport() {
+        return mSwipeBackSupport;
+    }
 
     public SnackAdapter getSnackAdapter() {
         return mSnackAdapter;

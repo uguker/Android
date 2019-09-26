@@ -12,7 +12,7 @@ public interface SwipBackProvider {
 
     void setEdgeLevel(int widthPixel);
 
-    boolean onSwipeBackPriority();
+    //boolean onSwipeBackPriority();
 
     boolean onSwipeBackSupport();
 }

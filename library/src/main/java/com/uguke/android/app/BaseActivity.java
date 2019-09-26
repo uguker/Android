@@ -152,14 +152,13 @@ public class BaseActivity extends SupportActivity implements ViewCallback, BaseV
         mViewDelegate.setEdgeLevel(widthPixel);
     }
 
-    @Override
     public boolean onSwipeBackPriority() {
         return mViewDelegate.swipeBackPriority();
     }
 
     @Override
     public boolean onSwipeBackSupport() {
-        return false;
+        return AppDelegate.getInstance().isSwipeBackSupport();
     }
 
     /**

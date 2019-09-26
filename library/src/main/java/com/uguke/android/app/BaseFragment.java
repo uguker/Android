@@ -198,14 +198,13 @@ public class BaseFragment extends SupportFragment implements ViewCallback, BaseV
         mViewDelegate.setEdgeLevel(widthPixel);
     }
 
-    @Override
     public boolean onSwipeBackPriority() {
         return false;
     }
 
     @Override
     public boolean onSwipeBackSupport() {
-        return false;
+        return AppDelegate.getInstance().isSwipeBackSupport();
     }
 
     public void setParallaxOffset(@FloatRange(from = 0.0f, to = 1.0f) float offset) {

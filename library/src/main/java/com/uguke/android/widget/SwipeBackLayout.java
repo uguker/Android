@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentationMagician;
 
 import com.uguke.android.R;
@@ -31,7 +32,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -81,7 +81,7 @@ public class SwipeBackLayout extends FrameLayout {
     private static final float DEFAULT_PARALLAX = 0.33f;
     private static final int FULL_ALPHA = 255;
     private static final float DEFAULT_SCROLL_THRESHOLD = 0.4f;
-    private static final int OVERSCROLL_DISTANCE = 10;
+    private static final int OVER_SCROLL_DISTANCE = 10;
 
     private float mScrollFinishThreshold = DEFAULT_SCROLL_THRESHOLD;
 
@@ -92,7 +92,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     private View mContentView;
     private Fragment mPreFragment;
-    private SupportActivity mActivity;
+    private FragmentActivity mActivity;
     private SupportFragment mFragment;
 
     private Drawable mShadowLeft;
@@ -366,7 +366,7 @@ public class SwipeBackLayout extends FrameLayout {
         }
     }
 
-    public void attachToActivity(SupportActivity activity) {
+    public void attachToActivity(FragmentActivity activity) {
         mActivity = activity;
         TypedArray a = activity.getTheme().obtainStyledAttributes(new int[]{
                 android.R.attr.windowBackground
@@ -540,10 +540,10 @@ public class SwipeBackLayout extends FrameLayout {
             int left = 0, top = 0;
             if ((mCurrentSwipeOrientation & EDGE_LEFT) != 0) {
                 left = xvel > 0 || xvel == 0 && mScrollPercent > mScrollFinishThreshold ? (childWidth
-                        + mShadowLeft.getIntrinsicWidth() + OVERSCROLL_DISTANCE) : 0;
+                        + mShadowLeft.getIntrinsicWidth() + OVER_SCROLL_DISTANCE) : 0;
             } else if ((mCurrentSwipeOrientation & EDGE_RIGHT) != 0) {
                 left = xvel < 0 || xvel == 0 && mScrollPercent > mScrollFinishThreshold ? -(childWidth
-                        + mShadowRight.getIntrinsicWidth() + OVERSCROLL_DISTANCE) : 0;
+                        + mShadowRight.getIntrinsicWidth() + OVER_SCROLL_DISTANCE) : 0;
             }
 
             mHelper.settleCapturedViewAt(left, top);

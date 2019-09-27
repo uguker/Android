@@ -47,6 +47,7 @@ public abstract class BasePageActivity<T> extends BaseActivity {
             }
         });
         mViewDelegate.getRefreshLayout().setEnablePureScrollMode(false);
+        //mAdapter.notifyItemChanged();
     }
 
     /**

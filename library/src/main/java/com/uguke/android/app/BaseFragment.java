@@ -35,7 +35,7 @@ import me.yokeyword.fragmentation.SupportHelper;
  *
  * @author LeiJue
  */
-public class BaseFragment extends SupportFragment implements ViewCallback, BaseView, SwipBackProvider {
+public class BaseFragment extends SupportFragment implements ViewCallback, BaseView, SwipeBackProvider {
 
     final ViewFragmentDelegate mViewDelegate = new ViewFragmentDelegate(this, this);
 

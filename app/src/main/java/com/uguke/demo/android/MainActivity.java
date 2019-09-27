@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.BaseTabbedActivity;
+import com.uguke.android.app.BaseSlidingActivity;
 import com.uguke.android.app.FragmentTab;
 
 import io.reactivex.Observable;
@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * @author LeiJue
  */
-public class MainActivity extends BaseTabbedActivity {
+public class MainActivity extends BaseSlidingActivity {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
@@ -54,10 +54,10 @@ public class MainActivity extends BaseTabbedActivity {
                 new FragmentTab("ta的", InfoFragment.class),
                 new FragmentTab("我的", MineFragment.class));
 
-        loadMultipleRootFragment(
-                new FragmentTab("首页", HomeFragment.class),
-                new FragmentTab("其他", SSFragment.class),
-                new FragmentTab("我的", MineFragment.class));
+//        loadMultipleRootFragment(
+//                new FragmentTab("首页", HomeFragment.class),
+//                new FragmentTab("其他", SSFragment.class),
+//                new FragmentTab("我的", MineFragment.class));
 //        loadMultipleRootFragment(
 //                new FragmentTab.Builder("首页").setFragmentClass(HomeFragment.class).build(),
 //                new FragmentTab.Builder("其他").setFragmentClass(SSFragment.class).build(),
@@ -68,6 +68,12 @@ public class MainActivity extends BaseTabbedActivity {
         hideToolbar();
 
         setSwipeBackEnable(true);
+
+//        mToolbar.setTitle("")
+//                .setTitle("")
+//                .setTitle("")
+//                .setTitle("");
+
     }
 
     @Override

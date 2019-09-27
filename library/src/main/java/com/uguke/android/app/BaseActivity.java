@@ -23,14 +23,14 @@ import com.uguke.android.widget.SwipeBackLayout;
 import com.uguke.android.widget.Toolbar;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SupportHelper;
 
 /**
  * 基础Activity
  * @author LeiJue
  */
-public class BaseActivity extends SupportActivity implements ViewCallback, BaseView, SwipBackProvider {
+public class BaseActivity extends me.yokeyword.fragmentation.SupportActivity
+        implements ViewCallback, BaseView, SwipeBackProvider {
 
     final ViewActivityDelegate mViewDelegate = new ViewActivityDelegate(this, this);
 
@@ -99,7 +99,6 @@ public class BaseActivity extends SupportActivity implements ViewCallback, BaseV
     public <T extends ISupportFragment> T findFragmentByTag(String tag) {
         return SupportHelper.findFragment(getSupportFragmentManager(), tag);
     }
-
 
     @Override
     public final void setContentView(@LayoutRes int id) {

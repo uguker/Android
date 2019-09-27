@@ -14,7 +14,7 @@
         android:theme="@style/AndroidTheme"
         tools:replace="theme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

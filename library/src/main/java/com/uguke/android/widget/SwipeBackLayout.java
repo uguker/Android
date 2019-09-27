@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentationMagician;
 
 import com.uguke.android.R;
 import com.uguke.android.app.BaseActivity;
+import com.uguke.android.app.SupportFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,7 +33,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Thx https://github.com/ikew0ng/SwipeBackLayout.

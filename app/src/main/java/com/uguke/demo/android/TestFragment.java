@@ -1,6 +1,5 @@
 package com.uguke.demo.android;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -9,39 +8,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.uguke.android.app.BaseSlidingActivity;
-import com.uguke.android.app.SupportActivity;
+import com.uguke.android.app.SupportFragment;
 
 import java.util.List;
 
-/**
- *
- * @author LeiJue
- */
-@SuppressLint("Registered")
-public class ListActivity extends SupportActivity {
+public class TestFragment extends SupportFragment {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //setNativeContentView(R.layout.activity_main);
-
-        loadRootFragment(R.id.content, new TestFragment());
-
+        Glide.with(mActivity).load("").into(new ImageView(mActivity));
 
         post(() -> {
 
-            List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+            List<Fragment> fragmentList = getFragmentManager().getFragments();
 
             for (Fragment fragment : fragmentList) {
                 Log.e("数据", fragment.getClass().getName());
             }
 
         });
-
-
-
     }
-
 }

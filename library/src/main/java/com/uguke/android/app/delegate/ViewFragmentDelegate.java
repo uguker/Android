@@ -18,6 +18,8 @@ import me.yokeyword.fragmentation.SupportFragment;
  */
 public final class ViewFragmentDelegate extends ViewDelegate {
 
+    static final Integer PARENT_VIEW_TAG = Integer.MAX_VALUE - 9999;
+    static final String FRAGMENTATION_ARG_CONTAINER = "fragmentation_arg_container";
     private boolean mViewAttached;
     protected SwipeBackLayout mSwipeBackLayout;
 
@@ -94,7 +96,7 @@ public final class ViewFragmentDelegate extends ViewDelegate {
     private void attachSwipeBackLayout(View view) {
         if (mSwipeBackLayout != null && !mViewAttached) {
             mViewAttached = true;
-            mSwipeBackLayout.attachToFragment(mFragment, view);
+            //mSwipeBackLayout.attachToFragment(mFragment, view);
         }
     }
 }

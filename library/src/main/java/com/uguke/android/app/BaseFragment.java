@@ -23,7 +23,7 @@ import com.uguke.android.app.delegate.ViewCreator;
 import com.uguke.android.app.delegate.ViewFragmentDelegate;
 import com.uguke.android.helper.snack.OnDismissListener;
 import com.uguke.android.widget.SwipeBackLayout;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class BaseFragment extends SupportFragment implements ViewCallback, BaseV
     private MvpDelegate mMvpDelegate;
 
     /** 标题 **/
-    public Toolbar mToolbar;
+    public CommonToolbar mToolbar;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
     /** 活动 **/

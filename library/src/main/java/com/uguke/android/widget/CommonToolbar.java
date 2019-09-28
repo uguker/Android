@@ -33,7 +33,7 @@ import com.uguke.android.R;
  * 标题栏
  * @author LeiJue
  */
-public class Toolbar extends RelativeLayout {
+public class CommonToolbar extends RelativeLayout {
 
     /** 行为间隔 **/
     private float mActionSpace;
@@ -81,21 +81,21 @@ public class Toolbar extends RelativeLayout {
         }
     };
 
-    public Toolbar(Context context) {
+    public CommonToolbar(Context context) {
         super(context);
         mContext = context;
         initViews();
         initAttrs(null);
     }
 
-    public Toolbar(Context context, AttributeSet attrs) {
+    public CommonToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initViews();
         initAttrs(attrs);
     }
 
-    public Toolbar(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CommonToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         initViews();
@@ -199,43 +199,43 @@ public class Toolbar extends RelativeLayout {
     @SuppressLint("CustomViewStyleable")
     private void initAttrs(AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.AToolbar);
+            TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.CommonToolbar);
             // 返回按钮
-            Drawable backIcon = ta.getDrawable(R.styleable.AToolbar_backIcon);
+            Drawable backIcon = ta.getDrawable(R.styleable.CommonToolbar_ct_backIcon);
             // 文本信息
-            String title = ta.getString(R.styleable.AToolbar_title);
-            String back = ta.getString(R.styleable.AToolbar_backText);
-            String action = ta.getString(R.styleable.AToolbar_actionText);
-            boolean titleBold = ta.getBoolean(R.styleable.AToolbar_titleTextBold, false);
-            boolean backBold = ta.getBoolean(R.styleable.AToolbar_backTextBold, false);
-            boolean actionBold = ta.getBoolean(R.styleable.AToolbar_actionTextBold, false);
-            mTextColors[0] = ta.getColor(R.styleable.AToolbar_titleTextColor, mTextColors[0]);
-            mTextColors[1] = ta.getColor(R.styleable.AToolbar_backTextColor, mTextColors[1]);
-            mTextColors[2] = ta.getColor(R.styleable.AToolbar_actionTextColor, mTextColors[2]);
-            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.AToolbar_titleTextSize,
+            String title = ta.getString(R.styleable.CommonToolbar_ct_title);
+            String back = ta.getString(R.styleable.CommonToolbar_ct_backText);
+            String action = ta.getString(R.styleable.CommonToolbar_ct_actionText);
+            boolean titleBold = ta.getBoolean(R.styleable.CommonToolbar_ct_titleTextBold, false);
+            boolean backBold = ta.getBoolean(R.styleable.CommonToolbar_ct_backTextBold, false);
+            boolean actionBold = ta.getBoolean(R.styleable.CommonToolbar_ct_actionTextBold, false);
+            mTextColors[0] = ta.getColor(R.styleable.CommonToolbar_ct_titleTextColor, mTextColors[0]);
+            mTextColors[1] = ta.getColor(R.styleable.CommonToolbar_ct_backTextColor, mTextColors[1]);
+            mTextColors[2] = ta.getColor(R.styleable.CommonToolbar_ct_actionTextColor, mTextColors[2]);
+            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_titleTextSize,
                     ResUtils.toPixel(mTextSizes[0])));
-            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.AToolbar_backTextSize,
+            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_backTextSize,
                     ResUtils.toPixel(mTextSizes[1])));
-            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.AToolbar_actionTextSize,
+            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionTextSize,
                     ResUtils.toPixel(mTextSizes[2])));
             // 获取间隔信息
-            mInnerSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.AToolbar_actionSpace,
+            mInnerSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionSpace,
                     ResUtils.getPixel(mContext, R.dimen.content)));
-            mTitleSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.AToolbar_actionSpace,
+            mTitleSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionSpace,
                     ResUtils.toPixel(mTitleSpace)));
-            mActionSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.AToolbar_actionSpace,
+            mActionSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionSpace,
                     ResUtils.toPixel(mActionSpace)));
-            boolean backIconEnable = ta.getBoolean(R.styleable.AToolbar_backIconEnable, true);
-            boolean backIconVisible = ta.getBoolean(R.styleable.AToolbar_backIconVisible, false);
-            boolean backTextVisible = ta.getBoolean(R.styleable.AToolbar_backTextVisible, false);
-            boolean actionTextVisible = ta.getBoolean(R.styleable.AToolbar_actionTextVisible, false);
-            mRippleEffect = ta.getBoolean(R.styleable.AToolbar_rippleEffect, true);
-            mMaterialStyle = ta.getBoolean(R.styleable.AToolbar_materialStyle, false);
-            boolean dividerVisible = ta.getBoolean(R.styleable.AToolbar_dividerVisible, false);
-            int dividerSpace = ta.getDimensionPixelOffset(R.styleable.AToolbar_dividerSpace, 0);
-            int dividerHeight = ta.getDimensionPixelOffset(R.styleable.AToolbar_dividerHeight,
+            boolean backIconEnable = ta.getBoolean(R.styleable.CommonToolbar_ct_backIconEnable, true);
+            boolean backIconVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_backIconVisible, false);
+            boolean backTextVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_backTextVisible, false);
+            boolean actionTextVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_actionTextVisible, false);
+            mRippleEffect = ta.getBoolean(R.styleable.CommonToolbar_ct_rippleEffect, true);
+            mMaterialStyle = ta.getBoolean(R.styleable.CommonToolbar_ct_materialStyle, false);
+            boolean dividerVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_dividerVisible, false);
+            int dividerSpace = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_dividerSpace, 0);
+            int dividerHeight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_dividerHeight,
                     ResUtils.getPixel(mContext, R.dimen.divider));
-            int dividerColor = ta.getColor(R.styleable.AToolbar_dividerColor,
+            int dividerColor = ta.getColor(R.styleable.CommonToolbar_ct_dividerColor,
                     ContextCompat.getColor(mContext, R.color.divider));
             ta.recycle();
             // 设置文本信息
@@ -321,7 +321,7 @@ public class Toolbar extends RelativeLayout {
         }
     }
 
-    public Toolbar setMaterialStyle(boolean materialStyle) {
+    public CommonToolbar setMaterialStyle(boolean materialStyle) {
         // 状态没做变化则不做处理
         if (mMaterialStyle == materialStyle) {
             return this;
@@ -342,7 +342,7 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setRippleEffect(boolean rippleEffect) {
+    public CommonToolbar setRippleEffect(boolean rippleEffect) {
         // 状态没做变化则不做处理
         if (mRippleEffect == rippleEffect) {
             return this;
@@ -369,7 +369,7 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setInnerSpace(float space) {
+    public CommonToolbar setInnerSpace(float space) {
         mInnerSpace = space;
         refreshToolbar();
         return this;
@@ -379,33 +379,33 @@ public class Toolbar extends RelativeLayout {
     // 标题部分
     /////////////////////////
 
-    public Toolbar setTitle(CharSequence title) {
+    public CommonToolbar setTitle(CharSequence title) {
         mTitle.setText(title);
         return this;
     }
 
-    public Toolbar setTitle(int id) {
+    public CommonToolbar setTitle(int id) {
         mTitle.setText(id);
         return this;
     }
 
-    public Toolbar setTitleTextColor(int color) {
+    public CommonToolbar setTitleTextColor(int color) {
         mTitle.setTextColor(color);
         return this;
     }
 
-    public Toolbar setTitleTextSize(float size) {
+    public CommonToolbar setTitleTextSize(float size) {
         mTitle.setTextSize(size);
         return this;
     }
 
-    public Toolbar setTitleTextBold(boolean bold) {
+    public CommonToolbar setTitleTextBold(boolean bold) {
         mTitle.setTypeface(Typeface.defaultFromStyle(bold ?
                 Typeface.BOLD : Typeface.NORMAL));
         return this;
     }
 
-    public Toolbar setTitleSpace(float space) {
+    public CommonToolbar setTitleSpace(float space) {
         mTitleSpace = space;
         refreshToolbar();
         return this;
@@ -415,25 +415,25 @@ public class Toolbar extends RelativeLayout {
     // Back部分
     /////////////////////////
 
-    public Toolbar setBackIcon(@DrawableRes int resId) {
+    public CommonToolbar setBackIcon(@DrawableRes int resId) {
         mBackDrawable = ContextCompat.getDrawable(mContext, resId);
         mBackIcon.setImageResource(resId);
         return this;
     }
 
-    public Toolbar setBackIcon(Drawable drawable) {
+    public CommonToolbar setBackIcon(Drawable drawable) {
         mBackDrawable = drawable;
         mBackIcon.setImageDrawable(drawable);
         return this;
     }
 
-    public Toolbar setBackIcon(Bitmap bitmap) {
+    public CommonToolbar setBackIcon(Bitmap bitmap) {
         mBackDrawable = new BitmapDrawable(getResources(), bitmap);
         mBackIcon.setImageBitmap(bitmap);
         return this;
     }
 
-    public Toolbar setBackIconVisible(boolean visible) {
+    public CommonToolbar setBackIconVisible(boolean visible) {
         // 状态未变动
         if ((mBackIcon.getVisibility() == VISIBLE) == visible) {
             return this;
@@ -443,53 +443,53 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setBackIconEnable(boolean enable) {
+    public CommonToolbar setBackIconEnable(boolean enable) {
         mBackIcon.setOnClickListener(enable ? mFinishListener : mBackListener);
         mBackIcon.setTag(enable);
         return this;
     }
 
-    public Toolbar setBackIconListener(View.OnClickListener listener) {
+    public CommonToolbar setBackIconListener(View.OnClickListener listener) {
         mBackListener = listener;
         Boolean enable = (Boolean) mBackIcon.getTag();
         setBackIconEnable(enable == null ? true : enable);
         return this;
     }
 
-    public Toolbar setFinishListener(View.OnClickListener listener) {
+    public CommonToolbar setFinishListener(View.OnClickListener listener) {
         mFinishListener = listener;
         Boolean enable = (Boolean) mBackIcon.getTag();
         setBackIconEnable(enable == null ? true : enable);
         return this;
     }
 
-    public Toolbar setBackText(CharSequence text) {
+    public CommonToolbar setBackText(CharSequence text) {
         mBackText.setText(text);
         return this;
     }
 
-    public Toolbar setBackText(int id) {
+    public CommonToolbar setBackText(int id) {
         mBackText.setText(id);
         return this;
     }
 
-    public Toolbar setBackTextColor(int color) {
+    public CommonToolbar setBackTextColor(int color) {
         mBackText.setTextColor(color);
         return this;
     }
 
-    public Toolbar setBackTextSize(float size) {
+    public CommonToolbar setBackTextSize(float size) {
         mBackText.setTextSize(size);
         return this;
     }
 
-    public Toolbar setBackTextBold(boolean bold) {
+    public CommonToolbar setBackTextBold(boolean bold) {
         mBackText.setTypeface(Typeface.defaultFromStyle(bold ?
                 Typeface.BOLD : Typeface.NORMAL));
         return this;
     }
 
-    public Toolbar setBackTextVisible(boolean visible) {
+    public CommonToolbar setBackTextVisible(boolean visible) {
         // 状态未变动
         if ((mBackText.getVisibility() == VISIBLE) == visible) {
             return this;
@@ -499,7 +499,7 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setBackTextListener(View.OnClickListener listener) {
+    public CommonToolbar setBackTextListener(View.OnClickListener listener) {
         mBackText.setOnClickListener(listener);
         return this;
     }
@@ -508,33 +508,33 @@ public class Toolbar extends RelativeLayout {
     // Action部分
     /////////////////////////
 
-    public Toolbar setActionText(CharSequence text) {
+    public CommonToolbar setActionText(CharSequence text) {
         mActionText.setText(text);
         return this;
     }
 
-    public Toolbar setActionText(int id) {
+    public CommonToolbar setActionText(int id) {
         mActionText.setText(id);
         return this;
     }
 
-    public Toolbar setActionTextColor(int color) {
+    public CommonToolbar setActionTextColor(int color) {
         mActionText.setTextColor(color);
         return this;
     }
 
-    public Toolbar setActionTextSize(float size) {
+    public CommonToolbar setActionTextSize(float size) {
         mActionText.setTextSize(size);
         return this;
     }
 
-    public Toolbar setActionTextBold(boolean bold) {
+    public CommonToolbar setActionTextBold(boolean bold) {
         mActionText.setTypeface(Typeface.defaultFromStyle(bold ?
                 Typeface.BOLD : Typeface.NORMAL));
         return this;
     }
 
-    public Toolbar setActionTextVisible(boolean visible) {
+    public CommonToolbar setActionTextVisible(boolean visible) {
         // 状态未变动
         if ((mActionText.getVisibility() == VISIBLE) == visible) {
             return this;
@@ -544,12 +544,12 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setActionTextListener(View.OnClickListener listener) {
+    public CommonToolbar setActionTextListener(View.OnClickListener listener) {
         mActionText.setOnClickListener(listener);
         return this;
     }
 
-    public Toolbar addActionIcon(int key, @DrawableRes int resId) {
+    public CommonToolbar addActionIcon(int key, @DrawableRes int resId) {
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -567,7 +567,7 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setActionIconVisble(int key, boolean visible) {
+    public CommonToolbar setActionIconVisble(int key, boolean visible) {
         ImageView view = mActionIcons.get(key);
         if (view != null) {
             // 状态未变动
@@ -580,7 +580,7 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setActionSpace(float space) {
+    public CommonToolbar setActionSpace(float space) {
         mActionSpace = space;
         // 文字是否已显示
         boolean textVisible = mActionText.getVisibility() == VISIBLE;
@@ -598,7 +598,7 @@ public class Toolbar extends RelativeLayout {
         return this;
     }
 
-    public Toolbar setActionIconListener(int key, View.OnClickListener listener) {
+    public CommonToolbar setActionIconListener(int key, View.OnClickListener listener) {
         ImageView view = mActionIcons.get(key);
         if (view != null) {
             view.setOnClickListener(listener);
@@ -610,22 +610,22 @@ public class Toolbar extends RelativeLayout {
     // 分割线部分
     /////////////////////////
 
-    public Toolbar setDividerColor(int color) {
+    public CommonToolbar setDividerColor(int color) {
         mDivider.setBackgroundColor(color);
         return this;
     }
 
-    public Toolbar setDividerHeight(float height) {
+    public CommonToolbar setDividerHeight(float height) {
         ViewUtils.setHeight(mDivider, height);
         return this;
     }
 
-    public Toolbar setDividerSpace(float space) {
+    public CommonToolbar setDividerSpace(float space) {
         ViewUtils.setMargins(mDivider, space, 0, space, 0);
         return this;
     }
 
-    public Toolbar setDividerVisible(boolean visible) {
+    public CommonToolbar setDividerVisible(boolean visible) {
         // 状态未改变
         if ((mDivider.getVisibility() == VISIBLE) == visible) {
             return this;
@@ -651,6 +651,6 @@ public class Toolbar extends RelativeLayout {
     }
 
     public interface Handler {
-        void onHandle(Toolbar toolbar);
+        void onHandle(CommonToolbar toolbar);
     }
 }

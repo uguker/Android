@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -29,7 +29,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public class SupportFragment extends Fragment implements ISupportFragment {
 
     /** 标题 **/
-    public Toolbar mToolbar;
+    public CommonToolbar mToolbar;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
 

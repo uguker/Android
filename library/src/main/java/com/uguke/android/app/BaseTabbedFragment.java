@@ -12,7 +12,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.uguke.android.widget.OnTabSelectedListener;
 import com.uguke.android.util.ResUtils;
 import com.uguke.android.widget.CommonTabLayout;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 import com.uguke.android.R;
 
 import java.util.Arrays;
@@ -171,7 +171,7 @@ public abstract class BaseTabbedFragment extends BaseFragment {
         AppBarLayout appBarLayout = findViewById(R.id.android_bar);
         if (mToolbar == null && appBarLayout != null) {
             if (view == null) {
-                Toolbar toolbar = new Toolbar(mActivity);
+                CommonToolbar toolbar = new CommonToolbar(mActivity);
                 toolbar.setLayoutParams(new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ResUtils.getPixel(mActivity, R.dimen.toolbar)));

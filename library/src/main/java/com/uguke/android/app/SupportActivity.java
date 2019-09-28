@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
@@ -28,7 +28,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public class SupportActivity extends AppCompatActivity implements ISupportActivity {
 
     /** 标题 **/
-    public Toolbar mToolbar;
+    public CommonToolbar mToolbar;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
 
@@ -172,6 +172,10 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
 
     public final void setNativeContentView(View view) {
         mLayoutDelegate.setNativeContentView(view);
+    }
+
+    public void showTips(String tips) {
+        mLayoutDelegate.showTips(tips);
     }
 
     /****************************************以下为可选方法(Optional methods)******************************************************/

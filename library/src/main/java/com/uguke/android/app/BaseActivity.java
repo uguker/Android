@@ -20,7 +20,7 @@ import com.uguke.android.app.delegate.ViewCallback;
 import com.uguke.android.app.delegate.ViewCreator;
 import com.uguke.android.helper.snack.OnDismissListener;
 import com.uguke.android.widget.SwipeBackLayout;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
@@ -35,7 +35,7 @@ public class BaseActivity extends me.yokeyword.fragmentation.SupportActivity
     final ViewActivityDelegate mViewDelegate = new ViewActivityDelegate(this, this);
 
     /** 标题 **/
-    public Toolbar mToolbar;
+    public CommonToolbar mToolbar;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
 

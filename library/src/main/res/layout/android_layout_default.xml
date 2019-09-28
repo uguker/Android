@@ -12,15 +12,18 @@
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
-        <com.uguke.android.widget.Toolbar
+        <com.uguke.android.widget.CommonToolbar
             android:id="@+id/android_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar"
-            app:backIcon="@drawable/def_back_common_dark"
-            app:backIconVisible="true"
-            app:rippleEffect="false">
+            app:ct_backIcon="@drawable/def_back_common_dark"
+            app:ct_rippleEffect="false"
+            app:ct_backIconVisible="true"
+            android:layout_height="@dimen/toolbar">
+            <!--app:backIcon="@drawable/def_back_common_dark"-->
+            <!--app:backIconVisible="true"-->
+            <!--app:rippleEffect="false">-->
 
-        </com.uguke.android.widget.Toolbar>
+        </com.uguke.android.widget.CommonToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

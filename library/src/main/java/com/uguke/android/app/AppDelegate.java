@@ -16,7 +16,7 @@ import com.uguke.android.app.delegate.ViewHandler;
 import com.uguke.android.helper.ActionHelper;
 import com.uguke.android.adapter.DefaultSnackAdapter;
 import com.uguke.android.adapter.SnackAdapter;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 
 import java.util.LinkedList;
 
@@ -30,7 +30,7 @@ public class AppDelegate {
 
     private SnackAdapter mSnackAdapter = new DefaultSnackAdapter();
 
-    private ViewHandler<AppBarLayout, Toolbar> mToolbarHandler;
+    private ViewHandler<AppBarLayout, CommonToolbar> mToolbarHandler;
     private ViewHandler<RelativeLayout, SmartRefreshLayout> mRefreshHandler;
 
     private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
@@ -69,7 +69,7 @@ public class AppDelegate {
     }
 
 
-    public AppDelegate setToolbarHandler(ViewHandler<AppBarLayout, Toolbar> handler) {
+    public AppDelegate setToolbarHandler(ViewHandler<AppBarLayout, CommonToolbar> handler) {
         mToolbarHandler = handler;
         return this;
     }
@@ -104,7 +104,7 @@ public class AppDelegate {
         return mLoadingAdapter;
     }
 
-    public ViewHandler<AppBarLayout, Toolbar> getToolbarHandler() {
+    public ViewHandler<AppBarLayout, CommonToolbar> getToolbarHandler() {
         return mToolbarHandler;
     }
 

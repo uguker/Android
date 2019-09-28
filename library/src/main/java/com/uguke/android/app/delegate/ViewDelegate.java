@@ -36,7 +36,7 @@ import com.uguke.android.helper.snack.SnackHelper;
 import com.uguke.android.util.ButterKnifeUtils;
 import com.uguke.android.widget.LoadingView;
 import com.uguke.android.widget.SwipeBackLayout;
-import com.uguke.android.widget.Toolbar;
+import com.uguke.android.widget.CommonToolbar;
 
 import java.util.LinkedList;
 
@@ -273,9 +273,9 @@ public class ViewDelegate {
         AppDelegate appDelegate = AppDelegate.getInstance();
         Object context = mFragment == null ? mActivity : mFragment;
         // 标题栏
-        Toolbar toolbar = mContentView.findViewById(R.id.android_toolbar);
+        CommonToolbar toolbar = mContentView.findViewById(R.id.android_toolbar);
         AppBarLayout appbar = mContentView.findViewById(R.id.android_bar);
-        ViewHandler<AppBarLayout, Toolbar> toolbarViewHandler = appDelegate.getToolbarHandler();
+        ViewHandler<AppBarLayout, CommonToolbar> toolbarViewHandler = appDelegate.getToolbarHandler();
         if (toolbar != null && appbar != null && toolbarViewHandler != null) {
             toolbarViewHandler.onHandle(context, appbar, toolbar);
         }

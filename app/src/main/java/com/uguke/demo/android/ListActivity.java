@@ -3,13 +3,10 @@ package com.uguke.demo.android;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
-import com.uguke.android.app.BaseSlidingActivity;
 import com.uguke.android.app.SupportActivity;
 
 import java.util.List;
@@ -29,6 +26,7 @@ public class ListActivity extends SupportActivity {
 
         loadRootFragment(R.id.content, new TestFragment());
 
+        mToolbar.setMaterialStyle(true);
 
         post(() -> {
 
@@ -40,7 +38,7 @@ public class ListActivity extends SupportActivity {
 
         });
 
-
+        showTips("你好啊");
 
     }
 

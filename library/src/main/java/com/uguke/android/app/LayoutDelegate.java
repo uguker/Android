@@ -5,15 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
+import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.helper.TipsHelper;
 import com.uguke.android.widget.CommonToolbar;
+import com.uguke.android.widget.LoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,7 @@ public class LayoutDelegate {
     private View mContentView;
     private ViewGroup mParentContainer;
     private ViewGroup mContentLayout;
+    private CoordinatorLayout mLoadingLayout;
     private SmartRefreshLayout mRefreshLayout;
     private List<ViewLifeCallback> mLifeCallbacks = new ArrayList<>();
 
@@ -95,7 +100,10 @@ public class LayoutDelegate {
      * 布局销毁
      */
     public void onDestroy() {
-
+        if (mTipsHelper != null) {
+            // 释放资源
+            mTipsHelper.release();
+        }
         // 通知状态变化
         notifyStateChanged(STATE_DESTROY);
     }
@@ -110,6 +118,8 @@ public class LayoutDelegate {
         mRefreshLayout = mContentView.findViewById(R.id.android_refresh);
         mToolbar = mContentView.findViewById(R.id.android_toolbar);
         mInflater.inflate(id, mRefreshLayout, true);
+        // 初始化头部和底部
+        initHeaderAndFooter();
         // 通知状态变化
         notifyStateChanged(STATE_CREATED);
     }
@@ -124,6 +134,8 @@ public class LayoutDelegate {
         mRefreshLayout = mContentView.findViewById(R.id.android_refresh);
         mToolbar = mContentView.findViewById(R.id.android_toolbar);
         mRefreshLayout.addView(view);
+        // 初始化头部和底部
+        initHeaderAndFooter();
         // 通知状态变化
         notifyStateChanged(STATE_CREATED);
     }
@@ -138,6 +150,8 @@ public class LayoutDelegate {
         mContentLayout = mContentView.findViewById(R.id.android_content);
         mToolbar = mContentView.findViewById(R.id.android_toolbar);
         mInflater.inflate(id, mContentLayout, true);
+        // 初始化头部和底部
+        initHeaderAndFooter();
         // 通知状态变化
         notifyStateChanged(STATE_CREATED);
     }
@@ -152,6 +166,8 @@ public class LayoutDelegate {
         mContentLayout = mContentView.findViewById(R.id.android_content);
         mToolbar = mContentView.findViewById(R.id.android_toolbar);
         mContentLayout.addView(view);
+        // 初始化头部和底部
+        initHeaderAndFooter();
         // 通知状态变化
         notifyStateChanged(STATE_CREATED);
     }
@@ -199,8 +215,109 @@ public class LayoutDelegate {
         mTipsHelper.setText(tips).show();
     }
 
+    /**
+     * 显示加载
+     */
+    public void showLoading(String ...texts) {
+        if (mContentView == null) {
+            throw new IllegalStateException("can't request showLoading before contentView inflated.");
+        }
+        // 初始化加载容器
+        initLoadingContainer();
+        LoadingAdapter adapter = AppDelegate.getInstance().getLoadingAdapter();
+        boolean isUseTexts = adapter.isUseTexts();
+        boolean isEmptyText = texts == null || texts.length == 0;
+        // 如果加载框使用文本信息或文本信息为空
+        if (isUseTexts || isEmptyText) {
+            adapter.show(texts);
+        } else {
+            if (mTipsHelper == null) {
+                mTipsHelper = TipsHelper.make(mLoadingLayout);
+            }
+            mLoadingLayout.setVisibility(View.VISIBLE);
+            mTipsHelper.setView(mLoadingLayout)
+                    .setDuration(TipsHelper.DURATION_MANUAL)
+                    .setText(texts[0])
+                    .show();
+        }
+    }
+
+    /**
+     * 隐藏加载
+     */
+    public void hideLoading() {
+        LoadingAdapter adapter = AppDelegate.getInstance().getLoadingAdapter();
+        adapter.hide();
+        if (mTipsHelper != null) {
+            mTipsHelper.hide();
+        }
+    }
+
     public void addLifeCallback(@NonNull ViewLifeCallback callback) {
         mLifeCallbacks.add(callback);
+    }
+
+    void initHeaderAndFooter() {
+        ViewGroup headerParent = mContentView.findViewById(R.id.android_header);
+        ViewGroup footerParent = mContentView.findViewById(R.id.android_footer);
+        LayoutCreator headerCreator;
+        LayoutCreator footerCreator;
+        // 获取ViewCreator对象
+        if (mFragment == null) {
+            headerCreator = mActivity.onCreateHeader(headerParent);
+            footerCreator = mActivity.onCreateFooter(footerParent);
+        } else {
+            headerCreator = mFragment.onCreateHeader(headerParent);
+            footerCreator = mFragment.onCreateFooter(footerParent);
+        }
+
+        // 初始化头部
+        if (headerCreator != null) {
+            headerParent.removeAllViews();
+            // 根据额外数据来判定是否浮动
+            Object extras = headerCreator.getExtras();
+            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+            View header = mInflater.inflate(headerCreator.getLayoutResId(), headerParent, true);
+            header.bringToFront();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (!floating) {
+                params.addRule(RelativeLayout.BELOW, R.id.android_header);
+            }
+            mRefreshLayout.setLayoutParams(params);
+        }
+        // 初始化底部
+        if (footerCreator != null) {
+            // 根据额外数据来判定是否浮动
+            Object extras = footerCreator.getExtras();
+            // 额外数据为空，直接判定为不浮动
+            // 额外数据为布尔类型，false为不浮动
+            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+            View footer = mInflater.inflate(footerCreator.getLayoutResId(), footerParent, true);
+            footer.bringToFront();
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (!floating) {
+                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
+            }
+            mRefreshLayout.setLayoutParams(params);
+        }
+    }
+
+    /**
+     * 初始化加载容器
+     */
+    void initLoadingContainer() {
+        // 添加布局
+        if (mLoadingLayout == null) {
+            ViewGroup parent = mContentLayout == null ? mParentContainer : mContentLayout;
+            // 初始化加载容器
+            mLoadingLayout = (CoordinatorLayout) mInflater.inflate(R.layout.android_layout_loading, parent, false);
+            parent.addView(mLoadingLayout);
+            LoadingView view = (LoadingView) mLoadingLayout.getChildAt(0);
+            AppDelegate.getInstance()
+                    .getLoadingAdapter()
+                    .convert(mFragment == null ? mActivity : mFragment, mLoadingLayout, view);
+        }
     }
 
     /**
@@ -252,7 +369,6 @@ public class LayoutDelegate {
 //            }
 //        }
 //    }
-
 
     public CommonToolbar getToolbar() {
         return mToolbar;

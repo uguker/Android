@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.allen.library.SuperTextView;
-import com.uguke.android.app.BaseFragment;
+import com.uguke.android.app.SupportFragment;
 
 import butterknife.BindArray;
 import butterknife.BindViews;
@@ -15,7 +15,7 @@ import butterknife.BindViews;
  *
  * @author LeiJue
  */
-public class InfoFragment extends BaseFragment {
+public class InfoFragment extends SupportFragment {
 
     @BindViews({R.id.setting, R.id.about})
     SuperTextView [] tvs;

@@ -23,7 +23,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * 基础标签活动
  * @author LeiJue
  */
-public abstract class BaseTabbedActivity extends BaseActivity {
+public abstract class BaseTabbedActivity extends SupportActivity {
 
     protected CommonTabLayout mTabLayout;
     protected ISupportFragment [] mFragments;
@@ -31,25 +31,25 @@ public abstract class BaseTabbedActivity extends BaseActivity {
 
     @Override
     public void onCreating(Bundle savedInstanceState) {
-        setContentView(R.layout.android_layout_tabbed, onSwipeBackSupport() ? Style.NATIVE_SWIPE : Style.NATIVE);
+        setNativeContentView(R.layout.android_layout_tabbed);
         // 恢复选项位置
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
         }
         mTabLayout = findViewById(R.id.android_tab);
         // 监听事件
-        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(int position) {
-                    BaseTabbedActivity.super.showHideFragment(mFragments[position]);
-                    mCurrentTab = position;
-                }
-
-                @Override
-                public void onTabReselected(int position) {
-                    mCurrentTab = position;
-                }
-            });
+//        mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
+//                @Override
+//                public void onTabSelected(int position) {
+//                    BaseTabbedActivity.super.showHideFragment(mFragments[position]);
+//                    mCurrentTab = position;
+//                }
+//
+//                @Override
+//                public void onTabReselected(int position) {
+//                    mCurrentTab = position;
+//                }
+//            });
     }
 
     @Override
@@ -63,28 +63,28 @@ public abstract class BaseTabbedActivity extends BaseActivity {
     }
 
     public void loadMultipleRootFragment(int position, FragmentTab... tabs) {
-        if (tabs == null || tabs.length == 0) {
-            return;
-        }
-        mFragments = new BaseFragment[tabs.length];
-        if (findFragmentByTag(tabs[0].getTag()) == null) {
-            for (int i = 0, len = tabs.length; i < len; i++) {
-                mFragments[i] = tabs[i].newFragment();
-            }
-            loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
-        } else {
-            for (int i = 0, len = tabs.length; i < len; i++) {
-                mFragments[i] = findFragmentByTag(tabs[0].getTag());
-            }
-        }
-        mTabLayout.setTabData(Arrays.asList(tabs));
-        mTabLayout.setCurrentTab(position);
+//        if (tabs == null || tabs.length == 0) {
+//            return;
+//        }
+//        mFragments = new BaseFragment[tabs.length];
+//        if (findFragmentByTag(tabs[0].getTag()) == null) {
+//            for (int i = 0, len = tabs.length; i < len; i++) {
+//                mFragments[i] = tabs[i].newFragment();
+//            }
+//            loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
+//        } else {
+//            for (int i = 0, len = tabs.length; i < len; i++) {
+//                mFragments[i] = findFragmentByTag(tabs[0].getTag());
+//            }
+//        }
+//        mTabLayout.setTabData(Arrays.asList(tabs));
+//        mTabLayout.setCurrentTab(position);
     }
 
-    @Override
-    public void showHideFragment(ISupportFragment showFragment) {
-        showHideFragment(showFragment, null);
-    }
+//    @Override
+//    public void showHideFragment(ISupportFragment showFragment) {
+//        showHideFragment(showFragment, null);
+//    }
 
     @Override
     public void showHideFragment(ISupportFragment showFragment, ISupportFragment hideFragment) {
@@ -100,46 +100,48 @@ public abstract class BaseTabbedActivity extends BaseActivity {
         mTabLayout.setCurrentTab(index);
     }
 
-    public void showFragment(int position) {
-        super.showHideFragment(mFragments[position]);
-        mTabLayout.setCurrentTab(position);
-    }
 
-    public void showFragment(ISupportFragment fragment) {
-        int index = 0;
-        for (int i = 0; i < mFragments.length; i++) {
-            if (mFragments[i] == fragment) {
-                index = i;
-                break;
-            }
-        }
-        super.showHideFragment(mFragments[index]);
-        mTabLayout.setCurrentTab(index);
-    }
 
-    public void showFragment(Class<? extends ISupportFragment> showClass) {
-        int index = 0;
-        for (int i = 0; i < mFragments.length; i++) {
-            ISupportFragment fragment = mFragments[i];
-            if (showClass == fragment.getClass()) {
-                index = i;
-                break;
-            }
-        }
-        super.showHideFragment(mFragments[index]);
-        mTabLayout.setCurrentTab(index);
-    }
+//    public void showFragment(int position) {
+//        super.showHideFragment(mFragments[position]);
+//        mTabLayout.setCurrentTab(position);
+//    }
+//
+//    public void showFragment(ISupportFragment fragment) {
+//        int index = 0;
+//        for (int i = 0; i < mFragments.length; i++) {
+//            if (mFragments[i] == fragment) {
+//                index = i;
+//                break;
+//            }
+//        }
+//        super.showHideFragment(mFragments[index]);
+//        mTabLayout.setCurrentTab(index);
+//    }
 
-    /**
-     * 应用顶部TabLayout
-     */
-    public void applyTopTab() {
-        ViewGroup parent = (ViewGroup) mTabLayout.getParent();
-        parent.removeView(mTabLayout);
-        parent.addView(mTabLayout, 0);
-        mTabLayout.setIndicatorHeight(2);
-        mTabLayout.setUnderlineGravity(Gravity.BOTTOM);
-    }
+//    public void showFragment(Class<? extends ISupportFragment> showClass) {
+//        int index = 0;
+//        for (int i = 0; i < mFragments.length; i++) {
+//            ISupportFragment fragment = mFragments[i];
+//            if (showClass == fragment.getClass()) {
+//                index = i;
+//                break;
+//            }
+//        }
+//        super.showHideFragment(mFragments[index]);
+//        mTabLayout.setCurrentTab(index);
+//    }
+
+//    /**
+//     * 应用顶部TabLayout
+//     */
+//    public void applyTopTab() {
+//        ViewGroup parent = (ViewGroup) mTabLayout.getParent();
+//        parent.removeView(mTabLayout);
+//        parent.addView(mTabLayout, 0);
+//        mTabLayout.setIndicatorHeight(2);
+//        mTabLayout.setUnderlineGravity(Gravity.BOTTOM);
+//    }
 
     public void applyToolbar() {
         applyToolbar(null);

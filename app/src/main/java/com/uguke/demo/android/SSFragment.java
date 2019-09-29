@@ -5,14 +5,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.BaseFragment;
+import com.uguke.android.app.SupportFragment;
 
 import butterknife.OnClick;
 
 /**
  * @author LeiJue
  */
-public class SSFragment extends BaseFragment {
+public class SSFragment extends SupportFragment {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {

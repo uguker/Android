@@ -16,9 +16,8 @@ import com.uguke.android.helper.refresh.RefreshHelper;
  * 基础分页界面
  * @author LeiJue
  */
-public abstract class BasePageFragment<T> extends BaseFragment {
+public abstract class BasePageFragment<T> extends SupportFragment {
 
-    private boolean mSupport;
     protected RecyclerView mRecycler;
     protected RefreshHelper<T> mRefreshHelper;
     protected BaseQuickAdapter<T, ? extends BaseViewHolder> mAdapter;
@@ -26,7 +25,7 @@ public abstract class BasePageFragment<T> extends BaseFragment {
     @Override
     public void onCreating(Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
-        setContentView(R.layout.android_layout_refresh, mSupport ? Style.DEFAULT_SWIPE : Style.DEFAULT);
+        setContentView(R.layout.android_layout_refresh);
         mRecycler = findViewById(R.id.android_recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = onCreateAdapter();
@@ -38,22 +37,14 @@ public abstract class BasePageFragment<T> extends BaseFragment {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
         // 初始化刷新工具
-        mRefreshHelper = new RefreshHelper<>(mViewDelegate.getRefreshLayout(), mAdapter);
+        mRefreshHelper = new RefreshHelper<>(mLayoutDelegate.getRefreshLayout(), mAdapter);
         mRefreshHelper.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(int page, int rows) {
                 BasePageFragment.this.onRefresh(mRefreshHelper, page, rows);
             }
         });
-        mViewDelegate.getRefreshLayout().setEnablePureScrollMode(false);
-    }
-
-    /**
-     * 是否支持滑动返回，在super.onCreating()之前调用
-     * @param support 是否支持
-     */
-    public void setSwipeBackSupport(boolean support) {
-        mSupport = support;
+        mLayoutDelegate.getRefreshLayout().setEnablePureScrollMode(false);
     }
 
     /**

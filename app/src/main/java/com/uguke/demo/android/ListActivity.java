@@ -3,11 +3,13 @@ package com.uguke.demo.android;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.uguke.android.app.SupportActivity;
+import com.uguke.android.app.LayoutCreator;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class ListActivity extends SupportActivity {
         loadRootFragment(R.id.content, new TestFragment());
 
         mToolbar.setMaterialStyle(true);
+        mToolbar.setTitle("测试标题");
 
         post(() -> {
 
@@ -38,8 +41,19 @@ public class ListActivity extends SupportActivity {
 
         });
 
-        showTips("你好啊");
-
+        showTips("你好啊你好啊你好啊你好啊你好啊你");
+//        showLoading();
+//
+//        hideLoading();
     }
 
+    @Override
+    public LayoutCreator onCreateHeader(ViewGroup container) {
+        return LayoutCreator.create(R.layout.bottom, container, false);
+    }
+
+    @Override
+    public LayoutCreator onCreateFooter(ViewGroup container) {
+        return LayoutCreator.create(R.layout.bottom, container, false);
+    }
 }

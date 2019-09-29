@@ -4,8 +4,6 @@ import android.content.Context;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.uguke.android.helper.snack.OnDismissListener;
-
 /**
  * 基础View
  * @author LeiJue
@@ -47,20 +45,20 @@ public interface BaseView {
      */
     void showSnack(String text, int duration);
 
-    /**
-     * 显示Snack文本
-     * @param text 文本
-     * @param listener 回调
-     */
-    void showSnack(String text, OnDismissListener listener);
-
-    /**
-     * 显示Snack文本
-     * @param text 文本
-     * @param duration 时长
-     * @param listener 回调
-     */
-    void showSnack(String text, int duration, OnDismissListener listener);
+//    /**
+//     * 显示Snack文本
+//     * @param text 文本
+//     * @param listener 回调
+//     */
+//    void showSnack(String text, OnDismissListener listener);
+//
+//    /**
+//     * 显示Snack文本
+//     * @param text 文本
+//     * @param duration 时长
+//     * @param listener 回调
+//     */
+//    void showSnack(String text, int duration, OnDismissListener listener);
 
     /**
      * 显示弹窗

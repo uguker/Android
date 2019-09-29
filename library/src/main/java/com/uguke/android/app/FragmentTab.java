@@ -22,9 +22,9 @@ public class FragmentTab implements TabEntity {
     private int mSelectedIcon;
     private int mUnselectedIcon;
     private Bundle mArguments;
-    private Class<? extends BaseFragment> mFragmentClass;
+    private Class<? extends SupportFragment> mFragmentClass;
 
-    public FragmentTab(String title, Class<? extends BaseFragment> fragmentClass) {
+    public FragmentTab(String title, Class<? extends SupportFragment> fragmentClass) {
         mTitle = title;
         mFragmentClass = fragmentClass;
         mArguments = new Bundle();
@@ -184,9 +184,9 @@ public class FragmentTab implements TabEntity {
         return mFragmentClass;
     }
 
-    public BaseFragment newFragment() {
+    public SupportFragment newFragment() {
         try {
-            BaseFragment fragment = mFragmentClass.newInstance();
+            SupportFragment fragment = mFragmentClass.newInstance();
             if (!mArguments.isEmpty()) {
                 fragment.setArguments(mArguments);
             }

@@ -7,12 +7,12 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.BaseFragment;
+import com.uguke.android.app.SupportFragment;
 
 import butterknife.BindView;
 import butterknife.Unbinder;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends SupportFragment {
 
     @BindView(R.id.content)
     FrameLayout mContent;

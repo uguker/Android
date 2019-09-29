@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.allen.library.SuperButton;
-import com.uguke.android.app.BaseFragment;
+import com.uguke.android.app.SupportFragment;
 
 import butterknife.BindView;
 
-public class MineFragment extends BaseFragment {
+public class MineFragment extends SupportFragment {
 
     @BindView(R.id.text)
     EditText mText;

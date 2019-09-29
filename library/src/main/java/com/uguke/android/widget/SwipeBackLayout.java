@@ -24,7 +24,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentationMagician;
 
 import com.uguke.android.R;
-import com.uguke.android.app.BaseActivity;
+import com.uguke.android.app.SupportActivity;
 import com.uguke.android.app.SupportFragment;
 
 import java.lang.annotation.Retention;
@@ -527,9 +527,9 @@ public class SwipeBackLayout extends FrameLayout {
             if (mFragment != null) {
                 return 1;
             }
-            if (mActivity instanceof BaseActivity && ((BaseActivity) mActivity).swipeBackPriority()) {
-                return 1;
-            }
+//            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).swipeBackPriority()) {
+//                return 1;
+//            }
             return 0;
         }
 

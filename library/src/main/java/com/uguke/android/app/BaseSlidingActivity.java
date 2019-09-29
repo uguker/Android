@@ -15,16 +15,16 @@ import com.uguke.android.widget.SlidingTabLayout;
  * 基础标签活动
  * @author LeiJue
  */
-public abstract class BaseSlidingActivity extends BaseActivity {
+public abstract class BaseSlidingActivity extends SupportActivity {
 
     protected SlidingTabLayout mTabLayout;
-    protected BaseFragment[] mFragments;
+    protected SupportFragment[] mFragments;
     private int mCurrentTab;
     private ViewPager mViewPager;
 
     @Override
     public void onCreating(Bundle savedInstanceState) {
-        setContentView(R.layout.android_layout_sliding, onSwipeBackSupport() ? Style.NATIVE_SWIPE : Style.NATIVE);
+        setNativeContentView(R.layout.android_layout_sliding);
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
         }
@@ -43,7 +43,7 @@ public abstract class BaseSlidingActivity extends BaseActivity {
     }
 
     public void loadMultipleRootFragment(int position, final FragmentTab... tabs) {
-        mFragments = new BaseFragment[tabs.length];
+        mFragments = new SupportFragment[tabs.length];
         // 初始化数组
         for (int i = 0, len = tabs.length; i < len; i++) {
             mFragments[i] = tabs[i].newFragment();
@@ -73,7 +73,7 @@ public abstract class BaseSlidingActivity extends BaseActivity {
         mTabLayout.setCurrentTab(position);
     }
 
-    public BaseFragment [] getFragments() {
+    public SupportFragment [] getFragments() {
         return mFragments;
     }
 }

@@ -3,19 +3,13 @@ package com.uguke.android.app;
 import android.app.Application;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.adapter.DefaultLoadingAdapter;
-import com.uguke.android.adapter.DefaultToastAdapter;
 import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.adapter.NetworkAdapter;
-import com.uguke.android.adapter.ToastAdapter;
 import com.uguke.android.app.delegate.ViewHandler;
 import com.uguke.android.helper.ActionHelper;
-import com.uguke.android.adapter.DefaultSnackAdapter;
-import com.uguke.android.adapter.SnackAdapter;
 import com.uguke.android.widget.CommonToolbar;
 
 import java.util.LinkedList;
@@ -28,13 +22,10 @@ public class AppDelegate {
     private static AppDelegate sInstance;
     private NetworkAdapter mNetworkAdapter;
 
-    private SnackAdapter mSnackAdapter = new DefaultSnackAdapter();
-
     private ViewHandler<AppBarLayout, CommonToolbar> mToolbarHandler;
     private ViewHandler<RelativeLayout, SmartRefreshLayout> mRefreshHandler;
 
     private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
-    private ToastAdapter mToastAdapter = new DefaultToastAdapter();
     private LinkedList<ViewLifeCallback> mLifeCallbacks = new LinkedList<>();
 
     private boolean mSwipeBackSupport = false;
@@ -48,15 +39,6 @@ public class AppDelegate {
 
     private AppDelegate() { }
 
-    public AppDelegate setSnackAdapter(@NonNull SnackAdapter adapter) {
-        mSnackAdapter = adapter;
-        return this;
-    }
-
-    public AppDelegate setToastAdapter(@NonNull ToastAdapter adapter) {
-        mToastAdapter = adapter;
-        return this;
-    }
 
     public AppDelegate setNetworkAdapter(NetworkAdapter adapter) {
         mNetworkAdapter = adapter;
@@ -86,14 +68,6 @@ public class AppDelegate {
 
     public boolean isSwipeBackSupport() {
         return mSwipeBackSupport;
-    }
-
-    public SnackAdapter getSnackAdapter() {
-        return mSnackAdapter;
-    }
-
-    public @NonNull ToastAdapter getToastAdapter() {
-        return mToastAdapter;
     }
 
     public NetworkAdapter getNetworkAdapter() {

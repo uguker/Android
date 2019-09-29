@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * 消除监听事件
+ * 显示监听
  * @author LeiJue
  */
-public interface OnDismissListener<T> {
+public interface OnShowListener<T> {
     /**
-     * 消除监听
+     * 显示监听
      * @param target 目标
      * @param obj 附带值
      */
-    void onDismiss(@NonNull T target, @Nullable Object obj);
+    void onShow(@NonNull T target, @Nullable Object obj);
 }

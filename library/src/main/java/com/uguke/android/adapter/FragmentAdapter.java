@@ -5,7 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.uguke.android.app.BaseFragment;
+
+import com.uguke.android.app.SupportFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         mFragments = fragments;
     }
 
-    public FragmentAdapter(@NonNull FragmentManager fm, @NonNull BaseFragment[] fragments) {
+    public FragmentAdapter(@NonNull FragmentManager fm, @NonNull SupportFragment[] fragments) {
         super(fm);
         mFragments.addAll(Arrays.asList(fragments));
     }

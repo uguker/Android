@@ -23,7 +23,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * 基础标签活动
  * @author LeiJue
  */
-public abstract class BaseTabbedFragment extends BaseFragment {
+public abstract class BaseTabbedFragment extends SupportFragment {
 
     protected CommonTabLayout mTabLayout;
     protected ISupportFragment [] mFragments;
@@ -32,7 +32,7 @@ public abstract class BaseTabbedFragment extends BaseFragment {
 
     @Override
     public void onCreating(Bundle savedInstanceState) {
-        setContentView(R.layout.android_layout_tabbed, onSwipeBackSupport() ? Style.NATIVE_SWIPE : Style.NATIVE);
+        setNativeContentView(R.layout.android_layout_tabbed);
         // 恢复选项位置
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
@@ -127,22 +127,22 @@ public abstract class BaseTabbedFragment extends BaseFragment {
     }
 
     public void loadMultipleRootFragment(int position, FragmentTab... tabs) {
-        if (tabs == null || tabs.length == 0) {
-            return;
-        }
-        mFragments = new BaseFragment[tabs.length];
-        if (findFragmentByTag(tabs[0].getTag()) == null) {
-            for (int i = 0, len = tabs.length; i < len; i++) {
-                mFragments[i] = tabs[i].newFragment();
-            }
-            loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
-        } else {
-            for (int i = 0, len = tabs.length; i < len; i++) {
-                mFragments[i] = findFragmentByTag(tabs[0].getTag());
-            }
-        }
-        mTabLayout.setTabData(Arrays.asList(tabs));
-        mTabLayout.setCurrentTab(position);
+//        if (tabs == null || tabs.length == 0) {
+//            return;
+//        }
+//        mFragments = new BaseFragment[tabs.length];
+//        if (findFragmentByTag(tabs[0].getTag()) == null) {
+//            for (int i = 0, len = tabs.length; i < len; i++) {
+//                mFragments[i] = tabs[i].newFragment();
+//            }
+//            loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
+//        } else {
+//            for (int i = 0, len = tabs.length; i < len; i++) {
+//                mFragments[i] = findFragmentByTag(tabs[0].getTag());
+//            }
+//        }
+//        mTabLayout.setTabData(Arrays.asList(tabs));
+//        mTabLayout.setCurrentTab(position);
     }
 
     /**

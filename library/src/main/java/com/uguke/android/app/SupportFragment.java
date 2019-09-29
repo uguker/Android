@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -277,6 +278,32 @@ public class SupportFragment extends Fragment implements ISupportFragment {
         mLayoutDelegate.setNativeContentView(view);
     }
 
+    public LayoutCreator onCreateHeader(ViewGroup container) {
+        return null;
+    }
+
+    public LayoutCreator onCreateFooter(ViewGroup container) {
+        return null;
+    }
+
+    public final <T extends View> T findViewById(@IdRes int id) {
+        if (mLayoutDelegate.getContentView() != null) {
+            return mLayoutDelegate.getContentView().findViewById(id);
+        }
+        return null;
+    }
+
+    public void showTips(String tips) {
+        mLayoutDelegate.showTips(tips);
+    }
+
+    public void showLoading(String ...texts) {
+        mLayoutDelegate.showLoading(texts);
+    }
+
+    public void hideLoading() {
+        mLayoutDelegate.hideLoading();
+    }
 
     /****************************************以下为可选方法(Optional methods)******************************************************/
 
@@ -453,4 +480,20 @@ public class SupportFragment extends Fragment implements ISupportFragment {
         return SupportHelper.findFragment(getChildFragmentManager(), fragmentClass);
     }
 
+    /**
+     * 获取栈内的fragment对象
+     */
+    public <T extends ISupportFragment> T findFragmentByTag(String tag) {
+        if (getFragmentManager() != null) {
+            return SupportHelper.findFragment(getFragmentManager(), tag);
+        }
+        return null;
+    }
+
+    /**
+     * 获取栈内的fragment对象
+     */
+    public <T extends ISupportFragment> T findChildFragmentByTag(String tag) {
+        return SupportHelper.findFragment(getChildFragmentManager(), tag);
+    }
 }

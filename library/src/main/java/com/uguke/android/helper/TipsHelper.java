@@ -12,8 +12,8 @@ import androidx.core.content.ContextCompat;
 
 import com.uguke.android.R;
 import com.uguke.android.adapter.DefaultTipsAdapter;
-import com.uguke.android.helper.snack.OnShowListener;
 import com.uguke.android.listener.OnDismissListener;
+import com.uguke.android.listener.OnShowListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class TipsHelper {
     /** 时长为1个小时，故需要手动取消 **/
     public static final int DURATION_MANUAL = 1000 * 60 * 60;
     /** 一个较长的时间 **/
-    public static final int DURATION_LONG = 3500;
+    public static final int DURATION_LONG = 3000;
     /** 一个较短的时间 **/
     public static final int DURATION_SHORT = 1500;
     /** 一个需要手动取消的时间，设置为大于30秒就需要手动取消 **/
@@ -39,6 +39,7 @@ public class TipsHelper {
     private static final int CHANGE_FLAG = 100;
 
     private int mDuration;
+    private int mMaxLines;
     private CharSequence mText;
     private CharSequence mActionText;
     private ColorStateList mTextColor;
@@ -55,7 +56,7 @@ public class TipsHelper {
     /** 取消监听集合 **/
     private List<OnDismissListener<TipsHelper>> mOnDismissListeners;
     /** 显示监听集合 **/
-    private List<OnShowListener> mOnShowListeners;
+    private List<OnShowListener<TipsHelper>> mOnShowListeners;
 
     /** 用以通知变化 **/
     private Handler mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
@@ -79,6 +80,7 @@ public class TipsHelper {
     private TipsHelper(View view) {
         mView = view;
         mDuration = DURATION_SHORT;
+        mMaxLines = 2;
         mTextSize = 14;
         mActionTextSize = 14;
         mOnDismissListeners = new LinkedList<>();
@@ -86,36 +88,40 @@ public class TipsHelper {
         mTextColor = ColorStateList.valueOf(Color.WHITE);
         mActionTextColor = ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
         mBackgroundTintList = ColorStateList.valueOf(Color.parseColor("#313332"));
-
     }
 
     public TipsHelper setView(View view) {
-        this.mView = view;
+        mView = view;
+        return this;
+    }
+
+    public TipsHelper setMaxLines(int maxLines) {
+        mMaxLines = maxLines;
         return this;
     }
 
     public TipsHelper setDuration(int duration) {
-        this.mDuration = duration;
+        mDuration = duration;
         return this;
     }
 
     public TipsHelper setText(CharSequence text) {
-        this.mText = text;
+        mText = text;
         return this;
     }
 
     public TipsHelper setTextColor(@ColorInt int color) {
-        this.mTextColor = ColorStateList.valueOf(color);
+        mTextColor = ColorStateList.valueOf(color);
         return this;
     }
 
     public TipsHelper setTextColor(ColorStateList color) {
-        this.mTextColor = color;
+        mTextColor = color;
         return this;
     }
 
     public TipsHelper setTextSize(float size) {
-        this.mTextSize = size;
+        mTextSize = size;
         return this;
     }
 
@@ -135,8 +141,8 @@ public class TipsHelper {
     }
 
     public TipsHelper setAction(CharSequence action, View.OnClickListener listener) {
-        this.mActionText = action;
-        this.mOnActionListener = listener;
+        mActionText = action;
+        mOnActionListener = listener;
         return this;
     }
 
@@ -156,11 +162,11 @@ public class TipsHelper {
     }
 
     public TipsHelper addOnDismissListener(OnDismissListener<TipsHelper> listener) {
-        //mOnDismissListeners.add(listener);
+        mOnDismissListeners.add(listener);
         return this;
     }
 
-    public TipsHelper addOnShowListener(OnShowListener listener) {
+    public TipsHelper addOnShowListener(OnShowListener<TipsHelper> listener) {
         mOnShowListeners.add(listener);
         return this;
     }
@@ -178,7 +184,7 @@ public class TipsHelper {
         }
     }
 
-    public void onDestroy() {
+    public void release() {
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
@@ -186,11 +192,15 @@ public class TipsHelper {
         mObj = null;
     }
 
-    public void stopChange() {
+    public void stopChanging() {
         if (mHandler != null) {
             mHandler.removeMessages(CHANGE_FLAG);
         }
         mObj = null;
+    }
+
+    public int getMaxLines() {
+        return mMaxLines;
     }
 
     public int getDuration() {
@@ -229,11 +239,11 @@ public class TipsHelper {
         return mView;
     }
 
-    public List<OnDismissListener<TipsHelper>> getDismissedListeners() {
+    public List<OnDismissListener<TipsHelper>> getOnDismissListeners() {
         return mOnDismissListeners;
     }
 
-    public List<OnShowListener> getShownListeners() {
+    public List<OnShowListener<TipsHelper>> getOnShowListeners() {
         return mOnShowListeners;
     }
 
@@ -241,10 +251,10 @@ public class TipsHelper {
         return mOnActionListener;
     }
 
-    public void dismiss() {
+    public void hide() {
         if (mAdapter != null && mObj != null) {
             mAdapter.hide(mObj);
-            stopChange();
+            stopChanging();
         }
     }
 
@@ -258,13 +268,13 @@ public class TipsHelper {
         Object show(TipsHelper helper);
 
         /**
-         * 隐藏提示
+         * 隐藏持续显示的提示
          * @param obj show方法返回的对象
          */
         void hide(Object obj);
 
         /**
-         * 执行发生变化，每次变化回调
+         * 持续显示的提示发生变化，每次变化回调
          * @param helper 提示辅助类实体
          * @param obj show方法返回的对象
          */

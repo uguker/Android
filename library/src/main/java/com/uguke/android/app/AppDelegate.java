@@ -8,7 +8,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.adapter.DefaultLoadingAdapter;
 import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.adapter.NetworkAdapter;
-import com.uguke.android.app.delegate.ViewHandler;
 import com.uguke.android.helper.ActionHelper;
 import com.uguke.android.widget.CommonToolbar;
 
@@ -26,7 +25,7 @@ public class AppDelegate {
     private ViewHandler<RelativeLayout, SmartRefreshLayout> mRefreshHandler;
 
     private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
-    private LinkedList<ViewLifeCallback> mLifeCallbacks = new LinkedList<>();
+    private LinkedList<LayoutLifeCallback> mLifeCallbacks = new LinkedList<>();
 
     private boolean mSwipeBackSupport = false;
 

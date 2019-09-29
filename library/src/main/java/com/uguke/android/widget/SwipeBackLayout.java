@@ -530,7 +530,7 @@ public class SwipeBackLayout extends FrameLayout {
 //            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).swipeBackPriority()) {
 //                return 1;
 //            }
-            return 0;
+            return 1;
         }
 
         @Override

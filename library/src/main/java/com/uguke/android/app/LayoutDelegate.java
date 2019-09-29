@@ -47,7 +47,7 @@ public class LayoutDelegate {
     private ViewGroup mContentLayout;
     private CoordinatorLayout mLoadingLayout;
     private SmartRefreshLayout mRefreshLayout;
-    private List<ViewLifeCallback> mLifeCallbacks = new ArrayList<>();
+    private List<LayoutLifeCallback> mLifeCallbacks = new ArrayList<>();
 
     public LayoutDelegate(SupportActivity activity) {
         mActivity = activity;
@@ -253,7 +253,7 @@ public class LayoutDelegate {
         }
     }
 
-    public void addLifeCallback(@NonNull ViewLifeCallback callback) {
+    public void addLifeCallback(@NonNull LayoutLifeCallback callback) {
         mLifeCallbacks.add(callback);
     }
 
@@ -324,7 +324,7 @@ public class LayoutDelegate {
      * 通知状态变化
      */
     void notifyStateChanged(int state) {
-        for (ViewLifeCallback callback : mLifeCallbacks) {
+        for (LayoutLifeCallback callback : mLifeCallbacks) {
             if (state == STATE_CREATE) {
                 // 布局创建
                 callback.onCreate();

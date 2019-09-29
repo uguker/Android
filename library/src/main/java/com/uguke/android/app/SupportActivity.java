@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.uguke.android.helper.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
@@ -40,7 +41,7 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
         mLayoutDelegate.onCreate(savedInstanceState);
-        mLayoutDelegate.addLifeCallback(new ViewLifeCallback() {
+        mLayoutDelegate.addLifeCallback(new LayoutLifeCallback() {
             @Override
             public void onCreate() {}
 
@@ -57,18 +58,22 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
             public void onDestroy() {}
         });
         onCreating(savedInstanceState);
+        SwipeBackHelper.create(this);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
+        SwipeBackHelper.attach(this);
+
     }
 
     @Override
     protected void onDestroy() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroy();
+        SwipeBackHelper.destory(this);
         super.onDestroy();
     }
 

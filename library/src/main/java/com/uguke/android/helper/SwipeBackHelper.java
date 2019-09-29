@@ -1,8 +1,27 @@
 package com.uguke.android.helper;
 
-import java.util.LinkedList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+
+import androidx.fragment.app.FragmentActivity;
+
+import com.uguke.android.app.SupportActivity;
+import com.uguke.android.app.SupportFragment;
+import com.uguke.android.widget.SwipeBackLayout;
+
+import java.util.concurrent.ConcurrentHashMap;
+
+import me.yokeyword.fragmentation_swipeback.SwipeBackActivity;
+import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 
 public class SwipeBackHelper {
+
+
+    private static ConcurrentHashMap<FragmentActivity, SwipeBackLayout> mActivityMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<SupportFragment, SwipeBackLayout> mFragmentMap = new ConcurrentHashMap<>();
 
 
 
@@ -23,30 +42,97 @@ public class SwipeBackHelper {
 //        return page;
 //    }
 //
-//    public static void onCreate(Activity activity) {
+    public static void create(FragmentActivity activity) {
 //        SwipeBackPage page;
 //        if ((page = findHelperByActivity(activity)) == null){
 //            page = mPageStack.push(new SwipeBackPage(activity));
 //        }
 //        page.onCreate();
-//    }
-//
-//    public static void onPostCreate(Activity activity){
+
+        SwipeBackFragment fragment;
+        SwipeBackActivity ac;
+
+        if (mActivityMap.get(activity) == null) {
+
+            Window window = activity.getWindow();
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            SwipeBackLayout layout = new SwipeBackLayout(activity);
+            layout.setLayoutParams(params);
+//            if (mFragment == null) {
+//                mSwipeLayout.attachToActivity(mActivity);
+//            } else {
+//                // mSwipeLayout.attachToFragment(mFragment);
+//            }
+            mActivityMap.put(activity, layout);
+        }
+    }
+
+    public static void create(SupportFragment fragment) {
 //        SwipeBackPage page;
 //        if ((page = findHelperByActivity(activity)) == null){
-//            throw new RuntimeException("You Should call SwipeBackHelper.onCreate(activity) first");
+//            page = mPageStack.push(new SwipeBackPage(activity));
 //        }
-//        page.onPostCreate();
-//    }
-//
-//    public static void onDestroy(Activity activity){
-//        SwipeBackPage page;
-//        if ((page = findHelperByActivity(activity)) == null){
-//            throw new RuntimeException("You Should call SwipeBackHelper.onCreate(activity) first");
-//        }
-//        mPageStack.remove(page);
-//        page.mActivity=null;
-//    }
+//        page.onCreate();
+
+        if (mFragmentMap.get(fragment) == null) {
+
+            SwipeBackLayout layout = new SwipeBackLayout(fragment.getContext());
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
+            layout.setLayoutParams(params);
+            layout.setBackgroundColor(Color.TRANSPARENT);
+//            Window window = activity.getWindow();
+//            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.MATCH_PARENT);
+//            SwipeBackLayout layout = new SwipeBackLayout(activity);
+//            layout.setLayoutParams(params);
+//            if (mFragment == null) {
+//                mSwipeLayout.attachToActivity(mActivity);
+//            } else {
+//                // mSwipeLayout.attachToFragment(mFragment);
+//            }
+            mFragmentMap.put(fragment, layout);
+        }
+    }
+
+    public static void attach(FragmentActivity activity){
+        SwipeBackLayout layout;
+        if ((layout = mActivityMap.get(activity)) == null) {
+            throw new RuntimeException("You Should call SwipeBackHelper.onCreate() first");
+        }
+        layout.setEnableGesture(true);
+        layout.attachToActivity(activity);
+    }
+
+    public static View attach(SupportFragment fragment, View view){
+        SwipeBackLayout layout;
+        if ((layout = mFragmentMap.get(fragment)) == null) {
+            throw new RuntimeException("You Should call SwipeBackHelper.onCreate() first" );
+        }
+        layout.attachToFragment(fragment, view);
+
+        return view;
+    }
+
+    public static void destory(SupportActivity activity) {
+        mActivityMap.remove(activity);
+    }
+
+    public static void destroy(SupportFragment fragment){
+        SwipeBackLayout layout;
+        if ((layout = mFragmentMap.get(fragment)) == null) {
+            throw new RuntimeException("You Should call SwipeBackHelper.onCreate() first");
+        }
+        layout.internalCallOnDestroyView();
+        // 移除Fragment
+        mFragmentMap.remove(fragment);
+    }
 //
 //    public static void finish(Activity activity){
 //        SwipeBackPage page;

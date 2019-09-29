@@ -250,6 +250,7 @@ public class SupportFragment extends Fragment implements ISupportFragment {
         mDelegate.putNewBundle(newBundle);
     }
 
+
     public void onCreating(@Nullable Bundle savedInstanceState) {}
 
     //============ 设置界面方法 ============//

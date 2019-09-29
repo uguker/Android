@@ -1,4 +1,4 @@
-package com.uguke.android.app.delegate;
+package com.uguke.android.app;
 
 import android.view.View;
 import android.view.ViewGroup;

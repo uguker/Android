@@ -2,6 +2,7 @@ package com.uguke.demo.android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -16,7 +17,9 @@ public class SSFragment extends SupportFragment {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
+        super.onCreating(savedInstanceState);
+        setContentView(R.layout.fragment_info);
+        Log.e("数据", "我初始化了");
         //setBackgroundColor(Color.RED);
         //setSwipeBackEnable(true);
     }

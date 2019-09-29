@@ -28,6 +28,9 @@ public class ListActivity extends SupportActivity {
 
         loadRootFragment(R.id.content, new TestFragment());
 
+
+        start(new SSFragment());
+
         mToolbar.setMaterialStyle(true);
         mToolbar.setTitle("测试标题");
 
@@ -41,19 +44,19 @@ public class ListActivity extends SupportActivity {
 
         });
 
-        showTips("你好啊你好啊你好啊你好啊你好啊你");
+//        showTips("你好啊你好啊你好啊你好啊你好啊你");
 //        showLoading();
 //
 //        hideLoading();
     }
-
-    @Override
-    public LayoutCreator onCreateHeader(ViewGroup container) {
-        return LayoutCreator.create(R.layout.bottom, container, false);
-    }
-
-    @Override
-    public LayoutCreator onCreateFooter(ViewGroup container) {
-        return LayoutCreator.create(R.layout.bottom, container, false);
-    }
+//
+//    @Override
+//    public LayoutCreator onCreateHeader(ViewGroup container) {
+//        return LayoutCreator.create(R.layout.bottom, container, false);
+//    }
+//
+//    @Override
+//    public LayoutCreator onCreateFooter(ViewGroup container) {
+//        return LayoutCreator.create(R.layout.bottom, container, false);
+//    }
 }

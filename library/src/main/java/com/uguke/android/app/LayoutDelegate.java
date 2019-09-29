@@ -297,7 +297,7 @@ public class LayoutDelegate {
 
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
             if (!floating) {
-                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
+                params.addRule(RelativeLayout.ABOVE, R.id.android_footer);
             }
             mRefreshLayout.setLayoutParams(params);
         }

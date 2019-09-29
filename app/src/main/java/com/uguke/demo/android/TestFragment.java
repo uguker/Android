@@ -17,16 +17,18 @@ public class TestFragment extends SupportFragment {
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
-        Glide.with(mActivity).load("").into(new ImageView(mActivity));
-
-        post(() -> {
-
-            List<Fragment> fragmentList = getFragmentManager().getFragments();
-
-            for (Fragment fragment : fragmentList) {
-                Log.e("数据", fragment.getClass().getName());
-            }
-
-        });
+        setContentView(R.layout.bottom);
+        Log.e("数据", "我初始化了");
+//        Glide.with(mActivity).load("").into(new ImageView(mActivity));
+//
+//        post(() -> {
+//
+//            List<Fragment> fragmentList = getFragmentManager().getFragments();
+//
+//            for (Fragment fragment : fragmentList) {
+//                Log.e("数据", fragment.getClass().getName());
+//            }
+//
+//        });
     }
 }

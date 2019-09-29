@@ -14,8 +14,6 @@ import com.uguke.android.widget.SwipeBackLayout;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.yokeyword.fragmentation_swipeback.SwipeBackActivity;
-import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 
 public class SwipeBackHelper {
 
@@ -49,8 +47,8 @@ public class SwipeBackHelper {
 //        }
 //        page.onCreate();
 
-        SwipeBackFragment fragment;
-        SwipeBackActivity ac;
+//        SwipeBackFragment fragment;
+//        SwipeBackActivity ac;
 
         if (mActivityMap.get(activity) == null) {
 
@@ -106,7 +104,7 @@ public class SwipeBackHelper {
         if ((layout = mActivityMap.get(activity)) == null) {
             throw new RuntimeException("You Should call SwipeBackHelper.onCreate() first");
         }
-        layout.setEnableGesture(true);
+        layout.setEnableGesture(false);
         layout.attachToActivity(activity);
     }
 
@@ -116,8 +114,7 @@ public class SwipeBackHelper {
             throw new RuntimeException("You Should call SwipeBackHelper.onCreate() first" );
         }
         layout.attachToFragment(fragment, view);
-
-        return view;
+        return layout;
     }
 
     public static void destory(SupportActivity activity) {

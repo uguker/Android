@@ -2,6 +2,7 @@ package com.uguke.android.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
+import com.uguke.android.helper.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
@@ -68,17 +70,35 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     @Override
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mLayoutDelegate.onCreate(savedInstanceState);
+        mLayoutDelegate.addLifeCallback(new LayoutLifeCallback() {
+            @Override
+            public void onCreate() {}
+
+            @Override
+            public void onViewCreated(View view) {
+                // 初始化控件
+                mToolbar = mLayoutDelegate.getToolbar();
+                mRefreshLayout = mLayoutDelegate.getRefreshLayout();
+            }
+
+            @Override
+            public void onDestroy() {}
+        });
+        onCreating(savedInstanceState);
+        Log.e("数据", "onCreateView");
+        SwipeBackHelper.create(this);
         View contentView = mLayoutDelegate.getContentView();
         if (contentView == null) {
             return inflater.inflate(R.layout.android_layout_fragment_null, container, false);
         }
-        return contentView;
+        return SwipeBackHelper.attach(this, contentView);
     }
 
     @Override
     public void onDestroyView() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroyView();
+        SwipeBackHelper.destroy(this);
         super.onDestroyView();
     }
 

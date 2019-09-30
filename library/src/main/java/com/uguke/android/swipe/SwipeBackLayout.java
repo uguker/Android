@@ -1,4 +1,4 @@
-package com.uguke.android.widget;
+package com.uguke.android.swipe;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +25,14 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentationMagician;
 
 import com.uguke.android.R;
+import com.uguke.android.app.SupportActivity;
 import com.uguke.android.app.SupportFragment;
-import com.uguke.android.helper.SwipeBackHelper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import me.yokeyword.fragmentation.SupportHelper;
 
 public class SwipeBackLayout extends FrameLayout {
     /**
@@ -323,7 +320,7 @@ public class SwipeBackLayout extends FrameLayout {
             if (mHelper.continueSettling(true)) {
                 ViewCompat.postInvalidateOnAnimation(this);
             }
-
+            // Fragment类别
             if (mPreFragment != null && mPreFragment.getView() != null) {
                 if (mCallOnDestroyView) {
                     mPreFragment.getView().setX(0);
@@ -335,21 +332,11 @@ public class SwipeBackLayout extends FrameLayout {
                     mPreFragment.getView().setX(leftOffset > 0 ? 0 : leftOffset);
                 }
             }
-
-            //FragmentActivity activity = SwipeBackHelper.getPreActivity();
-
-            FragmentActivity activity = SwipeBackHelper.getPreActivity(mActivity);
-
-            if (activity != null) {
-                if (SwipeBackHelper.getSwipeBackLayout(activity) != null) {
-                    if (mHelper.getCapturedView() != null) {
-                        int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mParallaxOffset * mScrimOpacity);
-                        SwipeBackHelper.getSwipeBackLayout(activity).setX(leftOffset > 0 ? 0 : leftOffset);
-                    }
-                }
-                Log.e("数据", "log2");
-            } else {
-                Log.e("数据", "log");
+            // Activity类别
+            SwipeBackPage page = SwipeBackHelper.getPrePage(mActivity);
+            if (page != null && mHelper.getCapturedView() != null) {
+                int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mParallaxOffset * mScrimOpacity);
+                page.getSwipeBackLayout().setX(leftOffset > 0 ? 0 : leftOffset);
             }
         }
     }
@@ -528,10 +515,10 @@ public class SwipeBackLayout extends FrameLayout {
             if (mFragment != null) {
                 return 1;
             }
-//            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).swipeBackPriority()) {
-//                return 1;
-//            }
-            return 1;
+            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).swipeBackPriority()) {
+                return 1;
+            }
+            return 0;
         }
 
         @Override

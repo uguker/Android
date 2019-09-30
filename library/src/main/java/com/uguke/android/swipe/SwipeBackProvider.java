@@ -1,6 +1,5 @@
-package com.uguke.android.app;
+package com.uguke.android.swipe;
 
-import com.uguke.android.swipe.SwipeBackLayout;
 
 public interface SwipeBackProvider {
 
@@ -15,6 +14,8 @@ public interface SwipeBackProvider {
     void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel);
 
     void setEdgeLevel(int widthPixel);
+
+    void setOffsetPercent(float percent);
 
     //boolean onSwipeBackPriority();
 

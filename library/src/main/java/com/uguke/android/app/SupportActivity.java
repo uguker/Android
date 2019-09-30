@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.uguke.android.helper.SwipeBackHelper;
+import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
@@ -58,22 +58,21 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
             public void onDestroy() {}
         });
         onCreating(savedInstanceState);
-        SwipeBackHelper.create(this);
+        SwipeBackHelper.onCreate(this);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
-        SwipeBackHelper.attach(this);
-
+        SwipeBackHelper.onPostCreate(this);
     }
 
     @Override
     protected void onDestroy() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroy();
-        SwipeBackHelper.destroy(this);
+        SwipeBackHelper.onDestroy(this);
         super.onDestroy();
     }
 
@@ -197,6 +196,10 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
 
     public void hideLoading() {
         mLayoutDelegate.hideLoading();
+    }
+
+    public boolean swipeBackPriority() {
+        return false;
     }
 
     /****************************************以下为可选方法(Optional methods)******************************************************/

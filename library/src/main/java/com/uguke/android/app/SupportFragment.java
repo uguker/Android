@@ -2,7 +2,6 @@ package com.uguke.android.app;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
-import com.uguke.android.helper.SwipeBackHelper;
+import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
@@ -38,7 +37,7 @@ public class SupportFragment extends Fragment implements ISupportFragment {
 
     final LayoutDelegate mLayoutDelegate = new LayoutDelegate(this);
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
-    protected SupportActivity mActivity;
+    public SupportActivity mActivity;
 
 
     @Override
@@ -85,20 +84,25 @@ public class SupportFragment extends Fragment implements ISupportFragment {
             public void onDestroy() {}
         });
         onCreating(savedInstanceState);
-        Log.e("数据", "onCreateView");
-        SwipeBackHelper.create(this);
+        SwipeBackHelper.onCreate(this);
         View contentView = mLayoutDelegate.getContentView();
         if (contentView == null) {
             return inflater.inflate(R.layout.android_layout_fragment_null, container, false);
         }
-        return  SwipeBackHelper.attach(this, contentView);
+        return SwipeBackHelper.onAttach(this, contentView);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        SwipeBackHelper.onViewCreated(this, view);
     }
 
     @Override
     public void onDestroyView() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroyView();
-        SwipeBackHelper.destroy(this);
+        SwipeBackHelper.onDestroy(this);
         super.onDestroyView();
     }
 
@@ -112,6 +116,7 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         mDelegate.onHiddenChanged(hidden);
+        SwipeBackHelper.onHiddenChanged(this, hidden);
     }
 
     @Override

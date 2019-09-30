@@ -1,5 +1,6 @@
 package com.uguke.android.helper;
 
+import android.app.ListActivity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -12,15 +13,19 @@ import com.uguke.android.app.SupportActivity;
 import com.uguke.android.app.SupportFragment;
 import com.uguke.android.widget.SwipeBackLayout;
 
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SwipeBackHelper {
 
-
     private static ConcurrentHashMap<FragmentActivity, SwipeBackLayout> mActivityMap = new ConcurrentHashMap<>();
     private static ConcurrentHashMap<SupportFragment, SwipeBackLayout> mFragmentMap = new ConcurrentHashMap<>();
 
+    /** Activity列表 **/
+    private static LinkedList<FragmentActivity> mActivityList = new LinkedList<>();
+    private static LinkedList<SwipeBackLayout> mActivityLayoutList = new LinkedList<>();
 
 
 //    private static final Stack<SwipeBackPage> mPageStack = new Stack<>();
@@ -41,17 +46,8 @@ public class SwipeBackHelper {
 //    }
 //
     public static void create(FragmentActivity activity) {
-//        SwipeBackPage page;
-//        if ((page = findHelperByActivity(activity)) == null){
-//            page = mPageStack.push(new SwipeBackPage(activity));
-//        }
-//        page.onCreate();
 
-//        SwipeBackFragment fragment;
-//        SwipeBackActivity ac;
-
-        if (mActivityMap.get(activity) == null) {
-
+        if (!mActivityList.contains(activity)) {
             Window window = activity.getWindow();
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -60,14 +56,38 @@ public class SwipeBackHelper {
                     ViewGroup.LayoutParams.MATCH_PARENT);
             SwipeBackLayout layout = new SwipeBackLayout(activity);
             layout.setLayoutParams(params);
-//            if (mFragment == null) {
-//                mSwipeLayout.attachToActivity(mActivity);
-//            } else {
-//                // mSwipeLayout.attachToFragment(mFragment);
-//            }
-            mActivityMap.put(activity, layout);
+            mActivityList.add(activity);
+            mActivityLayoutList.add(layout);
         }
+
+//
+//        if (mActivityMap.get(activity) == null) {
+//
+//            Window window = activity.getWindow();
+//            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.MATCH_PARENT);
+//            SwipeBackLayout layout = new SwipeBackLayout(activity);
+//            layout.setLayoutParams(params);
+////            if (mFragment == null) {
+////                mSwipeLayout.attachToActivity(mActivity);
+////            } else {
+////                // mSwipeLayout.attachToFragment(mFragment);
+////            }
+//            mActivityMap.put(activity, layout);
+//        }
     }
+
+    public static FragmentActivity getPreActivity(FragmentActivity activity) {
+        if (activity == null) {
+            return null;
+        }
+        int preIndex = mActivityList.indexOf(activity) - 1;
+        return preIndex >= 0 ? mActivityList.get(preIndex) : null;
+    }
+
 
     public static void create(SupportFragment fragment) {
 //        SwipeBackPage page;
@@ -99,12 +119,32 @@ public class SwipeBackHelper {
         }
     }
 
+    public static SwipeBackLayout getSwipeBackLayout(FragmentActivity activity) {
+        if (activity == null) {
+            return null;
+        }
+        int index = mActivityList.indexOf(activity);
+        return mActivityLayoutList.get(index);
+    }
+
+//    public static SwipeBackLayout getCurrent(FragmentActivity activity) {
+//        if (activity == null) {
+//            return null;
+//        }
+//        for (Map.Entry<FragmentActivity, SwipeBackLayout> e : mActivityMap.entrySet()) {
+//            if (!e.getKey().getClass().equals(ListActivity.class)) {
+//                return e.getValue();
+//            }
+//        }
+//        return null;
+//    }
+
     public static void attach(FragmentActivity activity){
         SwipeBackLayout layout;
-        if ((layout = mActivityMap.get(activity)) == null) {
+        if ((layout = getSwipeBackLayout(activity)) == null) {
             throw new RuntimeException("You Should call SwipeBackHelper.onCreate() first");
         }
-        layout.setEnableGesture(false);
+        layout.setEnableGesture(true);
         layout.attachToActivity(activity);
     }
 
@@ -117,8 +157,10 @@ public class SwipeBackHelper {
         return layout;
     }
 
-    public static void destory(SupportActivity activity) {
-        mActivityMap.remove(activity);
+    public static void destroy(FragmentActivity activity) {
+        int index = mActivityList.indexOf(activity);
+        mActivityList.remove(index);
+        mActivityLayoutList.remove(index);
     }
 
     public static void destroy(SupportFragment fragment){

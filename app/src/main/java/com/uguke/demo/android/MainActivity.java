@@ -18,6 +18,7 @@ public class MainActivity extends BaseSlidingActivity {
         //setContentView(R.layout.activity_main, Style.DEFAULT);
         //loadRootFragment(R.id.content, new SSFragment());
         super.onCreating(savedInstanceState);
+        setContentView(R.layout.fragment_info);
 //        Disposable d = Observable.<String>create(new ObservableOnSubscribe<String>() {
 //            @Override
 //            public void subscribe(ObservableEmitter<String> emitter) throws Exception {

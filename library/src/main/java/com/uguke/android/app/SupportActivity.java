@@ -58,14 +58,14 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
             public void onDestroy() {}
         });
         onCreating(savedInstanceState);
-        //SwipeBackHelper.create(this);
+        SwipeBackHelper.create(this);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
-        //SwipeBackHelper.attach(this);
+        SwipeBackHelper.attach(this);
 
     }
 
@@ -73,7 +73,7 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
     protected void onDestroy() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroy();
-        //SwipeBackHelper.destory(this);
+        SwipeBackHelper.destroy(this);
         super.onDestroy();
     }
 

@@ -1,6 +1,7 @@
 package com.uguke.demo.android;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class ListActivity extends SupportActivity {
             }
 
         });
+
+        startActivity(new Intent(this, MainActivity.class));
 
 //        showTips("你好啊你好啊你好啊你好啊你好啊你");
 //        showLoading();

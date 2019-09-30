@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 import androidx.fragment.app.Fragment;
@@ -24,8 +26,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentationMagician;
 
 import com.uguke.android.R;
-import com.uguke.android.app.SupportActivity;
 import com.uguke.android.app.SupportFragment;
+import com.uguke.android.helper.SwipeBackHelper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -33,13 +35,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yokeyword.fragmentation.SupportHelper;
 
-/**
- * Thx https://github.com/ikew0ng/SwipeBackLayout.
- * <p>
- * @author YoKey
- * @date 16/4/19
- */
 public class SwipeBackLayout extends FrameLayout {
     /**
      * Edge flag indicating that the left edge should be affected.
@@ -112,9 +109,7 @@ public class SwipeBackLayout extends FrameLayout {
     private int mContentTop;
     private float mSwipeAlpha = 0.5f;
 
-    /**
-     * The set of listeners to be sent events through.
-     */
+    /** 滑动监听事件 **/
     private List<OnSwipeListener> mListeners;
 
     private Context mContext;
@@ -136,25 +131,17 @@ public class SwipeBackLayout extends FrameLayout {
     public SwipeBackLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-        init();
-    }
-
-    private void init() {
         mHelper = ViewDragHelper.create(this, new ViewDragCallback());
         setShadow(R.drawable.swipe_shadow_left, EDGE_LEFT);
         setEdgeOrientation(EDGE_LEFT);
     }
 
-    /**
-     * Get ViewDragHelper
-     */
     public ViewDragHelper getViewDragHelper() {
         return mHelper;
     }
 
     /**
      * 滑动中，上一个页面View的阴影透明度
-     *
      * @param alpha 0.0f:无阴影, 1.0f:较重的阴影, 默认:0.5f
      */
     public void setSwipeAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
@@ -162,10 +149,8 @@ public class SwipeBackLayout extends FrameLayout {
     }
 
     /**
-     * Set scroll threshold, we will close the activity, when scrollPercent over
-     * this value
-     *
-     * @param threshold
+     * 设置滑动到页面多少百分比会当前页面
+     * @param threshold 生效门槛
      */
     public void setScrollThresHold(@FloatRange(from = 0.0f, to = 1.0f) float threshold) {
         if (threshold >= 1 || threshold <= 0) {
@@ -174,6 +159,10 @@ public class SwipeBackLayout extends FrameLayout {
         mScrollFinishThreshold = threshold;
     }
 
+    /**
+     * 设置Fragment偏移百分比，默认0f
+     * @param offset 偏移百分比
+     */
     public void setParallaxOffset(float offset) {
         this.mParallaxOffset = offset;
     }
@@ -191,7 +180,6 @@ public class SwipeBackLayout extends FrameLayout {
     public void setEdgeOrientation(@EdgeOrientation int orientation) {
         mEdgeFlag = orientation;
         mHelper.setEdgeTrackingEnabled(orientation);
-
         if (orientation == EDGE_RIGHT || orientation == EDGE_ALL) {
             setShadow(R.drawable.swipe_shadow_right, EDGE_RIGHT);
         }
@@ -218,31 +206,28 @@ public class SwipeBackLayout extends FrameLayout {
      * Set a drawable used for edge shadow.
      */
     public void setShadow(int resId, int edgeFlag) {
-        setShadow(getResources().getDrawable(resId), edgeFlag);
+        setShadow(ContextCompat.getDrawable(mContext, resId), edgeFlag);
     }
 
-    /**
-     * Add a callback to be invoked when a swipe event is sent to this view.
-     *
-     * @param listener the swipe listener to attach to this view
-     */
-    public void addSwipeListener(OnSwipeListener listener) {
+    public void addOnSwipeListener(@NonNull OnSwipeListener listener) {
         if (mListeners == null) {
             mListeners = new ArrayList<>();
         }
         mListeners.add(listener);
     }
 
-    /**
-     * Removes a listener from the set of listeners
-     *
-     * @param listener
-     */
-    public void removeSwipeListener(OnSwipeListener listener) {
+    public void removeOnSwipeListener(@NonNull OnSwipeListener listener) {
         if (mListeners == null) {
             return;
         }
         mListeners.remove(listener);
+    }
+
+    public void removeAllOnSwipeListeners() {
+        if (mListeners == null) {
+            return;
+        }
+        mListeners.clear();
     }
 
     public interface OnSwipeListener {
@@ -349,6 +334,22 @@ public class SwipeBackLayout extends FrameLayout {
                     int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mParallaxOffset * mScrimOpacity);
                     mPreFragment.getView().setX(leftOffset > 0 ? 0 : leftOffset);
                 }
+            }
+
+            //FragmentActivity activity = SwipeBackHelper.getPreActivity();
+
+            FragmentActivity activity = SwipeBackHelper.getPreActivity(mActivity);
+
+            if (activity != null) {
+                if (SwipeBackHelper.getSwipeBackLayout(activity) != null) {
+                    if (mHelper.getCapturedView() != null) {
+                        int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mParallaxOffset * mScrimOpacity);
+                        SwipeBackHelper.getSwipeBackLayout(activity).setX(leftOffset > 0 ? 0 : leftOffset);
+                    }
+                }
+                Log.e("数据", "log2");
+            } else {
+                Log.e("数据", "log");
             }
         }
     }
@@ -508,7 +509,7 @@ public class SwipeBackLayout extends FrameLayout {
                     if (mCallOnDestroyView) {
                         return;
                     }
-                    if (!((Fragment) mFragment).isDetached()) {
+                    if (!mFragment.isDetached()) {
                         onDragFinished();
                         mFragment.getSupportDelegate().popQuiet();
                     }

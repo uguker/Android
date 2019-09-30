@@ -91,7 +91,7 @@ public class SupportFragment extends Fragment implements ISupportFragment {
         if (contentView == null) {
             return inflater.inflate(R.layout.android_layout_fragment_null, container, false);
         }
-        return SwipeBackHelper.attach(this, contentView);
+        return  SwipeBackHelper.attach(this, contentView);
     }
 
     @Override

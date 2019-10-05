@@ -1,11 +1,13 @@
 package com.uguke.demo.android;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.uguke.android.app.BaseSlidingActivity;
-
+import com.uguke.android.swipe.SwipeBackHelper;
+import com.uguke.android.swipe.SwipeBackLayout;
 
 
 /**
@@ -64,13 +66,33 @@ public class MainActivity extends BaseSlidingActivity {
 //                .setTitle("")
 //                .setTitle("");
 
+        SwipeBackHelper.getCurrentPage(this)
+                .setClosePercent(0.5f)
+                .setOffsetPercent(0.5f)
+                .addOnSwipeListener(new SwipeBackLayout.OnSwipeListener() {
+                    @Override
+                    public void onDragStateChange(int state) {
+
+                    }
+
+                    @Override
+                    public void onEdgeTouch(int orientation) {
+
+                    }
+
+                    @Override
+                    public void onScrollToClose(float percent) {
+                        Log.e("数据", "比例" + percent);
+                    }
+                });
+
     }
 
-//    @Override
-//    public boolean onSwipeBackSupport() {
-//        return true;
-//    }
-//
+    @Override
+    public boolean onSwipeBackSupport() {
+        return true;
+    }
+
 //
 //    public Observable<String> test() {
 //        return Observable.<String>create(new ObservableOnSubscribe<String>() {

@@ -1,11 +1,20 @@
 package com.uguke.android.swipe;
 
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.view.ViewCompat;
+import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -14,89 +23,73 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import androidx.annotation.FloatRange;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.customview.widget.ViewDragHelper;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentationMagician;
-
-import com.uguke.android.R;
-import com.uguke.android.app.SupportActivity;
-import com.uguke.android.app.SupportFragment;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.FragmentationMagician;
+
+import com.uguke.android.R;
+import com.uguke.android.app.SupportActivity;
+import com.uguke.android.app.SupportFragment;
+
+/**
+ * 滑动返回控件
+ * @author LeiJue
+ */
 public class SwipeBackLayout extends FrameLayout {
-    /**
-     * Edge flag indicating that the left edge should be affected.
-     */
+    /** 左滑动边缘 **/
     public static final int EDGE_LEFT = ViewDragHelper.EDGE_LEFT;
-
-    /**
-     * Edge flag indicating that the right edge should be affected.
-     */
+    /** 右滑动边缘 **/
     public static final int EDGE_RIGHT = ViewDragHelper.EDGE_RIGHT;
-
+    /** 两侧滑动 **/
     public static final int EDGE_ALL = EDGE_LEFT | EDGE_RIGHT;
 
+    @IntDef({EDGE_LEFT, EDGE_RIGHT, EDGE_ALL})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface EdgeOrientation {}
 
-    /**
-     * A view is not currently being dragged or animating as a result of a
-     * fling/snap.
-     */
+    /** 拖拽限制状态 **/
     public static final int STATE_IDLE = ViewDragHelper.STATE_IDLE;
-
-    /**
-     * A view is currently being dragged. The position is currently changing as
-     * a result of user input or simulated user input.
-     */
+    /** 拖拽中状态 **/
     public static final int STATE_DRAGGING = ViewDragHelper.STATE_DRAGGING;
-
-    /**
-     * A view is currently settling into place as a result of a fling or
-     * predefined non-interactive motion.
-     */
+    /** 拖拽后自然沉降的状态 **/
     public static final int STATE_SETTLING = ViewDragHelper.STATE_SETTLING;
-
-    /**
-     * A view is currently drag finished.
-     */
+    /** 拖拽结束状态 **/
     public static final int STATE_FINISHED = 3;
-
+    /** 默认遮罩颜色 **/
     private static final int DEFAULT_SCRIM_COLOR = 0x99000000;
+    /** 默认视差偏移百分比 **/
     private static final float DEFAULT_PARALLAX = 0.33f;
+    /** 透明度满值 **/
     private static final int FULL_ALPHA = 255;
     private static final float DEFAULT_SCROLL_THRESHOLD = 0.4f;
     private static final int OVER_SCROLL_DISTANCE = 10;
 
-    private float mScrollFinishThreshold = DEFAULT_SCROLL_THRESHOLD;
+    private float mClosePercent = DEFAULT_SCROLL_THRESHOLD;
 
     private ViewDragHelper mHelper;
 
     private float mScrollPercent;
+
+    private int mScrimColor = DEFAULT_SCRIM_COLOR;
     private float mScrimOpacity;
 
     private View mContentView;
-    private Fragment mPreFragment;
     private FragmentActivity mActivity;
     private SupportFragment mFragment;
+    private Fragment mPreFragment;
 
     private Drawable mShadowLeft;
     private Drawable mShadowRight;
     private Rect mTmpRect = new Rect();
 
     private int mEdgeFlag;
-    private boolean mEnable = true;
+    private boolean mSwipeBackEnable = true;
     private int mCurrentSwipeOrientation;
-    private float mParallaxOffset = DEFAULT_PARALLAX;
+    private float mOffsetPercent = DEFAULT_PARALLAX;
 
     private boolean mCallOnDestroyView;
 
@@ -106,14 +99,18 @@ public class SwipeBackLayout extends FrameLayout {
     private int mContentTop;
     private float mSwipeAlpha = 0.5f;
 
-    /** 滑动监听事件 **/
+    /** 监听事件 **/
     private List<OnSwipeListener> mListeners;
 
     private Context mContext;
 
+    /** 边缘等级 **/
     public enum EdgeLevel {
+        /** 满屏 **/
         MAX,
+        /** 20dp **/
         MIN,
+        /** 半屏 **/
         MED
     }
 
@@ -142,89 +139,65 @@ public class SwipeBackLayout extends FrameLayout {
      * @param alpha 0.0f:无阴影, 1.0f:较重的阴影, 默认:0.5f
      */
     public void setSwipeAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
-        this.mSwipeAlpha = alpha;
+        mSwipeAlpha = alpha;
     }
 
     /**
-     * 设置滑动到页面多少百分比会当前页面
-     * @param threshold 生效门槛
+     * 关闭百分比, 滚动多少将关闭界面（百分比）
+     * @param percent 关闭百分比（百分比）
      */
-    public void setScrollThresHold(@FloatRange(from = 0.0f, to = 1.0f) float threshold) {
-        if (threshold >= 1 || threshold <= 0) {
-            throw new IllegalArgumentException("Threshold value should be between 0 and 1.0");
+    public void setClosePercent(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
+        if (percent >= 1 || percent <= 0) {
+            throw new IllegalArgumentException("Percent value should be between 0 and 1.0");
         }
-        mScrollFinishThreshold = threshold;
+        mClosePercent = percent;
     }
 
     /**
-     * 设置Fragment偏移百分比，默认0f
-     * @param offset 偏移百分比
+     * 设置偏移百分比（百分比）
+     * @param percent 偏移百分比
      */
-    public void setParallaxOffset(float offset) {
-        this.mParallaxOffset = offset;
+    public void setOffsetPercent(float percent) {
+        mOffsetPercent = percent;
     }
 
-    /**
-     * Enable edge tracking for the selected edges of the parent view.
-     * The callback's {@link ViewDragHelper.Callback#onEdgeTouched(int, int)} and
-     * {@link ViewDragHelper.Callback#onEdgeDragStarted(int, int)} methods will only be invoked
-     * for edges for which edge tracking has been enabled.
-     *
-     * @param orientation Combination of edge flags describing the edges to watch
-     * @see #EDGE_LEFT
-     * @see #EDGE_RIGHT
-     */
     public void setEdgeOrientation(@EdgeOrientation int orientation) {
         mEdgeFlag = orientation;
         mHelper.setEdgeTrackingEnabled(orientation);
+
         if (orientation == EDGE_RIGHT || orientation == EDGE_ALL) {
             setShadow(R.drawable.swipe_shadow_right, EDGE_RIGHT);
         }
     }
 
-    @IntDef({EDGE_LEFT, EDGE_RIGHT, EDGE_ALL})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface EdgeOrientation {
-    }
-
-    /**
-     * Set a drawable used for edge shadow.
-     */
-    public void setShadow(Drawable shadow, int edgeFlag) {
-        if ((edgeFlag & EDGE_LEFT) != 0) {
+    public void setShadow(Drawable shadow, @EdgeOrientation int orientation) {
+        // 左边的阴影
+        if ((orientation & EDGE_LEFT) != 0) {
             mShadowLeft = shadow;
-        } else if ((edgeFlag & EDGE_RIGHT) != 0) {
+        }
+        // 右边的阴影
+        if ((orientation & EDGE_RIGHT) != 0) {
             mShadowRight = shadow;
         }
         invalidate();
     }
 
-    /**
-     * Set a drawable used for edge shadow.
-     */
-    public void setShadow(int resId, int edgeFlag) {
-        setShadow(ContextCompat.getDrawable(mContext, resId), edgeFlag);
+    public void setShadow(int resId, @EdgeOrientation int orientation) {
+        setShadow(ContextCompat.getDrawable(mContext, resId), orientation);
     }
 
-    public void addOnSwipeListener(@NonNull OnSwipeListener listener) {
+    public void addOnSwipeListener(OnSwipeListener listener) {
         if (mListeners == null) {
             mListeners = new ArrayList<>();
         }
         mListeners.add(listener);
     }
 
-    public void removeOnSwipeListener(@NonNull OnSwipeListener listener) {
+    public void removeOnSwipeListener(OnSwipeListener listener) {
         if (mListeners == null) {
             return;
         }
         mListeners.remove(listener);
-    }
-
-    public void removeAllOnSwipeListeners() {
-        if (mListeners == null) {
-            return;
-        }
-        mListeners.clear();
     }
 
     public interface OnSwipeListener {
@@ -246,14 +219,22 @@ public class SwipeBackLayout extends FrameLayout {
          * @see #EDGE_LEFT
          * @see #EDGE_RIGHT
          */
-        void onEdgeTouch(int oritentationEdgeFlag);
+        /**
+         * 开始滑动
+         * @param orientation 边缘方向
+         */
+        void onEdgeTouch(int orientation);
 
         /**
          * Invoke when scroll percent over the threshold for the first time
          *
          * @param scrollPercent scroll percent of this view
          */
-        void onDragScrolled(float scrollPercent);
+        /**
+         * 首次滚动超过关闭百分比时调用
+         * @param percent 关闭百分比
+         */
+        void onScrollToClose(float percent);
     }
 
     @Override
@@ -283,9 +264,9 @@ public class SwipeBackLayout extends FrameLayout {
     }
 
     private void drawScrim(Canvas canvas, View child) {
-        final int baseAlpha = (DEFAULT_SCRIM_COLOR & 0xff000000) >>> 24;
+        final int baseAlpha = (mScrimColor & 0xff000000) >>> 24;
         final int alpha = (int) (baseAlpha * mScrimOpacity * mSwipeAlpha);
-        final int color = alpha << 24;
+        final int color = alpha << 24 | (mScrimColor & 0xffffff);
 
         if ((mCurrentSwipeOrientation & EDGE_LEFT) != 0) {
             canvas.clipRect(0, 0, child.getLeft(), getHeight());
@@ -293,6 +274,11 @@ public class SwipeBackLayout extends FrameLayout {
             canvas.clipRect(child.getRight(), 0, getRight(), getHeight());
         }
         canvas.drawColor(color);
+    }
+
+    public void setScrimColor(int color) {
+        mScrimColor = color;
+        invalidate();
     }
 
     @Override
@@ -320,7 +306,8 @@ public class SwipeBackLayout extends FrameLayout {
             if (mHelper.continueSettling(true)) {
                 ViewCompat.postInvalidateOnAnimation(this);
             }
-            // Fragment类别
+
+            // Fragment中上一个SwipeBackLayout变化情况
             if (mPreFragment != null && mPreFragment.getView() != null) {
                 if (mCallOnDestroyView) {
                     mPreFragment.getView().setX(0);
@@ -328,24 +315,24 @@ public class SwipeBackLayout extends FrameLayout {
                 }
 
                 if (mHelper.getCapturedView() != null) {
-                    int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mParallaxOffset * mScrimOpacity);
+                    int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mOffsetPercent * mScrimOpacity);
                     mPreFragment.getView().setX(leftOffset > 0 ? 0 : leftOffset);
                 }
             }
-            // Activity类别
-            SwipeBackPage page = SwipeBackHelper.getPrePage(mActivity);
-            if (page != null && mHelper.getCapturedView() != null) {
-                int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mParallaxOffset * mScrimOpacity);
-                page.getSwipeBackLayout().setX(leftOffset > 0 ? 0 : leftOffset);
+            // Activity中上一个SwipeBackLayout变化情况
+            SwipeBackActivityPage page = SwipeBackHelper.getPrePage(mActivity);
+            if (mActivity != null && page != null) {
+                if (mHelper.getCapturedView() != null) {
+                    int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mOffsetPercent * mScrimOpacity);
+                    page.getSwipeBackLayout().setX(leftOffset > 0 ? 0 : leftOffset);
+                }
             }
         }
     }
 
-    /**
-     * hide
-     */
-    public void internalCallOnDestroyView() {
-        mCallOnDestroyView = true;
+    void setFragment(final SupportFragment fragment, View view) {
+        mFragment = fragment;
+        mContentView = view;
     }
 
     public void hiddenFragment() {
@@ -373,16 +360,15 @@ public class SwipeBackLayout extends FrameLayout {
 
     public void attachToFragment(SupportFragment fragment, View view) {
         addView(view);
-        mFragment = fragment;
-        mContentView = view;
+        setFragment(fragment, view);
     }
 
-    private void setContentView(View view) {
-        mContentView = view;
+    public void internalCallOnDestroyView() {
+        mCallOnDestroyView = true;
     }
 
-    public void setEnableGesture(boolean enable) {
-        mEnable = enable;
+    public void setSwipeBackEnable(boolean enable) {
+        mSwipeBackEnable = enable;
     }
 
     public void setEdgeLevel(EdgeLevel edgeLevel) {
@@ -391,6 +377,10 @@ public class SwipeBackLayout extends FrameLayout {
 
     public void setEdgeLevel(int widthPixel) {
         validateEdgeLevel(widthPixel, null);
+    }
+
+    private void setContentView(View view) {
+        mContentView = view;
     }
 
     private void validateEdgeLevel(int widthPixel, EdgeLevel edgeLevel) {
@@ -443,7 +433,7 @@ public class SwipeBackLayout extends FrameLayout {
                             int index = fragmentList.indexOf(mFragment);
                             for (int i = index - 1; i >= 0; i--) {
                                 Fragment fragment = fragmentList.get(i);
-                                if (fragment != null && fragment.getView() != null && fragment instanceof SupportFragment) {
+                                if (fragment != null && fragment.getView() != null) {
                                     fragment.getView().setVisibility(VISIBLE);
                                     mPreFragment = fragment;
                                     break;
@@ -487,7 +477,7 @@ public class SwipeBackLayout extends FrameLayout {
 
             if (mListeners != null && mHelper.getViewDragState() == STATE_DRAGGING && mScrollPercent <= 1 && mScrollPercent > 0) {
                 for (OnSwipeListener listener : mListeners) {
-                    listener.onDragScrolled(mScrollPercent);
+                    listener.onScrollToClose(mScrollPercent);
                 }
             }
 
@@ -515,7 +505,7 @@ public class SwipeBackLayout extends FrameLayout {
             if (mFragment != null) {
                 return 1;
             }
-            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).swipeBackPriority()) {
+            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).onSwipeBackPriority()) {
                 return 1;
             }
             return 0;
@@ -527,10 +517,10 @@ public class SwipeBackLayout extends FrameLayout {
 
             int left = 0, top = 0;
             if ((mCurrentSwipeOrientation & EDGE_LEFT) != 0) {
-                left = xvel > 0 || xvel == 0 && mScrollPercent > mScrollFinishThreshold ? (childWidth
+                left = xvel > 0 || xvel == 0 && mScrollPercent > mClosePercent ? (childWidth
                         + mShadowLeft.getIntrinsicWidth() + OVER_SCROLL_DISTANCE) : 0;
             } else if ((mCurrentSwipeOrientation & EDGE_RIGHT) != 0) {
-                left = xvel < 0 || xvel == 0 && mScrollPercent > mScrollFinishThreshold ? -(childWidth
+                left = xvel < 0 || xvel == 0 && mScrollPercent > mClosePercent ? -(childWidth
                         + mShadowRight.getIntrinsicWidth() + OVER_SCROLL_DISTANCE) : 0;
             }
 
@@ -567,7 +557,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!mEnable) {
+        if (!mSwipeBackEnable) {
             return super.onInterceptTouchEvent(ev);
         }
         try {
@@ -581,7 +571,7 @@ public class SwipeBackLayout extends FrameLayout {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!mEnable) {
+        if (!mSwipeBackEnable) {
             return super.onTouchEvent(event);
         }
         try {
@@ -591,14 +581,5 @@ public class SwipeBackLayout extends FrameLayout {
             e.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    protected void onMeasure(int widthSpec, int heightSpec) {
-        widthSpec = MeasureSpec.makeMeasureSpec(
-                MeasureSpec.getSize(widthSpec), MeasureSpec.EXACTLY);
-        heightSpec = MeasureSpec.makeMeasureSpec(
-                MeasureSpec.getSize(heightSpec), MeasureSpec.EXACTLY);
-        super.onMeasure(widthSpec, heightSpec);
     }
 }

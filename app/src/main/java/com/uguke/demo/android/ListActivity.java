@@ -52,7 +52,10 @@ public class ListActivity extends SupportActivity {
 //
 //        hideLoading();
     }
-//
+
+
+
+    //
 //    @Override
 //    public LayoutCreator onCreateHeader(ViewGroup container) {
 //        return LayoutCreator.create(R.layout.bottom, container, false);

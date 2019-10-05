@@ -2,6 +2,7 @@ package com.uguke.demo.android;
 
 import android.app.Application;
 
+import com.uguke.android.app.AppDelegate;
 import com.uguke.android.helper.ActionHelper;
 
 
@@ -17,6 +18,8 @@ public class App extends Application {
         super.onCreate();
         ActionHelper.init(this);
 
+        AppDelegate.getInstance()
+                .setSwipeBackSupport(true);
 
     }
 }

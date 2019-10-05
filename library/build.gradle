@@ -35,7 +35,7 @@ dependencies {
 //    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-13'
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-13'
-    implementation 'me.yokeyword:fragmentationx-swipeback:1.0.1'
+//    api 'me.yokeyword:fragmentationx-swipeback:1.0.1'
 //    api 'androidx.legacy:legacy-support-v4:1.0.0'
     // Fragment
     api 'me.yokeyword:fragmentationx-core:1.0.0'

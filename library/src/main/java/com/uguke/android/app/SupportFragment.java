@@ -40,6 +40,7 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     public SupportActivity mActivity;
 
 
+
     @Override
     public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
@@ -51,6 +52,15 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDelegate.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDelegate.onCreate(savedInstanceState);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onCreate(this);
+        }
     }
 
     @Override
@@ -84,25 +94,31 @@ public class SupportFragment extends Fragment implements ISupportFragment {
             public void onDestroy() {}
         });
         onCreating(savedInstanceState);
-        SwipeBackHelper.onCreate(this);
-        View contentView = mLayoutDelegate.getContentView();
-        if (contentView == null) {
-            return inflater.inflate(R.layout.android_layout_fragment_null, container, false);
+        // 获取设置的界面
+        View view = mLayoutDelegate.getContentView();
+        if (view == null) {
+            // 若界面为空，则设置空布局提示
+            view = inflater.inflate(R.layout.android_layout_fragment_null, container, false);
         }
-        return SwipeBackHelper.onAttach(this, contentView);
+        // 根据设置判断是否支持侧滑返回
+        return onSwipeBackSupport() ? SwipeBackHelper.onAttach(this, view) : view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SwipeBackHelper.onViewCreated(this, view);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onViewCreated(this, view);
+        }
     }
 
     @Override
     public void onDestroyView() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroyView();
-        SwipeBackHelper.onDestroy(this);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onDestroyView(this);
+        }
         super.onDestroyView();
     }
 
@@ -116,7 +132,9 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         mDelegate.onHiddenChanged(hidden);
-        SwipeBackHelper.onHiddenChanged(this, hidden);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onHiddenChanged(this, hidden);
+        }
     }
 
     @Override
@@ -125,11 +143,6 @@ public class SupportFragment extends Fragment implements ISupportFragment {
         mDelegate.setUserVisibleHint(isVisibleToUser);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mDelegate.onCreate(savedInstanceState);
-    }
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
@@ -329,6 +342,10 @@ public class SupportFragment extends Fragment implements ISupportFragment {
 
     public void hideLoading() {
         mLayoutDelegate.hideLoading();
+    }
+
+    public boolean onSwipeBackSupport() {
+        return AppDelegate.getInstance().isSwipeBackSupport();
     }
 
     /****************************************以下为可选方法(Optional methods)******************************************************/

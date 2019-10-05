@@ -58,21 +58,27 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
             public void onDestroy() {}
         });
         onCreating(savedInstanceState);
-        SwipeBackHelper.onCreate(this);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onCreate(this);
+        }
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onPostCreate(this);
+        }
     }
 
     @Override
     protected void onDestroy() {
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroy();
-        SwipeBackHelper.onDestroy(this);
+        if (onSwipeBackSupport()) {
+            SwipeBackHelper.onDestroy(this);
+        }
         super.onDestroy();
     }
 
@@ -198,8 +204,12 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
         mLayoutDelegate.hideLoading();
     }
 
-    public boolean swipeBackPriority() {
-        return false;
+    public boolean onSwipeBackSupport() {
+        return AppDelegate.getInstance().isSwipeBackSupport();
+    }
+
+    public boolean onSwipeBackPriority() {
+        return getSupportFragmentManager().getBackStackEntryCount() <= 1;
     }
 
     /****************************************以下为可选方法(Optional methods)******************************************************/

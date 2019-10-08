@@ -10,20 +10,21 @@ import com.uguke.android.helper.TipsHelper;
 import com.uguke.android.listener.OnDismissListener;
 import com.uguke.android.listener.OnShowListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 使用的是SnackBar来显示消息
  * @author LeiJue
  */
 public class DefaultTipsAdapter implements TipsHelper.Adapter {
-
     /** Snack变化文本 **/
     private static final String [] SNACK_ANIMATION_TEXTS = {" ", " .", " ..", " ..."};
     /** 文本长度超过25算是长文本，则延长显示时间 **/
     private static final int LONG_TEXT_LENGTH = 25;
-
-    private int mCount = 0;
+    /** 计数器 **/
+    private Map<Object, Integer> mCountMap = new HashMap<>(1);
 
     public DefaultTipsAdapter() {}
 
@@ -77,21 +78,30 @@ public class DefaultTipsAdapter implements TipsHelper.Adapter {
             });
         }
         snackbar.show();
+        // 将计数器添加到Map
+        mCountMap.put(snackbar, 0);
         return snackbar;
     }
 
     @Override
     public void hide(Object obj) {
         ((Snackbar) obj).dismiss();
+        // 移除计数器
+        mCountMap.remove(obj);
     }
 
     @Override
     public void changed(TipsHelper helper, Object obj) {
-        String animationText = SNACK_ANIMATION_TEXTS[mCount % SNACK_ANIMATION_TEXTS.length];
+        // 获取计数器
+        Integer temp = mCountMap.get(obj);
+        int count = temp == null ? 0 : temp;
+        String animationText = SNACK_ANIMATION_TEXTS[count % SNACK_ANIMATION_TEXTS.length];
         ((Snackbar) obj).setText(helper.getText() + animationText);
-        mCount ++;
-        if (mCount >= SNACK_ANIMATION_TEXTS.length) {
-            mCount = 0;
+        count ++;
+        if (count >= SNACK_ANIMATION_TEXTS.length) {
+            count = 0;
         }
+        // 缓存计数器
+        mCountMap.put(obj, count);
     }
 }

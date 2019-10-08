@@ -53,7 +53,11 @@ public class ListActivity extends SupportActivity {
 //        hideLoading();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showTips("我看见了");
+    }
 
     //
 //    @Override

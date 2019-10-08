@@ -1,5 +1,7 @@
 package com.uguke.android.app;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -7,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +18,6 @@ import com.uguke.android.widget.CommonToolbar;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
-import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportActivityDelegate;
 import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -204,6 +204,10 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
         mLayoutDelegate.hideLoading();
     }
 
+    /**
+     * 是否支持侧滑返回 true 支持 false 不支持
+     * 不支持的情况下{@link SwipeBackHelper}所有方法无效
+     */
     public boolean onSwipeBackSupport() {
         return AppDelegate.getInstance().isSwipeBackSupport();
     }
@@ -216,111 +220,75 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
         return getSupportFragmentManager().getBackStackEntryCount() <= 1;
     }
 
-    /****************************************以下为可选方法(Optional methods)******************************************************/
+    /**
+     * 当Fragment根布局 没有 设定background属性时,
+     * Fragmentation默认使用Theme的android:windowBackground作为Fragment的背景,
+     * 可以通过该方法改变其内所有Fragment的默认背景。
+     */
+    public void setDefaultFragmentBackground(@DrawableRes int backgroundRes) {
+        mDelegate.setDefaultFragmentBackground(backgroundRes);
+    }
+
+    //============ Fragment操作方法 ============//
 
     /**
-     * 加载根Fragment, 即Activity内的第一个Fragment 或 Fragment内的第一个子Fragment
-     *
+     * 加载根Fragment, Fragment内的第一个子Fragment
      * @param containerId 容器id
      * @param toFragment  目标Fragment
      */
-    public void loadRootFragment(int containerId, @NonNull ISupportFragment toFragment) {
+    public void loadRootFragment(int containerId, SupportFragment toFragment) {
         mDelegate.loadRootFragment(containerId, toFragment);
     }
 
-    public void loadRootFragment(int containerId, ISupportFragment toFragment, boolean addToBackStack, boolean allowAnimation) {
-        mDelegate.loadRootFragment(containerId, toFragment, addToBackStack, allowAnimation);
+    public void loadRootFragment(int containerId, SupportFragment toFragment, boolean addToBackStack, boolean allowAnim) {
+        mDelegate.loadRootFragment(containerId, toFragment, addToBackStack, allowAnim);
     }
 
-    /**
-     * 加载多个同级根Fragment,类似Wechat, QQ主页的场景
-     */
-    public void loadMultipleRootFragment(int containerId, int showPosition, ISupportFragment... toFragments) {
-        mDelegate.loadMultipleRootFragment(containerId, showPosition, toFragments);
-    }
-
-    /**
-     * show一个Fragment,hide其他同栈所有Fragment
-     * 使用该方法时，要确保同级栈内无多余的Fragment,(只有通过loadMultipleRootFragment()载入的Fragment)
-     * <p>
-     * 建议使用更明确的{@link #showHideFragment(ISupportFragment, ISupportFragment)}
-     *
-     * @param showFragment 需要show的Fragment
-     */
-    public void showHideFragment(com.uguke.android.app.SupportFragment showFragment) {
-        mDelegate.showHideFragment(showFragment);
-    }
-
-    /**
-     * show一个Fragment,hide一个Fragment ; 主要用于类似微信主页那种 切换tab的情况
-     */
-    public void showHideFragment(ISupportFragment showFragment, ISupportFragment hideFragment) {
-        mDelegate.showHideFragment(showFragment, hideFragment);
-    }
-
-    /**
-     * It is recommended to use {@link me.yokeyword.fragmentation.SupportFragment#start(ISupportFragment)}.
-     */
-    public void start(ISupportFragment toFragment) {
+    public void start(SupportFragment toFragment) {
         mDelegate.start(toFragment);
     }
 
-    /**
-     * It is recommended to use {@link me.yokeyword.fragmentation.SupportFragment#start(ISupportFragment, int)}.
-     *
-     * @param launchMode Similar to Activity's LaunchMode.
-     */
-    public void start(ISupportFragment toFragment, @ISupportFragment.LaunchMode int launchMode) {
+    public void start(final SupportFragment toFragment, @SupportFragment.LaunchMode int launchMode) {
         mDelegate.start(toFragment, launchMode);
     }
 
     /**
-     * It is recommended to use {@link me.yokeyword.fragmentation.SupportFragment#startForResult(ISupportFragment, int)}.
-     * Launch an fragment for which you would like a result when it poped.
+     * 类型{@link Activity#startActivityForResult(Intent, int)}
+     * 成功回调{@link SupportFragment#onFragmentResult(int, int, Bundle)}
+     * @param toFragment 目标Fragment
+     * @param requestCode 请求码
      */
-    public void startForResult(ISupportFragment toFragment, int requestCode) {
+    public void startForResult(SupportFragment toFragment, int requestCode) {
         mDelegate.startForResult(toFragment, requestCode);
     }
 
     /**
-     * It is recommended to use {@link me.yokeyword.fragmentation.SupportFragment#startWithPop(ISupportFragment)}.
-     * Start the target Fragment and pop itself
+     * 启动一个Fragment同时销毁自己
      */
-    public void startWithPop(ISupportFragment toFragment) {
+    public void startWithPop(SupportFragment toFragment) {
         mDelegate.startWithPop(toFragment);
     }
 
     /**
-     * It is recommended to use {@link me.yokeyword.fragmentation.SupportFragment#startWithPopTo(ISupportFragment, Class, boolean)}.
-     *
      * @see #popTo(Class, boolean)
      * +
-     * @see #start(ISupportFragment)
+     * @see #start(SupportFragment)
      */
-    public void startWithPopTo(ISupportFragment toFragment, Class<?> targetFragmentClass, boolean includeTargetFragment) {
+    public void startWithPopTo(SupportFragment toFragment, Class<?> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.startWithPopTo(toFragment, targetFragmentClass, includeTargetFragment);
     }
 
-    /**
-     * It is recommended to use {@link SupportFragment#replaceFragment(ISupportFragment, boolean)}.
-     */
-    public void replaceFragment(ISupportFragment toFragment, boolean addToBackStack) {
+
+    public void replaceFragment(SupportFragment toFragment, boolean addToBackStack) {
         mDelegate.replaceFragment(toFragment, addToBackStack);
     }
 
-    /**
-     * Pop the fragment.
-     */
     public void pop() {
         mDelegate.pop();
     }
 
     /**
-     * Pop the last fragment transition from the manager's fragment
-     * back stack.
-     * <p>
      * 出栈到目标fragment
-     *
      * @param targetFragmentClass   目标fragment
      * @param includeTargetFragment 是否包含该fragment
      */
@@ -329,7 +297,6 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
     }
 
     /**
-     * If you want to begin another FragmentTransaction immediately after popTo(), use this method.
      * 如果你想在出栈后, 立刻进行FragmentTransaction操作，请使用该方法
      */
     public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable) {
@@ -341,43 +308,23 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
     }
 
     /**
-     * 当Fragment根布局 没有 设定background属性时,
-     * Fragmentation默认使用Theme的android:windowbackground作为Fragment的背景,
-     * 可以通过该方法改变其内所有Fragment的默认背景。
-     */
-    public void setDefaultFragmentBackground(@DrawableRes int backgroundRes) {
-        mDelegate.setDefaultFragmentBackground(backgroundRes);
-    }
-
-    /**
      * 得到位于栈顶Fragment
      */
-    public ISupportFragment getTopFragment() {
-        return SupportHelper.getTopFragment(getSupportFragmentManager());
+    public SupportFragment getTopFragment() {
+        return (SupportFragment) SupportHelper.getTopFragment(getSupportFragmentManager());
     }
 
     /**
      * 获取栈内的fragment对象
      */
-    public <T extends ISupportFragment> T findFragment(Class<T> fragmentClass) {
+    public <T extends SupportFragment> T findFragment(Class<T> fragmentClass) {
         return SupportHelper.findFragment(getSupportFragmentManager(), fragmentClass);
     }
 
-
     /**
      * 获取栈内的fragment对象
      */
-    public <T extends ISupportFragment> T findFragmentByTag(String tag) {
-        if (getFragmentManager() != null) {
-            return SupportHelper.findFragment(getSupportFragmentManager(), tag);
-        }
-        return null;
-    }
-
-    /**
-     * 获取栈内的fragment对象
-     */
-    public <T extends ISupportFragment> T findChildFragmentByTag(String tag) {
+    public SupportFragment findFragmentByTag(String tag) {
         return SupportHelper.findFragment(getSupportFragmentManager(), tag);
     }
 }

@@ -36,16 +36,7 @@ public class AppDelegate {
 
     private boolean mSwipeBackSupport = false;
 
-    public static AppDelegate getInstance() {
-        if (sInstance == null) {
-            sInstance = new AppDelegate();
-        }
-        return sInstance;
-    }
-
-    private AppDelegate() { }
-
-    public AppDelegate init(Application application) {
+    public static void init(Application application) {
         getInstance();
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
@@ -103,10 +94,16 @@ public class AppDelegate {
                 }
             }
         });
-
-        return this;
     }
 
+    public static AppDelegate getInstance() {
+        if (sInstance == null) {
+            sInstance = new AppDelegate();
+        }
+        return sInstance;
+    }
+
+    private AppDelegate() { }
 
     public AppDelegate setNetworkAdapter(NetworkAdapter adapter) {
         mNetworkAdapter = adapter;

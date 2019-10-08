@@ -1,23 +1,14 @@
 package com.uguke.android.app;
 
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.uguke.android.widget.OnTabSelectedListener;
-import com.uguke.android.util.ResUtils;
 import com.uguke.android.widget.CommonTabLayout;
-import com.uguke.android.widget.CommonToolbar;
 import com.uguke.android.R;
 
 import java.util.Arrays;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * 基础标签活动
@@ -26,9 +17,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
 public abstract class BaseTabbedFragment extends SupportFragment {
 
     protected CommonTabLayout mTabLayout;
-    protected ISupportFragment [] mFragments;
+    protected SupportFragment [] mFragments;
     private int mCurrentTab = 0;
-    private boolean mSupport;
 
     @Override
     public void onCreating(Bundle savedInstanceState) {
@@ -43,7 +33,7 @@ public abstract class BaseTabbedFragment extends SupportFragment {
 
             @Override
             public void onTabSelected(int position) {
-                BaseTabbedFragment.super.showHideFragment(mFragments[position]);
+                mDelegate.showHideFragment(mFragments[position]);
                 mCurrentTab = position;
             }
 
@@ -56,41 +46,17 @@ public abstract class BaseTabbedFragment extends SupportFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("currentTab", mCurrentTab);
     }
 
-    @Override
-    public void showHideFragment(ISupportFragment showFragment) {
-        showHideFragment(showFragment, null);
-    }
-
-    @Override
-    public void showHideFragment(ISupportFragment showFragment, ISupportFragment hideFragment) {
-        int index = 0;
-        for (int i = 0; i < mFragments.length; i++) {
-            ISupportFragment fragment = mFragments[i];
-            if (showFragment == fragment) {
-                index = i;
-                break;
-            }
-        }
-        super.showHideFragment(showFragment, hideFragment);
-        mTabLayout.setCurrentTab(index);
-    }
-
     public void showFragment(int position) {
-        super.showHideFragment(mFragments[position]);
+        mDelegate.showHideFragment(mFragments[position]);
         mTabLayout.setCurrentTab(position);
     }
 
-    public void showFragment(ISupportFragment fragment) {
+    public void showFragment(SupportFragment fragment) {
         int index = 0;
         for (int i = 0; i < mFragments.length; i++) {
             if (mFragments[i] == fragment) {
@@ -98,93 +64,85 @@ public abstract class BaseTabbedFragment extends SupportFragment {
                 break;
             }
         }
-        super.showHideFragment(mFragments[index]);
+        mDelegate.showHideFragment(fragment);
         mTabLayout.setCurrentTab(index);
     }
 
-    public void showFragment(Class<? extends ISupportFragment> showClass) {
+    public void showFragment(Class<? extends SupportFragment> clazz) {
         int index = 0;
         for (int i = 0; i < mFragments.length; i++) {
-            ISupportFragment fragment = mFragments[i];
-            if (showClass == fragment.getClass()) {
+            if (mFragments[i].getClass() == clazz) {
                 index = i;
                 break;
             }
         }
-        super.showHideFragment(mFragments[index]);
+        mDelegate.showHideFragment(mFragments[index]);
         mTabLayout.setCurrentTab(index);
     }
-    /**
-     * 是否支持滑动返回，在super.onCreating()之前调用
-     * @param support 是否支持
-     */
-    public void setSwipeBackSupport(boolean support) {
-        mSupport = support;
-    }
 
-    public void loadMultipleRootFragment(FragmentTab... tabs) {
-        loadMultipleRootFragment(mCurrentTab, tabs);
-    }
-
-    public void loadMultipleRootFragment(int position, FragmentTab... tabs) {
-//        if (tabs == null || tabs.length == 0) {
-//            return;
-//        }
-//        mFragments = new BaseFragment[tabs.length];
-//        if (findFragmentByTag(tabs[0].getTag()) == null) {
-//            for (int i = 0, len = tabs.length; i < len; i++) {
-//                mFragments[i] = tabs[i].newFragment();
-//            }
-//            loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
-//        } else {
-//            for (int i = 0, len = tabs.length; i < len; i++) {
-//                mFragments[i] = findFragmentByTag(tabs[0].getTag());
-//            }
-//        }
-//        mTabLayout.setTabData(Arrays.asList(tabs));
-//        mTabLayout.setCurrentTab(position);
-    }
-
-    /**
-     * 应用顶部TabLayout
-     */
-    public void applyTopTab() {
-        ViewGroup parent = (ViewGroup) mTabLayout.getParent();
-        parent.removeView(mTabLayout);
-        parent.addView(mTabLayout, 0);
-        mTabLayout.setIndicatorHeight(2);
-        mTabLayout.setUnderlineGravity(Gravity.BOTTOM);
-    }
-
-    public void applyToolbar() {
-        applyToolbar(null);
-    }
-
-    public void applyToolbar(@LayoutRes int layoutRes) {
-        AppBarLayout appBarLayout = findViewById(R.id.android_bar);
-        if (mToolbar == null && appBarLayout != null) {
-            applyToolbar(getLayoutInflater().inflate(layoutRes, appBarLayout, false));
+    public void loadMultipleFragment(FragmentTab... tabs) {
+        if (tabs == null || tabs.length == 0) {
+            return;
         }
-    }
-
-    public void applyToolbar(View view) {
-        AppBarLayout appBarLayout = findViewById(R.id.android_bar);
-        if (mToolbar == null && appBarLayout != null) {
-            if (view == null) {
-                CommonToolbar toolbar = new CommonToolbar(mActivity);
-                toolbar.setLayoutParams(new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ResUtils.getPixel(mActivity, R.dimen.toolbar)));
-                toolbar.setDividerVisible(false);
-                toolbar.setMaterialStyle(false);
-                appBarLayout.addView(toolbar);
-                mToolbar = toolbar;
-            } else {
-                mToolbar = null;
-                appBarLayout.removeAllViews();
-                appBarLayout.addView(view);
+        mFragments = new SupportFragment[tabs.length];
+        if (findFragmentByTag(tabs[0].getTag()) == null) {
+            for (int i = 0, len = tabs.length; i < len; i++) {
+                mFragments[i] = tabs[i].newFragment();
+            }
+            mDelegate.loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
+        } else {
+            for (int i = 0, len = tabs.length; i < len; i++) {
+                mFragments[i] = findFragmentByTag(tabs[0].getTag());
             }
         }
+        mTabLayout.setTabData(Arrays.asList(tabs));
+        // 设置当前展示的项
+        mTabLayout.setCurrentTab(mCurrentTab > tabs.length - 1 ? tabs.length - 1 : mCurrentTab);
     }
 
+    public SupportFragment [] getFragments() {
+        return mFragments;
+    }
+
+//    /**
+//     * 应用顶部TabLayout
+//     */
+//    public void applyTopTab() {
+//        ViewGroup parent = (ViewGroup) mTabLayout.getParent();
+//        parent.removeView(mTabLayout);
+//        parent.addView(mTabLayout, 0);
+//        mTabLayout.setIndicatorHeight(2);
+//        mTabLayout.setUnderlineGravity(Gravity.BOTTOM);
+//    }
+//
+//    public void applyToolbar() {
+//        applyToolbar(null);
+//    }
+//
+//    public void applyToolbar(@LayoutRes int layoutRes) {
+//        AppBarLayout appBarLayout = findViewById(R.id.android_bar);
+//        if (mToolbar == null && appBarLayout != null) {
+//            applyToolbar(getLayoutInflater().inflate(layoutRes, appBarLayout, false));
+//        }
+//    }
+//
+//    public void applyToolbar(View view) {
+//        AppBarLayout appBarLayout = findViewById(R.id.android_bar);
+//        if (mToolbar == null && appBarLayout != null) {
+//            if (view == null) {
+//                CommonToolbar toolbar = new CommonToolbar(mActivity);
+//                toolbar.setLayoutParams(new ViewGroup.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ResUtils.getPixel(mActivity, R.dimen.toolbar)));
+//                toolbar.setDividerVisible(false);
+//                toolbar.setMaterialStyle(false);
+//                appBarLayout.addView(toolbar);
+//                mToolbar = toolbar;
+//            } else {
+//                mToolbar = null;
+//                appBarLayout.removeAllViews();
+//                appBarLayout.addView(view);
+//            }
+//        }
+//    }
 }

@@ -1,6 +1,7 @@
 package com.uguke.android.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -30,6 +35,17 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  */
 public class SupportFragment extends Fragment implements ISupportFragment {
 
+    public static final int STANDARD = 0;
+    public static final int SINGLE_TOP = 1;
+    public static final int SINGLE_TASK = 2;
+
+    public static final int RESULT_CANCELED = 0;
+    public static final int RESULT_OK = -1;
+
+    @IntDef({STANDARD, SINGLE_TOP, SINGLE_TASK})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LaunchMode {}
+
     /** 标题 **/
     public CommonToolbar mToolbar;
     /** 刷新控件 **/
@@ -38,8 +54,6 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     final LayoutDelegate mLayoutDelegate = new LayoutDelegate(this);
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
     public SupportActivity mActivity;
-
-
 
     @Override
     public void onAttach(@NonNull Activity activity) {
@@ -344,102 +358,78 @@ public class SupportFragment extends Fragment implements ISupportFragment {
         mLayoutDelegate.hideLoading();
     }
 
+    /**
+     * 是否支持侧滑返回 true 支持 false 不支持
+     * 不支持的情况下{@link SwipeBackHelper}所有方法无效
+     */
     public boolean onSwipeBackSupport() {
         return AppDelegate.getInstance().isSwipeBackSupport();
     }
 
-    /****************************************以下为可选方法(Optional methods)******************************************************/
-
     /**
      * 隐藏软键盘
      */
-    protected void hideSoftInput() {
+    public void hideSoftInput() {
         mDelegate.hideSoftInput();
     }
 
     /**
      * 显示软键盘,调用该方法后,会在onPause时自动隐藏软键盘
      */
-    protected void showSoftInput(final View view) {
+    public void showSoftInput(final View view) {
         mDelegate.showSoftInput(view);
     }
 
+    //============ Fragment操作方法 ============//
+
     /**
-     * 加载根Fragment, 即Activity内的第一个Fragment 或 Fragment内的第一个子Fragment
-     *
+     * 加载根Fragment, Fragment内的第一个子Fragment
      * @param containerId 容器id
      * @param toFragment  目标Fragment
      */
-    public void loadRootFragment(int containerId, ISupportFragment toFragment) {
+    public void loadRootFragment(int containerId, SupportFragment toFragment) {
         mDelegate.loadRootFragment(containerId, toFragment);
     }
 
-    public void loadRootFragment(int containerId, ISupportFragment toFragment, boolean addToBackStack, boolean allowAnim) {
+    public void loadRootFragment(int containerId, SupportFragment toFragment, boolean addToBackStack, boolean allowAnim) {
         mDelegate.loadRootFragment(containerId, toFragment, addToBackStack, allowAnim);
     }
 
-    /**
-     * 加载多个同级根Fragment,类似Wechat, QQ主页的场景
-     */
-    public void loadMultipleRootFragment(int containerId, int showPosition, ISupportFragment... toFragments) {
-        mDelegate.loadMultipleRootFragment(containerId, showPosition, toFragments);
-    }
-
-    /**
-     * show一个Fragment,hide其他同栈所有Fragment
-     * 使用该方法时，要确保同级栈内无多余的Fragment,(只有通过loadMultipleRootFragment()载入的Fragment)
-     * <p>
-     * 建议使用更明确的{@link #showHideFragment(ISupportFragment, ISupportFragment)}
-     *
-     * @param showFragment 需要show的Fragment
-     */
-    public void showHideFragment(ISupportFragment showFragment) {
-        mDelegate.showHideFragment(showFragment);
-    }
-
-    /**
-     * show一个Fragment,hide一个Fragment ; 主要用于类似微信主页那种 切换tab的情况
-     */
-    public void showHideFragment(ISupportFragment showFragment, ISupportFragment hideFragment) {
-        mDelegate.showHideFragment(showFragment, hideFragment);
-    }
-
-    public void start(ISupportFragment toFragment) {
+    public void start(SupportFragment toFragment) {
         mDelegate.start(toFragment);
     }
 
-    /**
-     * @param launchMode Similar to Activity's LaunchMode.
-     */
-    public void start(final ISupportFragment toFragment, @LaunchMode int launchMode) {
+    public void start(final SupportFragment toFragment, @LaunchMode int launchMode) {
         mDelegate.start(toFragment, launchMode);
     }
 
     /**
-     * Launch an fragment for which you would like a result when it poped.
+     * 类型{@link Activity#startActivityForResult(Intent, int)}
+     * 成功回调{@link SupportFragment#onFragmentResult(int, int, Bundle)}
+     * @param toFragment 目标Fragment
+     * @param requestCode 请求码
      */
-    public void startForResult(ISupportFragment toFragment, int requestCode) {
+    public void startForResult(SupportFragment toFragment, int requestCode) {
         mDelegate.startForResult(toFragment, requestCode);
     }
 
     /**
-     * Start the target Fragment and pop itself
+     * 启动一个Fragment同时销毁自己
      */
-    public void startWithPop(ISupportFragment toFragment) {
+    public void startWithPop(SupportFragment toFragment) {
         mDelegate.startWithPop(toFragment);
     }
 
     /**
      * @see #popTo(Class, boolean)
      * +
-     * @see #start(ISupportFragment)
+     * @see #start(SupportFragment)
      */
-    public void startWithPopTo(ISupportFragment toFragment, Class<?> targetFragmentClass, boolean includeTargetFragment) {
+    public void startWithPopTo(SupportFragment toFragment, Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.startWithPopTo(toFragment, targetFragmentClass, includeTargetFragment);
     }
 
-
-    public void replaceFragment(ISupportFragment toFragment, boolean addToBackStack) {
+    public void replaceFragment(SupportFragment toFragment, boolean addToBackStack) {
         mDelegate.replaceFragment(toFragment, addToBackStack);
     }
 
@@ -448,85 +438,86 @@ public class SupportFragment extends Fragment implements ISupportFragment {
     }
 
     /**
-     * Pop the child fragment.
+     * 出栈子Fragment.
      */
     public void popChild() {
         mDelegate.popChild();
     }
 
     /**
-     * Pop the last fragment transition from the manager's fragment
-     * back stack.
-     * <p>
      * 出栈到目标fragment
-     *
      * @param targetFragmentClass   目标fragment
      * @param includeTargetFragment 是否包含该fragment
      */
-    public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment) {
+    public void popTo(Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment);
     }
 
     /**
-     * If you want to begin another FragmentTransaction immediately after popTo(), use this method.
      * 如果你想在出栈后, 立刻进行FragmentTransaction操作，请使用该方法
      */
-    public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable) {
+    public void popTo(Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment, afterPopTransactionRunnable);
     }
 
-    public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable, int popAnim) {
+    public void popTo(Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable, int popAnim) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment, afterPopTransactionRunnable, popAnim);
     }
 
-    public void popToChild(Class<?> targetFragmentClass, boolean includeTargetFragment) {
+    public void popToChild(Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.popToChild(targetFragmentClass, includeTargetFragment);
     }
 
-    public void popToChild(Class<?> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable) {
+    public void popToChild(Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable) {
         mDelegate.popToChild(targetFragmentClass, includeTargetFragment, afterPopTransactionRunnable);
     }
 
-    public void popToChild(Class<?> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable, int popAnim) {
+    public void popToChild(Class<? extends SupportFragment> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable, int popAnim) {
         mDelegate.popToChild(targetFragmentClass, includeTargetFragment, afterPopTransactionRunnable, popAnim);
     }
 
     /**
      * 得到位于栈顶Fragment
      */
-    public ISupportFragment getTopFragment() {
-        return SupportHelper.getTopFragment(getFragmentManager());
+    public SupportFragment getTopFragment() {
+        if (getFragmentManager() != null) {
+            return (SupportFragment) SupportHelper.getTopFragment(getFragmentManager());
+        }
+        return null;
     }
 
-    public ISupportFragment getTopChildFragment() {
-        return SupportHelper.getTopFragment(getChildFragmentManager());
+    public SupportFragment getTopChildFragment() {
+        return (SupportFragment) SupportHelper.getTopFragment(getChildFragmentManager());
     }
 
     /**
      * @return 位于当前Fragment的前一个Fragment
      */
-    public ISupportFragment getPreFragment() {
-        return SupportHelper.getPreFragment(this);
+    public SupportFragment getPreFragment() {
+        return (SupportFragment) SupportHelper.getPreFragment(this);
     }
 
     /**
      * 获取栈内的fragment对象
      */
-    public <T extends ISupportFragment> T findFragment(Class<T> fragmentClass) {
-        return SupportHelper.findFragment(getFragmentManager(), fragmentClass);
+    public <T extends SupportFragment> T findFragment(Class<T> fragmentClass) {
+        if (getFragmentManager() != null) {
+            return SupportHelper.findFragment(getFragmentManager(), fragmentClass);
+        }
+        return null;
     }
 
     /**
      * 获取栈内的fragment对象
      */
-    public <T extends ISupportFragment> T findChildFragment(Class<T> fragmentClass) {
+    public <T extends SupportFragment> T findChildFragment(Class<T> fragmentClass) {
         return SupportHelper.findFragment(getChildFragmentManager(), fragmentClass);
     }
 
     /**
      * 获取栈内的fragment对象
      */
-    public <T extends ISupportFragment> T findFragmentByTag(String tag) {
+    public <T extends SupportFragment> T findFragmentByTag(String tag) {
         if (getFragmentManager() != null) {
             return SupportHelper.findFragment(getFragmentManager(), tag);
         }

@@ -16,11 +16,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ActionHelper.init(this);
+        //ActionHelper.init(this);
 
-        AppDelegate
-                .getInstance()
-                .init(this)
+        AppDelegate.init(this);
+        AppDelegate.getInstance()
                 .setSwipeBackSupport(true);
 
     }

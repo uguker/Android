@@ -19,6 +19,7 @@ import java.util.Map;
  * @author LeiJue
  */
 public class DefaultTipsAdapter implements TipsHelper.Adapter {
+
     /** Snack变化文本 **/
     private static final String [] SNACK_ANIMATION_TEXTS = {" ", " .", " ..", " ..."};
     /** 文本长度超过25算是长文本，则延长显示时间 **/

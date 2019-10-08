@@ -179,7 +179,7 @@
         <!-- 设置icon是否可见 -->
         <attr name="tl_iconVisible" format="boolean" />
         <!-- 设置icon显示位置,对应Gravity中常量值 -->
-        <attr name="tl_iconGravity" format="enum">
+        <attr name=" " format="enum">
             <enum name="left" value="3" />
             <enum name="top" value="48" />
             <enum name="right" value="5" />

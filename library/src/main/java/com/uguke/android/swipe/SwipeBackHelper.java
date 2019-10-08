@@ -1,13 +1,13 @@
 package com.uguke.android.swipe;
 
+import android.app.Activity;
 import android.view.View;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.annotation.NonNull;
 
 import com.uguke.android.app.SupportFragment;
 
 import java.util.Stack;
-
 
 /**
  * 侧滑返回辅助类
@@ -20,7 +20,7 @@ public class SwipeBackHelper {
     /** Fragment堆 **/
     private static Stack<SwipeBackFragmentPage> mFragmentStack = new Stack<>();
 
-    private static SwipeBackActivityPage findPageByActivity(FragmentActivity activity){
+    private static SwipeBackActivityPage findPageByActivity(Activity activity){
         for (SwipeBackActivityPage page : mActivityStack) {
             if (page.mActivity == activity) {
                 return page;
@@ -38,7 +38,7 @@ public class SwipeBackHelper {
         return null;
     }
 
-    public static void onCreate(FragmentActivity activity) {
+    public static void onCreate(Activity activity) {
         SwipeBackActivityPage page;
         if ((page = findPageByActivity(activity)) == null) {
             page = mActivityStack.push(new SwipeBackActivityPage(activity));
@@ -54,7 +54,7 @@ public class SwipeBackHelper {
         page.onCreate();
     }
 
-    public static void onPostCreate(FragmentActivity activity) {
+    public static void onPostCreate(Activity activity) {
         SwipeBackActivityPage page;
         if ((page = findPageByActivity(activity)) != null) {
             page.attachToActivity();
@@ -83,7 +83,7 @@ public class SwipeBackHelper {
         }
     }
 
-    public static void onDestroy(FragmentActivity activity) {
+    public static void onDestroy(Activity activity) {
         SwipeBackActivityPage page;
         if ((page = findPageByActivity(activity)) != null) {
             mActivityStack.remove(page);
@@ -99,25 +99,31 @@ public class SwipeBackHelper {
         }
     }
 
-    public static SwipeBack getCurrentPage(FragmentActivity activity) {
+    @NonNull
+    public static SwipeBack getCurrentPage(Activity activity) {
         SwipeBackActivityPage page;
         if ((page = findPageByActivity(activity)) != null) {
             int index = mActivityStack.indexOf(page);
-            return index >= 0 ? mActivityStack.get(index) : null;
+            if (index >= 0) {
+                return mActivityStack.get(index);
+            }
         }
-        return null;
+        return new SwipeBackActivityPage(activity);
     }
 
+    @NonNull
     public static SwipeBack getCurrentPage(SupportFragment fragment) {
         SwipeBackFragmentPage page;
         if ((page = findPageByFragment(fragment)) != null) {
             int index = mFragmentStack.indexOf(page);
-            return index >= 0 ? mFragmentStack.get(index) : null;
+            if (index >= 0) {
+                return mFragmentStack.get(index);
+            }
         }
-        return null;
+        return new SwipeBackFragmentPage(fragment);
     }
 
-    static SwipeBackActivityPage getPrePage(FragmentActivity activity) {
+    static SwipeBackActivityPage getPrePage(Activity activity) {
         SwipeBackActivityPage page;
         if ((page = findPageByActivity(activity)) != null) {
             int preIndex = mActivityStack.indexOf(page) - 1;

@@ -1,23 +1,25 @@
 package com.uguke.android.swipe;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.annotation.FloatRange;
 import androidx.fragment.app.FragmentActivity;
 
 /**
  * 回退页
  * @author LeiJue
  */
-public class SwipeBackActivityPage implements SwipeBack<SwipeBackActivityPage> {
+class SwipeBackActivityPage implements SwipeBack<SwipeBackActivityPage> {
 
-    FragmentActivity mActivity;
+    Activity mActivity;
     SwipeBackLayout mSwipeLayout;
 
-    public SwipeBackActivityPage(FragmentActivity activity) {
+    public SwipeBackActivityPage(Activity activity) {
         mActivity = activity;
     }
 
@@ -58,9 +60,9 @@ public class SwipeBackActivityPage implements SwipeBack<SwipeBackActivityPage> {
     }
 
     @Override
-    public SwipeBackActivityPage setSwipeAlpha(float alpha) {
+    public SwipeBackActivityPage setScrimAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
         if (mSwipeLayout != null) {
-            mSwipeLayout.setSwipeAlpha(alpha);
+            mSwipeLayout.setScrimAlpha(alpha);
         }
         return this;
     }
@@ -74,17 +76,17 @@ public class SwipeBackActivityPage implements SwipeBack<SwipeBackActivityPage> {
     }
 
     @Override
-    public SwipeBackActivityPage setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
+    public SwipeBackActivityPage setSwipeEdge(int widthPixel) {
         if (mSwipeLayout != null) {
-            mSwipeLayout.setEdgeLevel(edgeLevel);
+            mSwipeLayout.setSwipeEdge(widthPixel);
         }
         return this;
     }
 
     @Override
-    public SwipeBackActivityPage setEdgeLevel(int widthPixel) {
+    public SwipeBackActivityPage setSwipeEdgePercent(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
         if (mSwipeLayout != null) {
-            mSwipeLayout.setEdgeLevel(widthPixel);
+            mSwipeLayout.setSwipeEdgePercent(percent);
         }
         return this;
     }

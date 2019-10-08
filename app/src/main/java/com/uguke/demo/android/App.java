@@ -18,7 +18,9 @@ public class App extends Application {
         super.onCreate();
         ActionHelper.init(this);
 
-        AppDelegate.getInstance()
+        AppDelegate
+                .getInstance()
+                .init(this)
                 .setSwipeBackSupport(true);
 
     }

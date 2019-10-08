@@ -1,7 +1,7 @@
 package com.uguke.android.swipe;
 
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -78,7 +78,7 @@ public class SwipeBackLayout extends FrameLayout {
     private float mScrimOpacity;
 
     private View mContentView;
-    private FragmentActivity mActivity;
+    private Activity mActivity;
     private SupportFragment mFragment;
     private Fragment mPreFragment;
 
@@ -97,22 +97,12 @@ public class SwipeBackLayout extends FrameLayout {
 
     private int mContentLeft;
     private int mContentTop;
-    private float mSwipeAlpha = 0.5f;
+    private float mScrimAlpha = 0.5f;
 
     /** 监听事件 **/
     private List<OnSwipeListener> mListeners;
 
     private Context mContext;
-
-    /** 边缘等级 **/
-    public enum EdgeLevel {
-        /** 满屏 **/
-        MAX,
-        /** 20dp **/
-        MIN,
-        /** 半屏 **/
-        MED
-    }
 
     public SwipeBackLayout(Context context) {
         this(context, null);
@@ -130,16 +120,21 @@ public class SwipeBackLayout extends FrameLayout {
         setEdgeOrientation(EDGE_LEFT);
     }
 
-    public ViewDragHelper getViewDragHelper() {
-        return mHelper;
+    /**
+     * 滑动中，上一个页面View的遮罩透明度
+     * @param alpha 0.0f:无阴影, 1.0f:较重的阴影, 默认:0.5f
+     */
+    public void setScrimAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
+        mScrimAlpha = Math.abs(alpha) > 1 ? 1 : Math.abs(alpha);
     }
 
     /**
-     * 滑动中，上一个页面View的阴影透明度
-     * @param alpha 0.0f:无阴影, 1.0f:较重的阴影, 默认:0.5f
+     * 滑动中，上一个页面View的遮罩颜色
+     * @param color 颜色
      */
-    public void setSwipeAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
-        mSwipeAlpha = alpha;
+    public void setScrimColor(int color) {
+        mScrimColor = color;
+        invalidate();
     }
 
     /**
@@ -202,8 +197,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     public interface OnSwipeListener {
         /**
-         * Invoke when state change
-         *
+         * 状态变化
          * @param state flag to describe scroll state
          * @see #STATE_IDLE
          * @see #STATE_DRAGGING
@@ -213,28 +207,16 @@ public class SwipeBackLayout extends FrameLayout {
         void onDragStateChange(int state);
 
         /**
-         * Invoke when edge touched
-         *
-         * @param oritentationEdgeFlag edge flag describing the edge being touched
-         * @see #EDGE_LEFT
-         * @see #EDGE_RIGHT
-         */
-        /**
          * 开始滑动
          * @param orientation 边缘方向
          */
         void onEdgeTouch(int orientation);
 
         /**
-         * Invoke when scroll percent over the threshold for the first time
-         *
-         * @param scrollPercent scroll percent of this view
+         * 滑动的百分比距离
+         * @param percent 百分比距离
          */
-        /**
-         * 首次滚动超过关闭百分比时调用
-         * @param percent 关闭百分比
-         */
-        void onScrollToClose(float percent);
+        void onScrollPercent(float percent);
     }
 
     @Override
@@ -265,7 +247,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     private void drawScrim(Canvas canvas, View child) {
         final int baseAlpha = (mScrimColor & 0xff000000) >>> 24;
-        final int alpha = (int) (baseAlpha * mScrimOpacity * mSwipeAlpha);
+        final int alpha = (int) (baseAlpha * mScrimOpacity * mScrimAlpha);
         final int color = alpha << 24 | (mScrimColor & 0xffffff);
 
         if ((mCurrentSwipeOrientation & EDGE_LEFT) != 0) {
@@ -274,11 +256,6 @@ public class SwipeBackLayout extends FrameLayout {
             canvas.clipRect(child.getRight(), 0, getRight(), getHeight());
         }
         canvas.drawColor(color);
-    }
-
-    public void setScrimColor(int color) {
-        mScrimColor = color;
-        invalidate();
     }
 
     @Override
@@ -341,26 +318,30 @@ public class SwipeBackLayout extends FrameLayout {
         }
     }
 
-    public void attachToActivity(FragmentActivity activity) {
-        mActivity = activity;
-        TypedArray a = activity.getTheme().obtainStyledAttributes(new int[]{
-                android.R.attr.windowBackground
-        });
-        int background = a.getResourceId(0, 0);
-        a.recycle();
+    public void attachToActivity(Activity activity) {
+        if (getParent() == null) {
+            mActivity = activity;
+            TypedArray a = activity.getTheme().obtainStyledAttributes(new int[]{
+                    android.R.attr.windowBackground
+            });
+            int background = a.getResourceId(0, 0);
+            a.recycle();
 
-        ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-        ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
-        decorChild.setBackgroundResource(background);
-        decor.removeView(decorChild);
-        addView(decorChild);
-        setContentView(decorChild);
-        decor.addView(this);
+            ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+            ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
+            decorChild.setBackgroundResource(background);
+            decor.removeView(decorChild);
+            addView(decorChild);
+            setContentView(decorChild);
+            decor.addView(this);
+        }
     }
 
     public void attachToFragment(SupportFragment fragment, View view) {
-        addView(view);
-        setFragment(fragment, view);
+        if (view.getParent() == null) {
+            addView(view);
+            setFragment(fragment, view);
+        }
     }
 
     public void internalCallOnDestroyView() {
@@ -371,19 +352,19 @@ public class SwipeBackLayout extends FrameLayout {
         mSwipeBackEnable = enable;
     }
 
-    public void setEdgeLevel(EdgeLevel edgeLevel) {
-        validateEdgeLevel(-1, edgeLevel);
+    public void setSwipeEdge(int widthPixel) {
+        validateEdgeLevel(widthPixel, 0);
     }
 
-    public void setEdgeLevel(int widthPixel) {
-        validateEdgeLevel(widthPixel, null);
+    public void setSwipeEdgePercent(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
+        validateEdgeLevel(-1, percent);
     }
 
     private void setContentView(View view) {
         mContentView = view;
     }
 
-    private void validateEdgeLevel(int widthPixel, EdgeLevel edgeLevel) {
+    private void validateEdgeLevel(int widthPixel, float percent) {
         try {
             DisplayMetrics metrics = new DisplayMetrics();
             WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -393,13 +374,8 @@ public class SwipeBackLayout extends FrameLayout {
             if (widthPixel >= 0) {
                 mEdgeSize.setInt(mHelper, widthPixel);
             } else {
-                if (edgeLevel == EdgeLevel.MAX) {
-                    mEdgeSize.setInt(mHelper, metrics.widthPixels);
-                } else if (edgeLevel == EdgeLevel.MED) {
-                    mEdgeSize.setInt(mHelper, metrics.widthPixels / 2);
-                } else {
-                    mEdgeSize.setInt(mHelper, ((int) (20 * metrics.density + 0.5f)));
-                }
+                float validPercent = Math.abs(percent) > 1 ? 1 : Math.abs(percent);
+                mEdgeSize.setInt(mHelper, (int) (metrics.widthPixels * validPercent));
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -477,7 +453,7 @@ public class SwipeBackLayout extends FrameLayout {
 
             if (mListeners != null && mHelper.getViewDragState() == STATE_DRAGGING && mScrollPercent <= 1 && mScrollPercent > 0) {
                 for (OnSwipeListener listener : mListeners) {
-                    listener.onScrollToClose(mScrollPercent);
+                    listener.onScrollPercent(mScrollPercent);
                 }
             }
 
@@ -505,10 +481,14 @@ public class SwipeBackLayout extends FrameLayout {
             if (mFragment != null) {
                 return 1;
             }
-            if (mActivity instanceof SupportActivity && ((SupportActivity) mActivity).onSwipeBackPriority()) {
-                return 1;
+            if (mActivity instanceof SupportActivity) {
+                if (((SupportActivity) mActivity).onSwipeBackPriority()){
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-            return 0;
+            return 1;
         }
 
         @Override

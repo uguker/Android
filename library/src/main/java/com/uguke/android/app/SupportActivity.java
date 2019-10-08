@@ -57,10 +57,10 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
             @Override
             public void onDestroy() {}
         });
-        onCreating(savedInstanceState);
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onCreate(this);
         }
+        onCreating(savedInstanceState);
     }
 
     @Override
@@ -208,6 +208,10 @@ public class SupportActivity extends AppCompatActivity implements ISupportActivi
         return AppDelegate.getInstance().isSwipeBackSupport();
     }
 
+    /**
+     * 限制SwipeBack的条件,默认栈内Fragment数 <= 1时 , 优先滑动退出Activity , 而不是Fragment
+     * @return true: Activity优先滑动退出;  false: Fragment优先滑动退出
+     */
     public boolean onSwipeBackPriority() {
         return getSupportFragmentManager().getBackStackEntryCount() <= 1;
     }

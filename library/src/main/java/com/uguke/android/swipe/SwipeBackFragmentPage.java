@@ -5,13 +5,15 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.FloatRange;
+
 import com.uguke.android.app.SupportFragment;
 
 /**
  * 回退页
  * @author LeiJue
  */
-public class SwipeBackFragmentPage implements SwipeBack<SwipeBackFragmentPage> {
+class SwipeBackFragmentPage implements SwipeBack<SwipeBackFragmentPage> {
 
     SupportFragment mFragment;
     SwipeBackLayout mSwipeLayout;
@@ -74,9 +76,9 @@ public class SwipeBackFragmentPage implements SwipeBack<SwipeBackFragmentPage> {
     }
 
     @Override
-    public SwipeBackFragmentPage setSwipeAlpha(float alpha) {
+    public SwipeBackFragmentPage setScrimAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
         if (mSwipeLayout != null) {
-            mSwipeLayout.setSwipeAlpha(alpha);
+            mSwipeLayout.setScrimAlpha(alpha);
         }
         return this;
     }
@@ -90,17 +92,17 @@ public class SwipeBackFragmentPage implements SwipeBack<SwipeBackFragmentPage> {
     }
 
     @Override
-    public SwipeBackFragmentPage setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
+    public SwipeBackFragmentPage setSwipeEdge(int widthPixel) {
         if (mSwipeLayout != null) {
-            mSwipeLayout.setEdgeLevel(edgeLevel);
+            mSwipeLayout.setSwipeEdge(widthPixel);
         }
         return this;
     }
 
     @Override
-    public SwipeBackFragmentPage setEdgeLevel(int widthPixel) {
+    public SwipeBackFragmentPage setSwipeEdgePercent(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
         if (mSwipeLayout != null) {
-            mSwipeLayout.setEdgeLevel(widthPixel);
+            mSwipeLayout.setSwipeEdgePercent(percent);
         }
         return this;
     }

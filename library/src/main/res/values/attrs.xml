@@ -57,37 +57,39 @@
 
     <declare-styleable name="CommonToolbar">
         <!-- 内部间隔 -->
-        <attr name="ct_innerSpace" format="dimension" />
+        <attr name="tb_innerSpace" format="dimension" />
         <!-- 水波纹效果 -->
-        <attr name="ct_rippleEffect" format="boolean" />
-        <!-- Material样式 -->
-        <attr name="ct_materialStyle" format="boolean" />
+        <attr name="tb_rippleEnable" format="boolean" />
         <!-- 标题 -->
-        <attr name="ct_title" format="string" />
-        <attr name="ct_titleTextColor" format="color" />
-        <attr name="ct_titleTextSize" format="dimension" />
-        <attr name="ct_titleTextBold" format="boolean" />
-        <attr name="ct_titleSpace" format="dimension" />
+        <attr name="tb_title" format="string" />
+        <attr name="tb_titleTextColor" format="color" />
+        <attr name="tb_titleTextSize" format="dimension" />
+        <attr name="tb_titleTextBold" format="boolean" />
+        <attr name="tb_titleTextGravity" format="enum">
+            <enum name="start" value="8388627" />
+            <enum name="center" value="17" />
+        </attr>
+        <attr name="tb_titleSpace" format="dimension" />
         <!-- 返回 -->
-        <attr name="ct_backIcon" format="reference" />
-        <attr name="ct_backIconEnable" format="boolean" />
-        <attr name="ct_backIconVisible" format="boolean" />
-        <attr name="ct_backText" format="string" />
-        <attr name="ct_backTextColor" format="color" />
-        <attr name="ct_backTextSize" format="dimension" />
-        <attr name="ct_backTextBold" format="boolean" />
-        <attr name="ct_backTextVisible" format="boolean" />
+        <attr name="tb_backIcon" format="reference" />
+        <attr name="tb_backIconEnable" format="boolean" />
+        <attr name="tb_backIconVisible" format="boolean" />
+        <attr name="tb_backText" format="string" />
+        <attr name="tb_backTextColor" format="color" />
+        <attr name="tb_backTextSize" format="dimension" />
+        <attr name="tb_backTextBold" format="boolean" />
+        <attr name="tb_backTextVisible" format="boolean" />
         <!-- 行为文字 -->
-        <attr name="ct_actionText" format="string" />
-        <attr name="ct_actionTextColor" format="color" />
-        <attr name="ct_actionTextSize" format="dimension" />
-        <attr name="ct_actionTextBold" format="boolean" />
-        <attr name="ct_actionTextVisible" format="boolean" />
-        <attr name="ct_actionSpace" format="dimension" />
-        <attr name="ct_dividerColor" format="dimension" />
-        <attr name="ct_dividerHeight" format="dimension" />
-        <attr name="ct_dividerSpace" format="dimension" />
-        <attr name="ct_dividerVisible" format="dimension" />
+        <attr name="tb_actionText" format="string" />
+        <attr name="tb_actionTextColor" format="color" />
+        <attr name="tb_actionTextSize" format="dimension" />
+        <attr name="tb_actionTextBold" format="boolean" />
+        <attr name="tb_actionTextVisible" format="boolean" />
+        <attr name="tb_actionSpace" format="dimension" />
+        <attr name="tb_dividerColor" format="dimension" />
+        <attr name="tb_dividerHeight" format="dimension" />
+        <attr name="tb_dividerSpace" format="dimension" />
+        <attr name="tb_dividerVisible" format="dimension" />
 
     </declare-styleable>
 

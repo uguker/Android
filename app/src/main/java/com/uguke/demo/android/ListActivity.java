@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.uguke.android.app.SupportActivity;
 import com.uguke.android.app.LayoutCreator;
+import com.uguke.android.widget.CommonToolbar;
 
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class ListActivity extends SupportActivity {
 
         start(new SSFragment());
 
-        mToolbar.setMaterialStyle(true);
         mToolbar.setTitle("测试标题");
+                //.setTitleTextGravity(CommonToolbar.CENTER);
 
         post(() -> {
 
@@ -44,6 +45,8 @@ public class ListActivity extends SupportActivity {
             }
 
         });
+
+        Log.e("数据", CommonToolbar.START + "|" + CommonToolbar.CENTER);
 
         startActivity(new Intent(this, MainActivity.class));
 

@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,14 +19,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 
 import com.uguke.android.util.ResUtils;
 import com.uguke.android.util.ViewUtils;
 import com.uguke.android.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * 标题栏
@@ -35,16 +39,25 @@ import com.uguke.android.R;
  */
 public class CommonToolbar extends RelativeLayout {
 
+    public static final int START = GravityCompat.START | android.view.Gravity.CENTER_VERTICAL;
+    public static final int CENTER = android.view.Gravity.CENTER;
+
+    @IntDef({START, CENTER})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Gravity {}
+
     /** 行为间隔 **/
     private float mActionSpace;
     /** 标题间隔 **/
     private float mTitleSpace;
     /** 内部间隔 **/
     private float mInnerSpace;
+    /** 标题文本Gravity **/
+    private int mTitleTextGravity;
     /** 是否是常见模式 **/
     private boolean mMaterialStyle;
     /** 是否开始水波纹 **/
-    private boolean mRippleEffect;
+    private boolean mRippleEnable;
     /** 文本大小 **/
     private float [] mTextSizes;
     /** 文本颜色 **/
@@ -107,7 +120,7 @@ public class CommonToolbar extends RelativeLayout {
      */
     private void initViews() {
         mActionIcons = new SparseArray<>();
-        mRippleEffect = true;
+        mRippleEnable = true;
         mMaterialStyle = false;
         mTextSizes = new float[3];
         mTextColors = new int[3];
@@ -125,7 +138,6 @@ public class CommonToolbar extends RelativeLayout {
         // 添加标题
         mTitle = new AppCompatTextView(mContext);
         mTitle.setId(R.id.android_toolbar_title);
-        mTitle.setGravity(Gravity.CENTER);
         mTitle.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         addView(mTitle);
         // 初始化Back部分
@@ -164,7 +176,7 @@ public class CommonToolbar extends RelativeLayout {
         mBackText = new AppCompatTextView(mContext);
         mBackText.setId(R.id.android_toolbar_back_text);
         mBackText.setLayoutParams(params);
-        mBackText.setGravity(Gravity.CENTER_VERTICAL);
+        mBackText.setGravity(android.view.Gravity.CENTER_VERTICAL);
         mBackText.setFocusable(true);
         mBackText.setClickable(true);
         ViewCompat.setBackground(mBackText, createItemBackground());
@@ -180,7 +192,7 @@ public class CommonToolbar extends RelativeLayout {
         mContainer.setId(R.id.android_toolbar_action_container);
         mContainer.setLayoutParams(params);
         mContainer.setOrientation(LinearLayout.HORIZONTAL);
-        mContainer.setGravity(Gravity.CENTER_VERTICAL);
+        mContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
         mContainer.setPadding(0, 0, ResUtils.toPixel(16), 0);
         addView(mContainer);
         // 添加Action文本
@@ -189,7 +201,7 @@ public class CommonToolbar extends RelativeLayout {
         mActionText.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        mActionText.setGravity(Gravity.CENTER_VERTICAL);
+        mActionText.setGravity(android.view.Gravity.CENTER_VERTICAL);
         mActionText.setFocusable(true);
         mActionText.setClickable(true);
         ViewCompat.setBackground(mActionText, createItemBackground());
@@ -201,41 +213,42 @@ public class CommonToolbar extends RelativeLayout {
         if (attrs != null) {
             TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.CommonToolbar);
             // 返回按钮
-            Drawable backIcon = ta.getDrawable(R.styleable.CommonToolbar_ct_backIcon);
+            Drawable backIcon = ta.getDrawable(R.styleable.CommonToolbar_tb_backIcon);
             // 文本信息
-            String title = ta.getString(R.styleable.CommonToolbar_ct_title);
-            String back = ta.getString(R.styleable.CommonToolbar_ct_backText);
-            String action = ta.getString(R.styleable.CommonToolbar_ct_actionText);
-            boolean titleBold = ta.getBoolean(R.styleable.CommonToolbar_ct_titleTextBold, false);
-            boolean backBold = ta.getBoolean(R.styleable.CommonToolbar_ct_backTextBold, false);
-            boolean actionBold = ta.getBoolean(R.styleable.CommonToolbar_ct_actionTextBold, false);
-            mTextColors[0] = ta.getColor(R.styleable.CommonToolbar_ct_titleTextColor, mTextColors[0]);
-            mTextColors[1] = ta.getColor(R.styleable.CommonToolbar_ct_backTextColor, mTextColors[1]);
-            mTextColors[2] = ta.getColor(R.styleable.CommonToolbar_ct_actionTextColor, mTextColors[2]);
-            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_titleTextSize,
+            String title = ta.getString(R.styleable.CommonToolbar_tb_title);
+            String back = ta.getString(R.styleable.CommonToolbar_tb_backText);
+            String action = ta.getString(R.styleable.CommonToolbar_tb_actionText);
+            boolean titleBold = ta.getBoolean(R.styleable.CommonToolbar_tb_titleTextBold, false);
+            boolean backBold = ta.getBoolean(R.styleable.CommonToolbar_tb_backTextBold, false);
+            boolean actionBold = ta.getBoolean(R.styleable.CommonToolbar_tb_actionTextBold, false);
+            mTextColors[0] = ta.getColor(R.styleable.CommonToolbar_tb_titleTextColor, mTextColors[0]);
+            mTextColors[1] = ta.getColor(R.styleable.CommonToolbar_tb_backTextColor, mTextColors[1]);
+            mTextColors[2] = ta.getColor(R.styleable.CommonToolbar_tb_actionTextColor, mTextColors[2]);
+            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_titleTextSize,
                     ResUtils.toPixel(mTextSizes[0])));
-            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_backTextSize,
+            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_backTextSize,
                     ResUtils.toPixel(mTextSizes[1])));
-            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionTextSize,
+            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionTextSize,
                     ResUtils.toPixel(mTextSizes[2])));
             // 获取间隔信息
-            mInnerSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionSpace,
+            mInnerSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionSpace,
                     ResUtils.getPixel(mContext, R.dimen.content)));
-            mTitleSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionSpace,
+            mTitleSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionSpace,
                     ResUtils.toPixel(mTitleSpace)));
-            mActionSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_actionSpace,
+            mActionSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionSpace,
                     ResUtils.toPixel(mActionSpace)));
-            boolean backIconEnable = ta.getBoolean(R.styleable.CommonToolbar_ct_backIconEnable, true);
-            boolean backIconVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_backIconVisible, false);
-            boolean backTextVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_backTextVisible, false);
-            boolean actionTextVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_actionTextVisible, false);
-            mRippleEffect = ta.getBoolean(R.styleable.CommonToolbar_ct_rippleEffect, true);
-            mMaterialStyle = ta.getBoolean(R.styleable.CommonToolbar_ct_materialStyle, false);
-            boolean dividerVisible = ta.getBoolean(R.styleable.CommonToolbar_ct_dividerVisible, false);
-            int dividerSpace = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_dividerSpace, 0);
-            int dividerHeight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_ct_dividerHeight,
+            mTitleTextGravity = ta.getInt(R.styleable.CommonToolbar_tb_titleTextGravity, CENTER);
+
+            boolean backIconEnable = ta.getBoolean(R.styleable.CommonToolbar_tb_backIconEnable, true);
+            boolean backIconVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_backIconVisible, false);
+            boolean backTextVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_backTextVisible, false);
+            boolean actionTextVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_actionTextVisible, false);
+            mRippleEnable = ta.getBoolean(R.styleable.CommonToolbar_tb_rippleEnable, true);
+            boolean dividerVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_dividerVisible, false);
+            int dividerSpace = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_dividerSpace, 0);
+            int dividerHeight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_dividerHeight,
                     ResUtils.getPixel(mContext, R.dimen.divider));
-            int dividerColor = ta.getColor(R.styleable.CommonToolbar_ct_dividerColor,
+            int dividerColor = ta.getColor(R.styleable.CommonToolbar_tb_dividerColor,
                     ContextCompat.getColor(mContext, R.color.divider));
             ta.recycle();
             // 设置文本信息
@@ -265,8 +278,8 @@ public class CommonToolbar extends RelativeLayout {
         mTitle.setTextColor(mTextColors[0]);
         mBackText.setTextColor(mTextColors[1]);
         mActionText.setTextColor(mTextColors[2]);
-        setMaterialStyle(mMaterialStyle);
-        setRippleEffect(mRippleEffect);
+        setTitleTextGravity(mTitleTextGravity);
+        setRippleEnable(mRippleEnable);
         setActionSpace(mActionSpace);
         refreshToolbar();
     }
@@ -321,6 +334,23 @@ public class CommonToolbar extends RelativeLayout {
         }
     }
 
+    public CommonToolbar setTitleTextGravity(@Gravity int gravity) {
+        // 状态没做变化则不做处理
+        if (mTitle.getGravity() == gravity) {
+            return this;
+        }
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        if (gravity == START) {
+            params.addRule(RelativeLayout.RIGHT_OF, R.id.android_toolbar_back_container);
+            params.addRule(RelativeLayout.LEFT_OF, R.id.android_toolbar_action_container);
+        }
+        mTitle.setLayoutParams(params);
+        mTitle.setGravity(gravity);
+        return this;
+    }
+
     public CommonToolbar setMaterialStyle(boolean materialStyle) {
         // 状态没做变化则不做处理
         if (mMaterialStyle == materialStyle) {
@@ -338,17 +368,17 @@ public class CommonToolbar extends RelativeLayout {
                 ContextCompat.getDrawable(mContext, R.drawable.def_back_material_dark) :
                 ContextCompat.getDrawable(mContext, R.drawable.def_back_common_dark) : mBackDrawable);
         mTitle.setLayoutParams(params);
-        mTitle.setGravity(mMaterialStyle ? Gravity.CENTER_VERTICAL : Gravity.CENTER);
+        mTitle.setGravity(mMaterialStyle ? android.view.Gravity.CENTER_VERTICAL : android.view.Gravity.CENTER);
         return this;
     }
 
-    public CommonToolbar setRippleEffect(boolean rippleEffect) {
+    public CommonToolbar setRippleEnable(boolean rippleEnable) {
         // 状态没做变化则不做处理
-        if (mRippleEffect == rippleEffect) {
+        if (mRippleEnable == rippleEnable) {
             return this;
         }
-        mRippleEffect = rippleEffect;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && rippleEffect) {
+        mRippleEnable = rippleEnable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && rippleEnable) {
             ViewCompat.setBackground(mBackIcon, createItemBackground());
             ViewCompat.setBackground(mBackText, createItemBackground());
             ViewCompat.setBackground(mActionText, createItemBackground());
@@ -558,7 +588,7 @@ public class CommonToolbar extends RelativeLayout {
         view.setLayoutParams(params);
         view.setClickable(true);
         view.setFocusable(true);
-        if (mRippleEffect) {
+        if (mRippleEnable) {
             ViewCompat.setBackground(view, createItemBackground());
         }
         mActionIcons.put(key, view);

@@ -26,6 +26,10 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
+/**
+ * 网络辅助工具
+ * @author LeiJue
+ */
 public final class NetworkUtils {
     protected static final String ERROR_MAC_ADDRESS = "02:00:00:00:00:00";
     private static final String WLAN_STRING = "wlan0";

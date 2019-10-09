@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.uguke.android.app.SupportActivity;
 import com.uguke.android.app.LayoutCreator;
+import com.uguke.android.util.NetworkUtils;
 import com.uguke.android.widget.CommonToolbar;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class ListActivity extends SupportActivity {
 
         });
 
-        Log.e("数据", CommonToolbar.START + "|" + CommonToolbar.CENTER);
+        Log.e("数据", NetworkUtils.is4G(this) + "");
 
         startActivity(new Intent(this, MainActivity.class));
 

@@ -25,7 +25,6 @@ public class AppDelegate {
     private static AppDelegate sInstance;
     private NetworkAdapter mNetworkAdapter;
 
-
     private Stack<Activity> mStack = new Stack<>();
     private Application.ActivityLifecycleCallbacks mCallbacks;
     private ViewHandler<AppBarLayout, CommonToolbar> mToolbarHandler;

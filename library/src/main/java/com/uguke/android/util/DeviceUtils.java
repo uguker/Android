@@ -115,7 +115,7 @@ public final class DeviceUtils {
             return result;
         }
         String buildId = Build.MANUFACTURER + Build.BRAND + Build.MODEL + (SDK_INT >= LOLLIPOP ?
-                        Build.SUPPORTED_ABIS[0] : Build.CPU_ABI) + Build.DEVICE + Build.VERSION.INCREMENTAL;
+                        Build.SUPPORTED_ABIS[0] : Build.SUPPORTED_ABIS) + Build.DEVICE + Build.VERSION.INCREMENTAL;
         String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
         String macAddress = NetworkUtils.getMacAddress(context);
         result = buildId;

@@ -48,7 +48,7 @@ public class RxBus {
         return mProcessor.hasSubscribers();
     }
 
-    public static Bus with(LifecycleProvider provider) {
-        return new Bus(provider);
+    public static <T> Bus<T> with(LifecycleProvider provider) {
+        return new Bus<T>(provider) {};
     }
 }

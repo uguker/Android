@@ -28,13 +28,12 @@ public class TestFragment extends SupportFragment {
         Log.e("数据", "我初始化了");
         TextView tv = findViewById(R.id.text2);
 
-        RxBus.with(this)
-                .setEventCode(1)
-                .onNext(event -> {
-                    Log.e("数据", "我收到了");
-                    tv.setText(event.body.toString());
-                })
-                .create();
+
+//                .onNext(event -> {
+//                    Log.e("数据", "我收到了");
+//                    tv.setText(event.body.toString());
+//                })
+//                .create();
 //        Glide.with(mActivity).load("").into(new ImageView(mActivity));
 //
 //        post(() -> {

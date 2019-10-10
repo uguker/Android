@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
  * 事件对象
  * @author LeiJue
  */
-public class Event<T> {
+public final class Event<T> {
 
     /** 点击事件 **/
     public static final int TAP = 1;

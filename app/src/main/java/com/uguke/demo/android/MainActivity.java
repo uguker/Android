@@ -15,6 +15,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_info);
         RxBus.getInstance().send(1, "车市成功");
+        RxBus.getInstance().send(1, 10);
     }
 
 //    @Override

@@ -8,7 +8,10 @@ import androidx.annotation.Nullable;
 
 import com.uguke.android.app.BaseTabbedFragment;
 import com.uguke.android.app.FragmentTab;
+import com.uguke.android.bus.Event;
 import com.uguke.android.bus.RxBus;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * @author LeiJue
@@ -28,13 +31,20 @@ public class SSFragment extends BaseTabbedFragment {
                 new FragmentTab("她的", TestFragment.class)
         );
 
-        RxBus.with(this)
+        RxBus.<Integer>with(this)
                 .setEventCode(1)
-                .onNext(event -> {
-                    Log.e("数据", "我收到了bb");
-                })
-                .create();
-
+                .subscribe(event -> {
+                    Log.e("数据", "我接到:" + event.body);
+                }, throwable -> {
+                    Log.e("数据", "失败:" + throwable.getMessage());
+                });
+        RxBus.<String>with(this)
+                .setEventCode(1)
+                .subscribe(event -> {
+                    Log.e("数据", "我接到:" + event.body);
+                }, throwable -> {
+                    Log.e("数据", "失败:" + throwable.getMessage());
+                });
         //RxBus.getInstance().send(1, "车市成功");
     }
 

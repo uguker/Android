@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
 
@@ -26,7 +27,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Activity
  * @author LeiJue
  */
-public class SupportActivity extends AppCompatActivity implements ISupportActivity {
+public class SupportActivity extends RxAppCompatActivity implements ISupportActivity {
 
     /** 标题 **/
     public CommonToolbar mToolbar;

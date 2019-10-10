@@ -1,14 +1,10 @@
 package com.uguke.demo.android;
 
 import android.os.Bundle;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import com.uguke.android.swipe.SwipeBackHelper;
-import com.uguke.android.swipe.SwipeBackLayout;
-
+import com.uguke.android.bus.RxBus;
 /**
  * @author LeiJue
  */
@@ -18,27 +14,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_info);
-        SwipeBackHelper.getCurrentPage(this)
-                .setClosePercent(0.6f)
-                .setSwipeEdgePercent(0.9f)
-                .setOffsetPercent(0.5f)
-                .addOnSwipeListener(new SwipeBackLayout.OnSwipeListener() {
-                    @Override
-                    public void onDragStateChange(int state) {
-                        Log.e("数据", "状态");
-                    }
-
-                    @Override
-                    public void onEdgeTouch(int orientation) {
-
-                        Log.e("数据", "触摸");
-                    }
-
-                    @Override
-                    public void onScrollPercent(float percent) {
-                        Log.e("数据", "你离" + percent);
-                    }
-                });
+        RxBus.getInstance().send(1, "车市成功");
     }
 
 //    @Override

@@ -13,9 +13,9 @@ import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.trello.rxlifecycle3.components.support.RxFragment;
 import com.uguke.android.R;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
@@ -33,7 +33,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Fragment
  * @author LeiJue
  */
-public class SupportFragment extends Fragment implements ISupportFragment {
+public class SupportFragment extends RxFragment implements ISupportFragment {
 
     public static final int STANDARD = 0;
     public static final int SINGLE_TOP = 1;

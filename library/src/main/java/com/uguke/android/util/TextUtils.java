@@ -1,7 +1,5 @@
 package com.uguke.android.util;
 
-import com.uguke.android.util.CheckUtils;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;

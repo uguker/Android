@@ -12,11 +12,11 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -302,6 +302,10 @@ public class SwipeBackLayout extends FrameLayout {
                 if (mHelper.getCapturedView() != null) {
                     int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mOffsetPercent * mScrimOpacity);
                     page.getSwipeBackLayout().setX(leftOffset > 0 ? 0 : leftOffset);
+                    // 防止滑动了之后上级Activity不归位
+                    if (mHelper.getCapturedView().getLeft() == 0) {
+                        page.getSwipeBackLayout().setX(0);
+                    }
                 }
             }
         }

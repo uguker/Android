@@ -1,5 +1,7 @@
 package com.uguke.android.bus;
 
+import androidx.annotation.NonNull;
+
 import com.trello.rxlifecycle3.LifecycleProvider;
 
 import io.reactivex.Flowable;
@@ -33,7 +35,7 @@ public class RxBus {
         }
     }
 
-    public void send(int code, Object obj) {
+    public void send(int code, @NonNull Object obj) {
         Event event = new Event<>();
         event.code = code;
         event.body = obj;
@@ -48,7 +50,11 @@ public class RxBus {
         return mProcessor.hasSubscribers();
     }
 
-    public static <T> Bus<T> with(LifecycleProvider provider) {
-        return new Bus<T>(provider) {};
+    public static Bus bind(LifecycleProvider provider) {
+        return new Bus<Object>(provider);
+    }
+
+    public static <T> Bus<T> bind(LifecycleProvider provider, final Class<T> clazz) {
+        return new Bus<>(provider, clazz);
     }
 }

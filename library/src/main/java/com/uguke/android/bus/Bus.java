@@ -1,9 +1,5 @@
 package com.uguke.android.bus;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.trello.rxlifecycle3.LifecycleProvider;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.android.ActivityEvent;
@@ -11,12 +7,8 @@ import com.trello.rxlifecycle3.android.FragmentEvent;
 import com.trello.rxlifecycle3.components.RxActivity;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 import com.trello.rxlifecycle3.components.support.RxFragmentActivity;
-import com.uguke.android.gen.GenClass;
 
 import org.reactivestreams.Publisher;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.Consumer;
@@ -36,13 +28,36 @@ public class Bus<T> {
     /** Activity订阅结束生命周期位置 **/
     private ActivityEvent mActivityEndEvent;
     private int mEventCode;
-    private Class<T> mClass;
+    private Class<?> mClass;
 
-    @SuppressWarnings("unchecked")
     public Bus(LifecycleProvider provider) {
         super();
         mLifecycleProvider = provider;
+    }
 
+    public Bus(LifecycleProvider provider, Class<?> clazz) {
+        super();
+        mLifecycleProvider = provider;
+        // 将基础数据Class转为对应的封装类Class
+        if (byte.class == clazz) {
+            mClass = Byte.class;
+        } else if (short.class == clazz) {
+            mClass = Short.class;
+        } else if (int.class == clazz) {
+            mClass = Integer.class;
+        } else if (long.class == clazz) {
+            mClass = Long.class;
+        }else if (float.class == clazz) {
+            mClass = Float.class;
+        }else if (double.class == clazz) {
+            mClass = Double.class;
+        } else if (char.class == clazz) {
+            mClass = Character.class;
+        } else if (boolean.class == clazz) {
+            mClass = Boolean.class;
+        } else {
+            mClass = clazz;
+        }
     }
 
     public Bus<T> setCode(int code) {
@@ -50,20 +65,10 @@ public class Bus<T> {
         return this;
     }
 
-//    public Bus setClass(Class<?> clazz) {
-//
-//        return this;
-//    }
-
     public Bus<T> setEventCode(int code) {
         mEventCode = code;
         return this;
     }
-
-//    public Bus setEventClass(Class<?> clazz) {
-//        mEventClass = clazz;
-//        return this;
-//    }
 
     public Bus<T> setEndEvent(FragmentEvent event) {
         this.mFragmentEndEvent = event;
@@ -75,22 +80,15 @@ public class Bus<T> {
         return this;
     }
 
-    public void subscribe(Consumer<Event<T>> onNext) {
+    public void subscribe(Consumer<T> onNext) {
         subscribe(onNext, null);
     }
 
     @SuppressWarnings("unchecked")
-    public void subscribe(Consumer<Event<T>> onNext, Consumer<Throwable> onError) {
+    public void  subscribe(Consumer<T> onNext, Consumer<Throwable> onError) {
         if (mLifecycleProvider == null) {
             return;
         }
-
-        //mClass =  (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        ParameterizedType clazz = (ParameterizedType) getClass().getGenericSuperclass();
-        //Log.e("数据", "" + getClass().getName());
-
-        T t = (T) new Object();
-        Log.e("数据", "" + clazz.toString() + "|" + (clazz.getActualTypeArguments()[0]));
 
         LifecycleTransformer<Event<?>> composer;
         if (mLifecycleProvider instanceof RxAppCompatActivity ||
@@ -112,20 +110,27 @@ public class Bus<T> {
                 .toFlowable()
                 // 绑定生命周期
                 .compose(composer)
-                .flatMap(new Function<Event<?>, Publisher<Event<T>>>() {
+                // 过滤不符合条件的事件
+                .filter(new Predicate<Event<?>>() {
                     @Override
-                    public Publisher<Event<T>> apply(Event<?> event) throws Exception {
-                        Log.e("数据", "" + event.getClass().getName());
-                        return Flowable.just((Event<T>)event);
+                    public boolean test(Event<?> e) throws Exception {
+                        if (mClass == null) {
+                            return mEventCode == e.code;
+                        } else {
+                            if (e.body != null) {
+                                return mEventCode == e.code && mClass.isAssignableFrom(e.body.getClass());
+                            }
+                            return true;
+                        }
                     }
                 })
-                .filter(new Predicate<Event<T>>() {
+                // 转换类型
+                .flatMap(new Function<Event<?>, Publisher<T>>() {
                     @Override
-                    public boolean test(Event<T> e) throws Exception {
-                        return mEventCode == e.code;
+                    public Publisher<T> apply(Event<?> event) throws Exception {
+                        return Flowable.just((T) event.body);
                     }
                 })
-                //过滤 根据code判断返回事件
                 .subscribe(onNext, onError == null ? new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {

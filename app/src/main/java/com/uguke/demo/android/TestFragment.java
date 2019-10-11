@@ -25,7 +25,6 @@ public class TestFragment extends SupportFragment {
     public void onCreating(@Nullable Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
         setContentView(R.layout.bottom);
-        Log.e("数据", "我初始化了");
         TextView tv = findViewById(R.id.text2);
 
 

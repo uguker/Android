@@ -60,9 +60,9 @@ public class DefaultTipsAdapter implements TipsHelper.Adapter {
                         }
                     }
                 })
-                .setTextColor(helper.getTextColor())
-                .setActionTextColor(helper.getActionTextColor())
-                .setBackgroundTintList(helper.getBackgroundTintList());
+                //.setTextColor(helper.getTextColor())
+                .setActionTextColor(helper.getActionTextColor());
+                //.setBackgroundTintList(helper.getBackgroundTintList());
 
         TextView text = snackbar.getView().findViewById(R.id.snackbar_text);
         TextView action = snackbar.getView().findViewById(R.id.snackbar_action);

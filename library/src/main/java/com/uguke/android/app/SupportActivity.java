@@ -44,9 +44,6 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
         mLayoutDelegate.onCreate(savedInstanceState);
         mLayoutDelegate.addLifeCallback(new LayoutLifeCallback() {
             @Override
-            public void onCreate() {}
-
-            @Override
             public void onViewCreated(View view) {
                 // 设置布局
                 getDelegate().setContentView(view);
@@ -54,9 +51,6 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
                 mToolbar = mLayoutDelegate.getToolbar();
                 mRefreshLayout = mLayoutDelegate.getRefreshLayout();
             }
-
-            @Override
-            public void onDestroy() {}
         });
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onCreate(this);

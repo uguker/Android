@@ -28,10 +28,6 @@ import java.util.List;
  */
 public class LayoutDelegate {
 
-    private static final int STATE_CREATE = 0;
-    private static final int STATE_CREATED = 1;
-    private static final int STATE_DESTROY = 2;
-
     static final Integer PARENT_VIEW_TAG = Integer.MAX_VALUE - 9999;
     static final String FRAGMENTATION_ARG_CONTAINER = "fragmentation_arg_container";
 
@@ -92,8 +88,6 @@ public class LayoutDelegate {
                         ViewGroup.LayoutParams.MATCH_PARENT));
             }
         }
-        // 通知状态变化
-        notifyStateChanged(STATE_CREATE);
     }
 
     /**
@@ -104,8 +98,6 @@ public class LayoutDelegate {
             // 释放资源
             mTipsHelper.release();
         }
-        // 通知状态变化
-        notifyStateChanged(STATE_DESTROY);
     }
 
     /**
@@ -121,7 +113,7 @@ public class LayoutDelegate {
         // 初始化头部和底部
         initHeaderAndFooter();
         // 通知状态变化
-        notifyStateChanged(STATE_CREATED);
+        notifyStateChanged();
     }
 
     /**
@@ -137,7 +129,7 @@ public class LayoutDelegate {
         // 初始化头部和底部
         initHeaderAndFooter();
         // 通知状态变化
-        notifyStateChanged(STATE_CREATED);
+        notifyStateChanged();
     }
 
     /**
@@ -153,7 +145,7 @@ public class LayoutDelegate {
         // 初始化头部和底部
         initHeaderAndFooter();
         // 通知状态变化
-        notifyStateChanged(STATE_CREATED);
+        notifyStateChanged();
     }
 
     /**
@@ -169,7 +161,7 @@ public class LayoutDelegate {
         // 初始化头部和底部
         initHeaderAndFooter();
         // 通知状态变化
-        notifyStateChanged(STATE_CREATED);
+        notifyStateChanged();
     }
 
     /**
@@ -187,7 +179,7 @@ public class LayoutDelegate {
             mContentView = mInflater.inflate(id, mParentContainer, false);
         }
         // 通知状态变化
-        notifyStateChanged(STATE_CREATED);
+        notifyStateChanged();
     }
 
     /**
@@ -205,7 +197,7 @@ public class LayoutDelegate {
             mContentView = view;
         }
         // 通知状态变化
-        notifyStateChanged(STATE_CREATED);
+        notifyStateChanged();
     }
 
     public void showTips(String tips) {
@@ -323,53 +315,12 @@ public class LayoutDelegate {
     /**
      * 通知状态变化
      */
-    void notifyStateChanged(int state) {
+    void notifyStateChanged() {
         for (LayoutLifeCallback callback : mLifeCallbacks) {
-            if (state == STATE_CREATE) {
-                // 布局创建
-                callback.onCreate();
-            } else if (state == STATE_CREATED) {
-                // 布局创建完成
-                callback.onViewCreated(mContentView);
-            } else if (state == STATE_DESTROY) {
-                // 布局销毁
-                callback.onDestroy();
-            }
+            callback.onViewCreated(mContentView);
         }
     }
-
-//    /**
-//     * 是否支持侧滑回退
-//     */
-//    boolean isSwipeBackSupport() {
-////        if (mFragment == null) {
-////            return mActivity.onSwipeBackSupport();
-////        }
-////        return mFragment.onSwipeBackSupport();
-//        return false;
-//    }
-//
-//    /**
-//     * 创建侧滑返回控件
-//     */
-//    void onCreateSwipeLayout() {
-//        if (isSwipeBackSupport()) {
-//            Window window = mActivity.getWindow();
-//            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//            window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
-//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.MATCH_PARENT);
-//            mSwipeLayout = new SwipeBackLayout(mActivity);
-//            mSwipeLayout.setLayoutParams(params);
-//            if (mFragment == null) {
-//                mSwipeLayout.attachToActivity(mActivity);
-//            } else {
-//                // mSwipeLayout.attachToFragment(mFragment);
-//            }
-//        }
-//    }
-
+    
     public CommonToolbar getToolbar() {
         return mToolbar;
     }

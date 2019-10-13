@@ -9,18 +9,8 @@ import android.view.View;
 public interface LayoutLifeCallback {
 
     /**
-     * 控件创建
-     */
-    void onCreate();
-
-    /**
      * 控件创建完毕
      * @param view 根控件
      */
     void onViewCreated(View view);
-
-    /**
-     * 控件销毁
-     */
-    void onDestroy();
 }

@@ -95,17 +95,11 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
         mLayoutDelegate.onCreate(savedInstanceState);
         mLayoutDelegate.addLifeCallback(new LayoutLifeCallback() {
             @Override
-            public void onCreate() {}
-
-            @Override
             public void onViewCreated(View view) {
                 // 初始化控件
                 mToolbar = mLayoutDelegate.getToolbar();
                 mRefreshLayout = mLayoutDelegate.getRefreshLayout();
             }
-
-            @Override
-            public void onDestroy() {}
         });
         onCreating(savedInstanceState);
         // 获取设置的界面

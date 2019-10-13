@@ -30,15 +30,15 @@ public class SSFragment extends BaseTabbedFragment {
                 new FragmentTab("她的", TestFragment.class)
         );
 
-        RxBus.bind(this, int.class)
-                .setEventCode(1)
+        RxBus.with(this, int.class)
+                .setCode(1)
                 .subscribe(event -> {
                     Log.e("数据", "我接到:" + event);
                 }, throwable -> {
                     Log.e("数据", "失败:" + throwable.getMessage());
                 });
-        RxBus.bind(this, CharSequence.class)
-                .setEventCode(1)
+        RxBus.with(this, CharSequence.class)
+                .setCode(1)
                 .subscribe(event -> {
                     Log.e("数据", "我接到2:" + event);
                 }, throwable -> {

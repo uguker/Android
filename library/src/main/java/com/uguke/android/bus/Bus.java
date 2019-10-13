@@ -30,12 +30,12 @@ public class Bus<T> {
     private int mEventCode;
     private Class<?> mClass;
 
-    public Bus(LifecycleProvider provider) {
+    Bus(LifecycleProvider provider) {
         super();
         mLifecycleProvider = provider;
     }
 
-    public Bus(LifecycleProvider provider, Class<?> clazz) {
+    Bus(LifecycleProvider provider, Class<?> clazz) {
         super();
         mLifecycleProvider = provider;
         // 将基础数据Class转为对应的封装类Class
@@ -61,11 +61,6 @@ public class Bus<T> {
     }
 
     public Bus<T> setCode(int code) {
-        mEventCode = code;
-        return this;
-    }
-
-    public Bus<T> setEventCode(int code) {
         mEventCode = code;
         return this;
     }

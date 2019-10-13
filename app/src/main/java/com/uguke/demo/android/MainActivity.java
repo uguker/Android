@@ -18,8 +18,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_test);
-        RxBus.getInstance().send(1, "车市成功");
-        RxBus.getInstance().send(1, 10);
+
 
         FloatingActionButton btn = findViewById(R.id.btn);
 //        btn.setOnClickListener(v -> {

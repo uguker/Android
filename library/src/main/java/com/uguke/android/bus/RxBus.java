@@ -29,6 +29,14 @@ public class RxBus {
         return Holder.INSTANCE;
     }
 
+    Flowable<Event<?>> toFlowable() {
+        return mProcessor;
+    }
+
+    boolean hasSubscribers() {
+        return mProcessor.hasSubscribers();
+    }
+
     public void send(Event<?> event) {
         if (hasSubscribers()) {
             mProcessor.onNext(event);
@@ -42,19 +50,11 @@ public class RxBus {
         send(event);
     }
 
-    public Flowable<Event<?>> toFlowable() {
-        return mProcessor;
-    }
-
-    public boolean hasSubscribers() {
-        return mProcessor.hasSubscribers();
-    }
-
-    public static Bus bind(LifecycleProvider provider) {
+    public static Bus with(LifecycleProvider provider) {
         return new Bus<Object>(provider);
     }
 
-    public static <T> Bus<T> bind(LifecycleProvider provider, final Class<T> clazz) {
+    public static <T> Bus<T> with(LifecycleProvider provider, final Class<T> clazz) {
         return new Bus<>(provider, clazz);
     }
 }

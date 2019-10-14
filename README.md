@@ -1,6 +1,9 @@
 # AndroidUtils
 Android常用工具封装
+SupportActivity继承于RxAppCompatActivity，实现ISupportActivity接口
 
+
+SupportFragment继承于RxFragment，实现ISupportFragment接口
 
 ## 使用的第三方类库
 
@@ -11,12 +14,9 @@ Android常用工具封装
 * RxAndroid https://github.com/ReactiveX/RxAndroid
 * Rx生命周期管理 https://github.com/trello/RxLifecycle
 
-
-SupportActivity继承于RxAppCompatActivity，实现ISupportActivity接口
-
-
-SupportFragment继承于RxFragment，实现ISupportFragment接口
-
+## 目录
+-[SwipeBackHelper 侧滑返回](#SwipeBackHelper 侧滑返回)<br>
+-[RxBus 事件分发](#RxBus 事件分发)<br>
 
 ## SwipeBackHelper 侧滑返回
 辅助实现侧滑返回

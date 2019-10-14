@@ -250,18 +250,6 @@ public final class BitmapUtils {
 
     }
 
-//    public static Bitmap scale(Bitmap src, int newWidth, int newHeight) {
-//        return scale(src, newWidth, newHeight, false);
-//    }
-//
-//    public static Bitmap scale(Bitmap src, int newWidth, int newHeight, boolean recycle) {
-//        if (isEmptyBitmap(src)) return null;
-//
-//        Bitmap ret = Bitmap.createScaledBitmap(src, newWidth, newHeight, true);
-//        if (recycle && !src.isRecycled()) src.recycle();
-//        return ret;
-//    }
-
     public static Bitmap scale(Bitmap src, float scaleWidth, float scaleHeight) {
         return scale(src, scaleWidth, scaleHeight, false);
     }

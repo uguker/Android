@@ -1,6 +1,5 @@
 package com.uguke.android.util;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -65,7 +64,7 @@ public final class NetworkUtils {
         if (ip == null || ip.length() <= 0) {
             ip = "223.5.5.5";// default ping ip
         }
-        int result = 0;//Shell.execCmd(String.format("ping -c 1 %s", ip), false);
+        int result = 0;
         return result == 0;
     }
 
@@ -104,13 +103,12 @@ public final class NetworkUtils {
         try {
             TelephonyManager tm =
                     (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null)
-                return false;
-            @SuppressLint("PrivateApi")
-            Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
-            if (null != getMobileDataEnabledMethod) {
+            if (tm != null) {
+                @SuppressLint("PrivateApi")
+                Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
                 return (boolean) getMobileDataEnabledMethod.invoke(tm);
             }
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,11 +119,9 @@ public final class NetworkUtils {
     public static void setMobileEnabled(Context context, final boolean enabled) {
         try {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm == null)
-                return;
-            Method setMobileDataEnabledMethod = tm.getClass().getDeclaredMethod(
-                    "setDataEnabled", boolean.class);
-            if (null != setMobileDataEnabledMethod) {
+            if (tm != null) {
+                Method setMobileDataEnabledMethod = tm.getClass().getDeclaredMethod(
+                        "setDataEnabled", boolean.class);
                 setMobileDataEnabledMethod.invoke(tm, enabled);
             }
         } catch (Exception e) {
@@ -135,22 +131,24 @@ public final class NetworkUtils {
 
     @RequiresPermission(Manifest.permission.ACCESS_WIFI_STATE)
     public static boolean isWifiEnabled(Context context) {
-        @SuppressLint("WifiManagerLeak")
+        @SuppressLint("WifiManagerPotentialLeak")
         WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         return manager != null && manager.isWifiEnabled();
     }
 
     @RequiresPermission(Manifest.permission.CHANGE_WIFI_STATE)
     public static void setWifiEnabled(Context context, boolean enabled) {
+        @SuppressLint("WifiManagerPotentialLeak")
         WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if (manager == null) return;
-        if (enabled) {
-            if (!manager.isWifiEnabled()) {
-                manager.setWifiEnabled(true);
-            }
-        } else {
-            if (manager.isWifiEnabled()) {
-                manager.setWifiEnabled(false);
+        if (manager != null) {
+            if (enabled) {
+                if (!manager.isWifiEnabled()) {
+                    manager.setWifiEnabled(true);
+                }
+            } else {
+                if (manager.isWifiEnabled()) {
+                    manager.setWifiEnabled(false);
+                }
             }
         }
     }
@@ -277,83 +275,30 @@ public final class NetworkUtils {
         }
     }
 
-    
-    public static String getMacAddress(Context context) {
-        String macAddress = ERROR_MAC_ADDRESS;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            macAddress = getMacAddressFromDefault(context);
-        }
-        if (!ERROR_MAC_ADDRESS.equals(macAddress)) {
-            return macAddress;
-        } else {
-            return getMacAddressFromHardware();
-        }
-    }
-
-    /**
-     * Android 6.0-Android 7.0 获取mac地址
-     */
-    public static String getMacAddressFromFile() {
-        String macSerial = null;
-        String str = "";
+    @RequiresPermission(Manifest.permission.INTERNET)
+    public static String getWifiMacAddress() {
         try {
-            Process pp = Runtime.getRuntime().exec("cat/sys/class/net/wlan0/address");
-            InputStreamReader ir = new InputStreamReader(pp.getInputStream());
-            LineNumberReader input = new LineNumberReader(ir);
-
-            while (null != str) {
-                str = input.readLine();
-                if (str != null) {
-                    macSerial = str.trim();
-                    break;
-                }
+            Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
+            if (enumeration == null) {
+                return "";
             }
-        } catch (IOException ex) {
-            // 赋予默认值
-            ex.printStackTrace();
-        }
-        return macSerial;
-    }
-
-    @SuppressLint({"HardwareIds", "MissingPermission"})
-    private static String getMacAddressFromDefault(Context context) {
-        try {
-            WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            if (wifi != null) {
-                WifiInfo info = wifi.getConnectionInfo();
-                if (info != null) {
-                    return info.getMacAddress();
-                }
-            }
-            return ERROR_MAC_ADDRESS;
-        } catch (Exception e) {
-            return ERROR_MAC_ADDRESS;
-        }
-    }
-
-    /**
-     * 遍历循环所有的网络接口，找到接口是 wlan0
-     * 必须的权限 <uses-permission android:name="android.permission.INTERNET" />
-     */
-    private static String getMacAddressFromHardware() {
-        try {
-            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
-            for (NetworkInterface nif : all) {
-                if (!WLAN_STRING.equalsIgnoreCase(nif.getName())) {
-                    continue;
-                }
-                byte[] macBytes = nif.getHardwareAddress();
-                if (macBytes != null && macBytes.length > 0) {
-                    StringBuilder sb = new StringBuilder();
-                    for (byte b : macBytes) {
-                        sb.append(String.format("%02x:", b));
+            while (enumeration.hasMoreElements()) {
+                NetworkInterface netInterface = enumeration.nextElement();
+                if (netInterface.getName().equals(WLAN_STRING)) {
+                    byte[] macBytes = netInterface.getHardwareAddress();
+                    if (macBytes != null && macBytes.length > 0) {
+                        StringBuilder sb = new StringBuilder();
+                        for (byte b : macBytes) {
+                            sb.append(String.format("%02x:", b));
+                        }
+                        return sb.substring(0, sb.length() - 1);
                     }
-                    return sb.substring(0, sb.length() - 1);
                 }
             }
-            return ERROR_MAC_ADDRESS;
         } catch (Exception e) {
-            return ERROR_MAC_ADDRESS;
+            e.printStackTrace();
         }
+        return ERROR_MAC_ADDRESS;
     }
+
 }

@@ -15,8 +15,8 @@ SupportFragment继承于RxFragment，实现ISupportFragment接口
 * Rx生命周期管理 https://github.com/trello/RxLifecycle
 
 ## 目录
--[SwipeBackHelper 侧滑返回](#SwipeBackHelper 侧滑返回)<br>
--[RxBus 事件分发](#RxBus 事件分发)<br>
+-[SwipeBackHelper 侧滑返回](##SwipeBackHelper 侧滑返回)<br>
+-[RxBus 事件分发](##RxBus 事件分发)<br>
 
 ## SwipeBackHelper 侧滑返回
 辅助实现侧滑返回

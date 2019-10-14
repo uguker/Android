@@ -1,6 +1,5 @@
-package com.uguke.android.helper.refresh;
+package com.uguke.android.helper;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -70,9 +69,6 @@ public class RefreshHelper<T> {
                 if (mOnRefreshListener != null) {
                     mCurrentPage = mStartPage;
                     mOnRefreshListener.onRefresh(mCurrentPage, mPageSize);
-                    Log.e("数据", "我不为空");
-                } else {
-                    Log.e("数据", "我为空");
                 }
             }
         });
@@ -200,6 +196,29 @@ public class RefreshHelper<T> {
 
     public static void setFinishDelayed(int delayed) {
         sFinishDelayed = delayed;
+    }
+
+    /**
+     * 刷新监听
+     */
+    public interface OnRefreshListener {
+
+        /**
+         * 刷新动作监听
+         * @param page  页码
+         * @param pageSize 页面大小
+         */
+        void onRefresh(int page, int pageSize);
+    }
+
+    /**
+     * 空数据回调
+     */
+    public interface OnEmptyListener {
+        /**
+         * 空数据
+         */
+        void onEmpty();
     }
 
 }

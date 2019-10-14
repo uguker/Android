@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.uguke.android.R;
-import com.uguke.android.helper.refresh.OnRefreshListener;
-import com.uguke.android.helper.refresh.RefreshHelper;
+import com.uguke.android.helper.RefreshHelper;
 
 /**
  * 基础分页界面
@@ -39,7 +38,7 @@ public abstract class BasePageActivity<T> extends SupportActivity {
         }
         // 初始化刷新工具
         mRefreshHelper = new RefreshHelper<>(mLayoutDelegate.getRefreshLayout(), mAdapter);
-        mRefreshHelper.setOnRefreshListener(new OnRefreshListener() {
+        mRefreshHelper.setOnRefreshListener(new RefreshHelper.OnRefreshListener() {
             @Override
             public void onRefresh(int page, int rows) {
                 BasePageActivity.this.onRefresh(mRefreshHelper, page, rows);

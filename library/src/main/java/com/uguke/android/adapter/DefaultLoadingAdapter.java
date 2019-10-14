@@ -21,8 +21,8 @@ public class DefaultLoadingAdapter implements LoadingAdapter {
         mParent = parent;
         mView = view;
 
-        mView.getLayoutParams().width = ResUtils.toPixel(40);
-        mView.getLayoutParams().height = ResUtils.toPixel(40);
+        mView.getLayoutParams().width = ResUtils.toPixel(50);
+        mView.getLayoutParams().height = ResUtils.toPixel(50);
     }
 
     @Override

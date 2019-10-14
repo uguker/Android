@@ -477,7 +477,7 @@ public class DateUtils {
 	}
 
 	public enum Month {
-
+		/** 月份 **/
 		UNKNOWN("Unknown", "未知月", -1),
 		/**
 		 * 一月
@@ -655,7 +655,7 @@ public class DateUtils {
 	}
 
 	public enum Style {
-
+		/** 月日 **/
 		MM_DD("MM-dd"),
 		YYYY_MM("yyyy-MM"),
 		YYYY_MM_DD("yyyy-MM-dd"),

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 
 public class TypeUtils {
 

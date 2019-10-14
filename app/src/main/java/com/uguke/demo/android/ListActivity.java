@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.uguke.android.app.SupportActivity;
+import com.uguke.android.util.DeviceUtils;
+import com.uguke.android.util.NetworkUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +44,14 @@ public class ListActivity extends SupportActivity {
         mToolbar.setTitle("测试标题");
 
         startActivity(new Intent(this, MainActivity.class));
+
+        Log.e("数据","Mac地址：" +  NetworkUtils.getWifiMacAddress());
+        Log.e("数据","AndroidId：" +  DeviceUtils.getAndroidId(this));
+        Log.e("数据","BuildId：" +  DeviceUtils.getBuildId());
+        Log.e("数据","BuildId：" +  DeviceUtils.getModel());
+        Log.e("数据","BuildId：" +  DeviceUtils.getVendor());
+        Log.e("数据","BuildId：" +  NetworkUtils.getDomainAddress("192.168.1.1"));
+
 
 //        Observable.interval(1, TimeUnit.SECONDS)
 //                //.compose(bindToLifecycle())

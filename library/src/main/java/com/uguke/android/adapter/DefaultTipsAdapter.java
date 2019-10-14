@@ -7,8 +7,6 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.uguke.android.R;
 import com.uguke.android.helper.TipsHelper;
-import com.uguke.android.listener.OnDismissListener;
-import com.uguke.android.listener.OnShowListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,12 +35,13 @@ public class DefaultTipsAdapter implements TipsHelper.Adapter {
             // 长文本显示时间不够，所以变更显示时间
             helper.setDuration(TipsHelper.DURATION_LONG);
         }
+
         Snackbar snackbar = Snackbar.make(helper.getView(), helper.getText(), helper.getDuration())
                 .addCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar bar, int event) {
-                        List<OnDismissListener<TipsHelper>> listeners = helper.getOnDismissListeners();
-                        for (OnDismissListener<TipsHelper> listener : listeners) {
+                        List<TipsHelper.OnDismissListener> listeners = helper.getOnDismissListeners();
+                        for (TipsHelper.OnDismissListener listener : listeners) {
                             if (listener != null) {
                                 listener.onDismiss(helper, event);
                             }
@@ -52,17 +51,17 @@ public class DefaultTipsAdapter implements TipsHelper.Adapter {
 
                     @Override
                     public void onShown(Snackbar sb) {
-                        List<OnShowListener<TipsHelper>> listeners = helper.getOnShowListeners();
-                        for (OnShowListener<TipsHelper> listener : listeners) {
+                        List<TipsHelper.OnShowListener> listeners = helper.getOnShowListeners();
+                        for (TipsHelper.OnShowListener listener : listeners) {
                             if (listener != null) {
                                 listener.onShow(helper, null);
                             }
                         }
                     }
                 })
-                //.setTextColor(helper.getTextColor())
-                .setActionTextColor(helper.getActionTextColor());
-                //.setBackgroundTintList(helper.getBackgroundTintList());
+                .setTextColor(helper.getTextColor())
+                .setActionTextColor(helper.getActionTextColor())
+                .setBackgroundTintList(helper.getBackgroundTintList());
 
         TextView text = snackbar.getView().findViewById(R.id.snackbar_text);
         TextView action = snackbar.getView().findViewById(R.id.snackbar_action);

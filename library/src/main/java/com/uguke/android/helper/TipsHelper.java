@@ -8,12 +8,11 @@ import android.os.Message;
 import android.view.View;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.uguke.android.R;
 import com.uguke.android.adapter.DefaultTipsAdapter;
-import com.uguke.android.listener.OnDismissListener;
-import com.uguke.android.listener.OnShowListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,9 +53,9 @@ public class TipsHelper {
     /** Action按钮点击事件 **/
     private View.OnClickListener mOnActionListener;
     /** 取消监听集合 **/
-    private List<OnDismissListener<TipsHelper>> mOnDismissListeners;
+    private List<OnDismissListener> mOnDismissListeners;
     /** 显示监听集合 **/
-    private List<OnShowListener<TipsHelper>> mOnShowListeners;
+    private List<OnShowListener> mOnShowListeners;
 
     /** 用以通知变化 **/
     private Handler mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
@@ -161,16 +160,15 @@ public class TipsHelper {
         return this;
     }
 
-    public TipsHelper addOnDismissListener(OnDismissListener<TipsHelper> listener) {
+    public TipsHelper addOnDismissListener(OnDismissListener listener) {
         mOnDismissListeners.add(listener);
         return this;
     }
 
-    public TipsHelper addOnShowListener(OnShowListener<TipsHelper> listener) {
+    public TipsHelper addOnShowListener(OnShowListener listener) {
         mOnShowListeners.add(listener);
         return this;
     }
-
 
     public void show() {
         if (mAdapter != null) {
@@ -239,11 +237,11 @@ public class TipsHelper {
         return mView;
     }
 
-    public List<OnDismissListener<TipsHelper>> getOnDismissListeners() {
+    public List<OnDismissListener> getOnDismissListeners() {
         return mOnDismissListeners;
     }
 
-    public List<OnShowListener<TipsHelper>> getOnShowListeners() {
+    public List<OnShowListener> getOnShowListeners() {
         return mOnShowListeners;
     }
 
@@ -279,5 +277,29 @@ public class TipsHelper {
          * @param obj show方法返回的对象
          */
         void changed(TipsHelper helper, Object obj);
+    }
+
+    /**
+     * 消除监听事件
+     */
+    public interface OnDismissListener {
+        /**
+         * 消除监听
+         * @param helper 当前对象
+         * @param obj 内部实现显示消息的对象
+         */
+        void onDismiss(TipsHelper helper, @Nullable Object obj);
+    }
+
+    /**
+     * 显示监听
+     */
+    public interface OnShowListener {
+        /**
+         * 显示监听
+         * @param helper 当前对象
+         * @param obj 内部实现显示消息的对象
+         */
+        void onShow(TipsHelper helper, @Nullable Object obj);
     }
 }

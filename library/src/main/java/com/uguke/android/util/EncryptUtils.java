@@ -1,7 +1,5 @@
 package com.uguke.android.util;
 
-import com.uguke.android.util.CheckUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

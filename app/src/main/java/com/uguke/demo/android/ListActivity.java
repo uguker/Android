@@ -51,17 +51,18 @@ public class ListActivity extends SupportActivity {
         Log.e("数据","BuildId：" +  NetworkUtils.getDomainAddress("192.168.1.1"));
 
 
-        OkGo.<String>get("https://www.baidu.com/s?rtt=1&bsst=1&cl=2&tn=news&word=test")
+        OkGo.<String>get("https://m.iqiyi.com/dianshiju/")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         //Log.e("数据", response.body());
 
-                        String xpath= "//*[@id=\"1\"]/h3";
+                        String xpath= "//*[@id=\"app\"]/div[2]/div/div/div[2]/div[3]/section/ul/li[1]/div[2]/div";
                         String doc = response.body();
                         Log.e("数据", doc);
                         JXDocument jxDocument = JXDocument.create(doc);
                         List<Object> rs = jxDocument.sel(xpath);
+                        Log.e("数据", "长度" + rs.size() + "");
                         for (Object o:rs){
                             if (o instanceof Element){
                                 int index = ((Element) o).siblingIndex();

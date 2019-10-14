@@ -7,20 +7,18 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.uguke.android.app.SupportActivity;
 import com.uguke.android.util.DeviceUtils;
 import com.uguke.android.util.NetworkUtils;
 
+import org.jsoup.nodes.Element;
+import org.seimicrawler.xpath.JXDocument;
+
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * @author LeiJue
  */
@@ -51,6 +49,31 @@ public class ListActivity extends SupportActivity {
         Log.e("数据","BuildId：" +  DeviceUtils.getModel());
         Log.e("数据","BuildId：" +  DeviceUtils.getVendor());
         Log.e("数据","BuildId：" +  NetworkUtils.getDomainAddress("192.168.1.1"));
+
+
+        OkGo.<String>get("https://www.baidu.com/s?rtt=1&bsst=1&cl=2&tn=news&word=test")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        //Log.e("数据", response.body());
+
+                        String xpath= "//*[@id=\"1\"]/h3";
+                        String doc = response.body();
+                        Log.e("数据", doc);
+                        JXDocument jxDocument = JXDocument.create(doc);
+                        List<Object> rs = jxDocument.sel(xpath);
+                        for (Object o:rs){
+                            if (o instanceof Element){
+                                int index = ((Element) o).siblingIndex();
+                                System.out.println(index);
+                                Log.e("数据", "百度：" + index);
+                            }
+
+                            Log.e("数据", "百度：" + o.toString());
+                            System.out.println(o.toString());
+                        }
+                    }
+                });
 
 
 //        Observable.interval(1, TimeUnit.SECONDS)

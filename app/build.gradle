@@ -41,5 +41,9 @@ dependencies {
 
     // 图片加载
     implementation 'com.github.bumptech.glide:glide:4.0.0-RC0'
+    api 'com.lzy.net:okgo:3.0.4'
+    api 'com.lzy.net:okrx2:2.0.2'
 
+
+    implementation 'cn.wanghaomiao:JsoupXpath:2.3.2'
 }

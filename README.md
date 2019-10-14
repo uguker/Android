@@ -18,7 +18,7 @@ SupportActivity继承于RxAppCompatActivity，实现ISupportActivity接口
 SupportFragment继承于RxFragment，实现ISupportFragment接口
 
 
-# SwipeBackHelper
+## SwipeBackHelper
 辅助实现侧滑返回
 
 

@@ -4,12 +4,12 @@ Android常用工具封装
 
 ## 使用的第三方类库
 
-1. 上拉下拉刷新 https://github.com/scwang90/SmartRefreshLayout
-2. 万能Adapter https://github.com/CymChad/BaseRecyclerViewAdapterHelper
-3. Fragment管理 https://github.com/YoKeyword/Fragmentation
-4. RxJava https://github.com/ReactiveX/RxJava
-5. RxAndroid https://github.com/ReactiveX/RxAndroid
-6. Rx生命周期管理 https://github.com/trello/RxLifecycle
+* 上拉下拉刷新 https://github.com/scwang90/SmartRefreshLayout
+* 万能Adapter https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+* Fragment管理 https://github.com/YoKeyword/Fragmentation
+* RxJava https://github.com/ReactiveX/RxJava
+* RxAndroid https://github.com/ReactiveX/RxAndroid
+* Rx生命周期管理 https://github.com/trello/RxLifecycle
 
 
 SupportActivity继承于RxAppCompatActivity，实现ISupportActivity接口

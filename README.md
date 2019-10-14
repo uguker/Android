@@ -16,7 +16,7 @@ SupportFragment继承于RxFragment，实现ISupportFragment接口
 
 #RxBus
 发送事件
-~
+```
     // 发送事件
     RxBus.getInstance().send(object);
     // 发送事件
@@ -30,4 +30,4 @@ SupportFragment继承于RxFragment，实现ISupportFragment接口
         .setEndEvent(endEvent)
         // 订阅
         .subscribe(subscribe);
-~
+```

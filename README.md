@@ -1,4 +1,4 @@
-# android
+# AndroidUtils
 Android常用工具封装
 
 
@@ -24,22 +24,22 @@ SupportFragment继承于RxFragment，实现ISupportFragment接口
 
 
 
-# RxBus 事件分发
+## RxBus 事件分发
 
 发送事件
 ```
-    RxBus.getInstance().send(object);
-    RxBus.getInstance().send(code, object);
+RxBus.getInstance().send(object);
+RxBus.getInstance().send(code, object);
 ```
 
 接收事件
 ```
-    // RxLifecycle生命监听接口，只接收指定的class
-    RxBus.with(lifecycleProvider, class)
-        // 只接收指定code事件
-        .setCode(code)
-        // 在生命周期什么阶段结束订阅
-        .setEndEvent(endEvent)
-        // 订阅
-        .subscribe(subscribe);
+// RxLifecycle生命监听接口，只接收指定的class
+RxBus.with(lifecycleProvider, class)
+    // 只接收指定code事件
+    .setCode(code)
+    // 在生命周期什么阶段结束订阅
+    .setEndEvent(endEvent)
+    // 订阅
+    .subscribe(subscribe);
 ```

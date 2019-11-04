@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.uguke.android.widget.TabEntity;
+import com.uguke.android.widget.TabIconEntity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * Fragment tab项
  * @author LeiJue
  */
-public class FragmentTab implements TabEntity {
+public class FragmentTab implements TabIconEntity {
 
     private String mTitle;
     private int mSelectedIcon;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 标题栏 -->
-    <dimen name="toolbar">54dp</dimen>
+    <dimen name="toolbar">48dp</dimen>
     <dimen name="tabbed">50dp</dimen>
 
     <dimen name="loading">30dp</dimen>

@@ -16,7 +16,6 @@ import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,105 +117,6 @@ public class SwipeBackLayout extends FrameLayout {
         mHelper = ViewDragHelper.create(this, new ViewDragCallback());
         setShadow(R.drawable.swipe_shadow_left, EDGE_LEFT);
         setEdgeOrientation(EDGE_LEFT);
-    }
-
-    /**
-     * 滑动中，上一个页面View的遮罩透明度
-     * @param alpha 0.0f:无阴影, 1.0f:较重的阴影, 默认:0.5f
-     */
-    public void setScrimAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
-        mScrimAlpha = Math.abs(alpha) > 1 ? 1 : Math.abs(alpha);
-    }
-
-    /**
-     * 滑动中，上一个页面View的遮罩颜色
-     * @param color 颜色
-     */
-    public void setScrimColor(int color) {
-        mScrimColor = color;
-        invalidate();
-    }
-
-    /**
-     * 关闭百分比, 滚动多少将关闭界面（百分比）
-     * @param percent 关闭百分比（百分比）
-     */
-    public void setClosePercent(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
-        if (percent >= 1 || percent <= 0) {
-            throw new IllegalArgumentException("Percent value should be between 0 and 1.0");
-        }
-        mClosePercent = percent;
-    }
-
-    /**
-     * 设置偏移百分比（百分比）
-     * @param percent 偏移百分比
-     */
-    public void setOffsetPercent(float percent) {
-        mOffsetPercent = percent;
-    }
-
-    public void setEdgeOrientation(@EdgeOrientation int orientation) {
-        mEdgeFlag = orientation;
-        mHelper.setEdgeTrackingEnabled(orientation);
-
-        if (orientation == EDGE_RIGHT || orientation == EDGE_ALL) {
-            setShadow(R.drawable.swipe_shadow_right, EDGE_RIGHT);
-        }
-    }
-
-    public void setShadow(Drawable shadow, @EdgeOrientation int orientation) {
-        // 左边的阴影
-        if ((orientation & EDGE_LEFT) != 0) {
-            mShadowLeft = shadow;
-        }
-        // 右边的阴影
-        if ((orientation & EDGE_RIGHT) != 0) {
-            mShadowRight = shadow;
-        }
-        invalidate();
-    }
-
-    public void setShadow(int resId, @EdgeOrientation int orientation) {
-        setShadow(ContextCompat.getDrawable(mContext, resId), orientation);
-    }
-
-    public void addOnSwipeListener(OnSwipeListener listener) {
-        if (mListeners == null) {
-            mListeners = new ArrayList<>();
-        }
-        mListeners.add(listener);
-    }
-
-    public void removeOnSwipeListener(OnSwipeListener listener) {
-        if (mListeners == null) {
-            return;
-        }
-        mListeners.remove(listener);
-    }
-
-    public interface OnSwipeListener {
-        /**
-         * 状态变化
-         * @param state flag to describe scroll state
-         * @see #STATE_IDLE
-         * @see #STATE_DRAGGING
-         * @see #STATE_SETTLING
-         * @see #STATE_FINISHED
-         */
-        void onDragStateChange(int state);
-
-        /**
-         * 开始滑动
-         * @param orientation 边缘方向
-         */
-        void onEdgeTouch(int orientation);
-
-        /**
-         * 滑动的百分比距离
-         * @param percent 百分比距离
-         */
-        void onScrollPercent(float percent);
     }
 
     @Override
@@ -388,6 +288,104 @@ public class SwipeBackLayout extends FrameLayout {
         }
     }
 
+    /**
+     * 滑动中，上一个页面View的遮罩透明度
+     * @param alpha 0.0f:无阴影, 1.0f:较重的阴影, 默认:0.5f
+     */
+    public void setScrimAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
+        mScrimAlpha = Math.abs(alpha) > 1 ? 1 : Math.abs(alpha);
+    }
+
+    /**
+     * 滑动中，上一个页面View的遮罩颜色
+     * @param color 颜色
+     */
+    public void setScrimColor(int color) {
+        mScrimColor = color;
+        invalidate();
+    }
+
+    /**
+     * 关闭百分比, 滚动多少将关闭界面（百分比）
+     * @param percent 关闭百分比（百分比）
+     */
+    public void setClosePercent(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
+        if (percent >= 1 || percent <= 0) {
+            throw new IllegalArgumentException("Percent value should be between 0 and 1.0");
+        }
+        mClosePercent = percent;
+    }
+
+    /**
+     * 设置偏移百分比（百分比）
+     * @param percent 偏移百分比
+     */
+    public void setOffsetPercent(float percent) {
+        mOffsetPercent = percent;
+    }
+
+    public void setEdgeOrientation(@EdgeOrientation int orientation) {
+        mEdgeFlag = orientation;
+        mHelper.setEdgeTrackingEnabled(orientation);
+
+        if (orientation == EDGE_RIGHT || orientation == EDGE_ALL) {
+            setShadow(R.drawable.swipe_shadow_right, EDGE_RIGHT);
+        }
+    }
+
+    public void setShadow(Drawable shadow, @EdgeOrientation int orientation) {
+        // 左边的阴影
+        if ((orientation & EDGE_LEFT) != 0) {
+            mShadowLeft = shadow;
+        }
+        // 右边的阴影
+        if ((orientation & EDGE_RIGHT) != 0) {
+            mShadowRight = shadow;
+        }
+        invalidate();
+    }
+
+    public void setShadow(int resId, @EdgeOrientation int orientation) {
+        setShadow(ContextCompat.getDrawable(mContext, resId), orientation);
+    }
+
+    public void addOnSwipeListener(OnSwipeListener listener) {
+        if (mListeners == null) {
+            mListeners = new ArrayList<>();
+        }
+        mListeners.add(listener);
+    }
+
+    public void removeOnSwipeListener(OnSwipeListener listener) {
+        if (mListeners == null) {
+            return;
+        }
+        mListeners.remove(listener);
+    }
+
+    public interface OnSwipeListener {
+        /**
+         * 状态变化
+         * @param state flag to describe scroll state
+         * @see #STATE_IDLE
+         * @see #STATE_DRAGGING
+         * @see #STATE_SETTLING
+         * @see #STATE_FINISHED
+         */
+        void onDragStateChange(int state);
+
+        /**
+         * 开始滑动
+         * @param orientation 边缘方向
+         */
+        void onEdgeTouch(int orientation);
+
+        /**
+         * 滑动的百分比距离
+         * @param percent 百分比距离
+         */
+        void onScrollPercent(float percent);
+    }
     private class ViewDragCallback extends ViewDragHelper.Callback {
 
         @Override

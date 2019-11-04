@@ -245,7 +245,7 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
         for (int i = 0; i < mTabCount; i++) {
             tabView = View.inflate(mContext, R.layout.android_widget_layout_tab, null);
             CharSequence pageTitle = mTabEntities.get(i).getTitle();
-            addTab(i, pageTitle.toString(), tabView);
+            addTab(i, String.valueOf(pageTitle), tabView);
         }
 
         updateTabStyles();
@@ -257,16 +257,6 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
             public CharSequence getTitle() {
                 return title;
             }
-
-            @Override
-            public int getSelectedIcon() {
-                return 0;
-            }
-
-            @Override
-            public int getUnselectedIcon() {
-                return 0;
-            }
         });
     }
 
@@ -274,7 +264,7 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
         View tabView = View.inflate(mContext, R.layout.android_widget_layout_tab, null);
         mTabEntities.add(entity);
         CharSequence pageTitle = mTabEntities.get(mTabCount).getTitle();
-        addTab(mTabCount, pageTitle.toString(), tabView);
+        addTab(mTabCount, String.valueOf(pageTitle), tabView);
         mTabCount = mTabEntities.size();
         updateTabStyles();
     }
@@ -290,16 +280,6 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
                 public CharSequence getTitle() {
                     return str;
                 }
-
-                @Override
-                public int getSelectedIcon() {
-                    return 0;
-                }
-
-                @Override
-                public int getUnselectedIcon() {
-                    return 0;
-                }
             });
         }
         return tabEntities;
@@ -309,21 +289,11 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
         List<TabEntity> tabEntities = new ArrayList<>();
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
-            final int finalI = i;
+            final int ii = i;
             tabEntities.add(new TabEntity() {
                 @Override
                 public CharSequence getTitle() {
-                    return adapter.getPageTitle(finalI);
-                }
-
-                @Override
-                public int getSelectedIcon() {
-                    return 0;
-                }
-
-                @Override
-                public int getUnselectedIcon() {
-                    return 0;
+                    return adapter.getPageTitle(ii);
                 }
             });
         }
@@ -346,8 +316,18 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
                     if (mCurrentTab != position) {
                         if (mSnapOnTabClick) {
                             setCurrentTab(position, false);
+                            if (mViewPager == null) {
+                                scrollToCurrentTab();
+                                updateTabSelection(mCurrentTab);
+                                invalidate();
+                            }
                         } else {
                             setCurrentTab(position);
+                            if (mViewPager == null) {
+                                scrollToCurrentTab();
+                                updateTabSelection(mCurrentTab);
+                                invalidate();
+                            }
                         }
                         for (OnTabSelectedListener listener : mListeners) {
                             if (listener != null) {

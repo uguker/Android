@@ -79,6 +79,11 @@ public class RefreshHelper<T> {
         return this;
     }
 
+    public RefreshHelper<T> setPageSize(int pageSize) {
+        mPageSize = pageSize;
+        return this;
+    }
+
     public RefreshHelper<T> setCurrentPage(int page) {
         mCurrentPage = page;
         return this;

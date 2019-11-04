@@ -19,9 +19,12 @@
 
     <!-- Toolbar ID资源 -->
     <item name="android_toolbar_title" type="id" />
+    <item name="android_toolbar_back" type="id" />
     <item name="android_toolbar_back_text" type="id" />
     <item name="android_toolbar_back_icon" type="id" />
+    <item name="android_toolbar_navigation_icon" type="id" />
     <item name="android_toolbar_back_container" type="id" />
+    <item name="android_toolbar_container" type="id" />
     <item name="android_toolbar_action_container" type="id" />
     <item name="android_toolbar_action_text" type="id" />
     <item name="android_toolbar_divider" type="id" />

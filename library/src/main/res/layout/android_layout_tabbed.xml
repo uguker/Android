@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <!-- 标题容器 -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/android_bar"
+    <!-- 头部布局 -->
+    <FrameLayout
+        android:id="@+id/android_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/android_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_above="@id/android_footer"
+        android:layout_below="@id/android_header">
 
-        <FrameLayout
-            android:id="@+id/android_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+    </FrameLayout>
 
-        </FrameLayout>
+    <!-- 底部布局 -->
+    <FrameLayout
+        android:id="@+id/android_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/android_tab">
 
-        <com.uguke.android.widget.CommonTabLayout
-            android:id="@+id/android_tab"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tabbed"
-            android:background="@color/foreground"
-            app:tl_iconHeight="20dp"
-            app:tl_iconWidth="20dp"
-            app:tl_indicator_color="@color/colorAccent"
-            app:tl_indicator_height="0dp"
-            app:tl_indicator_style="normal"
-            app:tl_textSelectedColor="@color/colorAccent"
-            app:tl_textUnselectedColor="@color/hint"
-            app:tl_textSize="12sp"
-            app:tl_iconGravity="bottom"
-            app:tl_underline_color="@color/divider"
-            app:tl_underline_gravity="top"
-            app:tl_underline_height="1dp">
+    </FrameLayout>
 
-        </com.uguke.android.widget.CommonTabLayout>
-    </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.uguke.android.widget.CommonTabLayout
+        android:id="@+id/android_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tabbed"
+        android:layout_alignParentBottom="true"
+        android:background="@color/foreground"
+        app:tl_iconGravity="bottom"
+        app:tl_iconHeight="20dp"
+        app:tl_iconWidth="20dp"
+        app:tl_indicator_color="@color/colorAccent"
+        app:tl_indicator_height="0dp"
+        app:tl_indicator_style="normal"
+        app:tl_textSelectedColor="@color/colorAccent"
+        app:tl_textSize="12sp"
+        app:tl_textUnselectedColor="@color/hint"
+        app:tl_underline_color="@color/divider"
+        app:tl_underline_gravity="top"
+        app:tl_underline_height="1dp">
+
+    </com.uguke.android.widget.CommonTabLayout>
+</RelativeLayout>

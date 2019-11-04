@@ -40,7 +40,7 @@ import java.util.List;
 public class CommonTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener {
 
     private Context mContext;
-    private List<TabEntity> mTabEntities = new ArrayList<>();
+    private List<TabIconEntity> mTabEntities = new ArrayList<>();
     private LinearLayout mTabContainer;
     private int mCurrentTab;
     private int mLastTab;
@@ -197,11 +197,32 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         notifyDataSetChanged();
     }
 
-
     public void setTabData(List<? extends TabEntity> tabEntities) {
         mTabEntities.clear();
         if (tabEntities != null) {
-            mTabEntities.addAll(tabEntities);
+            for (final TabEntity entity : tabEntities) {
+                if (entity instanceof TabIconEntity) {
+                    mTabEntities.add((TabIconEntity) entity);
+                } else {
+                    TabIconEntity te = new TabIconEntity() {
+                        @Override
+                        public int getSelectedIcon() {
+                            return 0;
+                        }
+
+                        @Override
+                        public int getUnselectedIcon() {
+                            return 0;
+                        }
+
+                        @Override
+                        public CharSequence getTitle() {
+                            return entity.getTitle();
+                        }
+                    };
+                    mTabEntities.add(te);
+                }
+            }
         }
         notifyDataSetChanged();
     }
@@ -229,18 +250,13 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         updateTabStyles();
     }
 
-    private List<TabEntity> convertToList(CharSequence [] titles) {
-        List<TabEntity> tabEntities = new ArrayList<>();
+    private List<TabIconEntity> convertToList(CharSequence [] titles) {
+        List<TabIconEntity> tabEntities = new ArrayList<>();
         if (titles == null) {
             return tabEntities;
         }
         for (final CharSequence str : titles) {
-            tabEntities.add(new TabEntity() {
-                @Override
-                public CharSequence getTitle() {
-                    return str;
-                }
-
+            tabEntities.add(new TabIconEntity() {
                 @Override
                 public int getSelectedIcon() {
                     return 0;
@@ -249,6 +265,11 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
                 @Override
                 public int getUnselectedIcon() {
                     return 0;
+                }
+
+                @Override
+                public CharSequence getTitle() {
+                    return str;
                 }
             });
         }
@@ -317,7 +338,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
             ImageView icon = tabView.findViewById(R.id.android_tab_icon);
             if (mIconVisible) {
                 icon.setVisibility(View.VISIBLE);
-                TabEntity tabEntity = mTabEntities.get(i);
+                TabIconEntity tabEntity = mTabEntities.get(i);
                 icon.setImageResource(i == mCurrentTab ? tabEntity.getSelectedIcon() : tabEntity.getUnselectedIcon());
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         mIconWidth <= 0 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int) mIconWidth,
@@ -348,7 +369,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
             TextView title = tabView.findViewById(R.id.android_tab_title);
             title.setTextColor(isSelect ? mTextSelectedColor : mTextUnselectedColor);
             ImageView icon = tabView.findViewById(R.id.android_tab_icon);
-            TabEntity tabEntity = mTabEntities.get(i);
+            TabIconEntity tabEntity = mTabEntities.get(i);
             icon.setImageResource(isSelect ? tabEntity.getSelectedIcon() : tabEntity.getUnselectedIcon());
             if (mTextBold == TEXT_BOLD_WHEN_SELECT) {
                 title.getPaint().setFakeBoldText(isSelect);

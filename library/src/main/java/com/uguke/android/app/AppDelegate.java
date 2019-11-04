@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.adapter.DefaultLoadingAdapter;
+import com.uguke.android.adapter.LifecycleAdapter;
 import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.util.KeyboardUtils;
@@ -32,6 +33,7 @@ public class AppDelegate {
     private ViewHandler<AppBarLayout, CommonToolbar> mToolbarHandler;
     private ViewHandler<RelativeLayout, SmartRefreshLayout> mRefreshHandler;
     private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
+    private LifecycleAdapter mLifecycleAdapter;
     private int mAliveCount = 0;
     private boolean mSwipeBackSupport = false;
 
@@ -84,6 +86,11 @@ public class AppDelegate {
         return this;
     }
 
+    public AppDelegate setLifecycleAdapter(LifecycleAdapter adapter) {
+        mLifecycleAdapter = adapter;
+        return this;
+    }
+
     public AppDelegate setToolbarHandler(ViewHandler<AppBarLayout, CommonToolbar> handler) {
         mToolbarHandler = handler;
         return this;
@@ -105,6 +112,10 @@ public class AppDelegate {
 
     public LoadingAdapter getLoadingAdapter() {
         return mLoadingAdapter;
+    }
+
+    public LifecycleAdapter getLifecycleAdapter() {
+        return mLifecycleAdapter;
     }
 
     public ViewHandler<AppBarLayout, CommonToolbar> getToolbarHandler() {

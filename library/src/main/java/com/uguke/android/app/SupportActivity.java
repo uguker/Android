@@ -3,20 +3,24 @@ package com.uguke.android.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+import com.uguke.android.R;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.SupportActivityDelegate;
@@ -27,14 +31,16 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Activity
  * @author LeiJue
  */
-public class SupportActivity extends RxAppCompatActivity implements ISupportActivity {
+public class SupportActivity extends RxAppCompatActivity implements ViewCreatedCallback, ISupportActivity {
 
+    public View mContentView;
     /** 标题 **/
     public CommonToolbar mToolbar;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
 
-    final LayoutDelegate mLayoutDelegate = new LayoutDelegate(this);
+    final CompositeDisposable mDisposable = new CompositeDisposable();
+    final ViewDelegate mLayoutDelegate = new ViewDelegate(this);
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
 
     @Override
@@ -42,16 +48,7 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
         mLayoutDelegate.onCreate(savedInstanceState);
-        mLayoutDelegate.addLifeCallback(new LayoutLifeCallback() {
-            @Override
-            public void onViewCreated(View view) {
-                // 设置布局
-                getDelegate().setContentView(view);
-                // 初始化控件
-                mToolbar = mLayoutDelegate.getToolbar();
-                mRefreshLayout = mLayoutDelegate.getRefreshLayout();
-            }
-        });
+        mLayoutDelegate.addLifeCallback(this);
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onCreate(this);
         }
@@ -68,7 +65,20 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mLayoutDelegate.onViewVisible();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLayoutDelegate.onViewInvisible();
+    }
+
+    @Override
     protected void onDestroy() {
+        mDisposable.dispose();
         mLayoutDelegate.onDestroy();
         mDelegate.onDestroy();
         if (onSwipeBackSupport()) {
@@ -163,6 +173,18 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
         mLayoutDelegate.setContentView(view);
     }
 
+    @Override
+    public void onViewCreated(View view) {
+        // 设置布局
+        getDelegate().setContentView(view);
+        // 处理头部和底部
+        onHandleCreators(view);
+        mContentView = view;
+        // 初始化控件
+        mToolbar = mLayoutDelegate.getToolbar();
+        mRefreshLayout = mLayoutDelegate.getRefreshLayout();
+    }
+
     public final void setSimpleContentView(@LayoutRes int id) {
         mLayoutDelegate.setSimpleContentView(id);
     }
@@ -179,11 +201,11 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
         mLayoutDelegate.setNativeContentView(view);
     }
 
-    public LayoutCreator onCreateHeader(ViewGroup container) {
+    public ViewCreator onCreateHeader(ViewGroup container) {
         return null;
     }
 
-    public LayoutCreator onCreateFooter(ViewGroup container) {
+    public ViewCreator onCreateFooter(ViewGroup container) {
         return null;
     }
 
@@ -197,6 +219,56 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
 
     public void hideLoading() {
         mLayoutDelegate.hideLoading();
+    }
+
+    public void hideToolbar() {
+        View view = findViewById(R.id.android_bar);
+        if (view != null) {
+            view.setVisibility(View.GONE);
+        } else if (mToolbar != null) {
+            mToolbar.setVisibility(View.GONE);
+        }
+    }
+
+    public void addDisposable(Disposable disposable) {
+        mDisposable.add(disposable);
+    }
+
+    protected void onHandleCreators(View view) {
+        ViewGroup headerParent = view.findViewById(R.id.android_header);
+        ViewGroup footerParent = view.findViewById(R.id.android_footer);
+        ViewCreator headerCreator = onCreateHeader(headerParent);
+        ViewCreator footerCreator = onCreateFooter(footerParent);
+        // 初始化头部
+        if (headerCreator != null) {
+            headerParent.removeAllViews();
+            // 根据额外数据来判定是否浮动
+            Object extras = headerCreator.getExtras();
+            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+            View header = LayoutInflater.from(this).inflate(headerCreator.getLayoutResId(), headerParent, true);
+            header.bringToFront();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (!floating) {
+                params.addRule(RelativeLayout.BELOW, R.id.android_header);
+            }
+            mRefreshLayout.setLayoutParams(params);
+        }
+        // 初始化底部
+        if (footerCreator != null) {
+            // 根据额外数据来判定是否浮动
+            Object extras = footerCreator.getExtras();
+            // 额外数据为空，直接判定为不浮动
+            // 额外数据为布尔类型，false为不浮动
+            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+            View footer = LayoutInflater.from(this).inflate(footerCreator.getLayoutResId(), footerParent, true);
+            footer.bringToFront();
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (!floating) {
+                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
+            }
+            mRefreshLayout.setLayoutParams(params);
+        }
     }
 
     /**
@@ -272,7 +344,6 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
     public void startWithPopTo(SupportFragment toFragment, Class<?> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.startWithPopTo(toFragment, targetFragmentClass, includeTargetFragment);
     }
-
 
     public void replaceFragment(SupportFragment toFragment, boolean addToBackStack) {
         mDelegate.replaceFragment(toFragment, addToBackStack);

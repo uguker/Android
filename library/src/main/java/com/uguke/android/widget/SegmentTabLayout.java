@@ -179,16 +179,6 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
                     public CharSequence getTitle() {
                         return title;
                     }
-
-                    @Override
-                    public int getSelectedIcon() {
-                        return 0;
-                    }
-
-                    @Override
-                    public int getUnselectedIcon() {
-                        return 0;
-                    }
                 });
             }
         }

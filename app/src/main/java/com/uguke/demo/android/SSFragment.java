@@ -1,22 +1,21 @@
 package com.uguke.demo.android;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.BaseTabbedFragment;
 import com.uguke.android.app.FragmentTab;
-import com.uguke.android.bus.Event;
+import com.uguke.android.app.SlidingFragment;
+import com.uguke.android.app.ViewCreator;
 import com.uguke.android.bus.RxBus;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * @author LeiJue
  */
-public class SSFragment extends BaseTabbedFragment {
+public class SSFragment extends SlidingFragment {
 
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
@@ -24,6 +23,10 @@ public class SSFragment extends BaseTabbedFragment {
         //setContentView(R.layout.fragment_info);
         //setBackgroundColor(Color.RED);
         //setSwipeBackEnable(true);
+
+//        SwipeBackHelper.getCurrentPage(this)
+//                .setSwipeEdgePercent(0.1f);
+        //applyToolbar();
 
         loadMultipleFragment(
                 new FragmentTab("我的", TestFragment.class),
@@ -47,7 +50,12 @@ public class SSFragment extends BaseTabbedFragment {
 
     }
 
-//    @OnClick(R.id.tv)
+    @Override
+    public ViewCreator onCreateHeader(ViewGroup container) {
+        return ViewCreator.create(R.layout.bottom, container);
+    }
+
+    //    @OnClick(R.id.tv)
 //    public void onClick() {
 //        Intent intent = new Intent(mActivity, MainActivity.class);
 //        mActivity.startActivity(intent);

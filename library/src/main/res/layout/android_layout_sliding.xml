@@ -15,16 +15,18 @@
         <com.uguke.android.widget.CommonToolbar
             android:id="@+id/android_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar">
-            <!--app:backIcon="@drawable/def_back_common_dark"-->
-            <!--app:backIconVisible="true"-->
-            <!--app:rippleEffect="false">-->
+            android:layout_height="@dimen/toolbar"
+            app:tb_backIcon="@drawable/def_back_common_dark"
+            app:tb_backIconVisible="true"
+            app:tb_rippleEnable="false"
+            app:tb_titleTextGravity="center">
 
         </com.uguke.android.widget.CommonToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/android_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -34,6 +36,7 @@
             android:id="@+id/android_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
+            android:layout_alignParentTop="true"
             android:background="@color/foreground"
             app:tl_indicator_color="@color/colorPrimary"
             app:tl_textSelectedColor="@color/colorPrimary"
@@ -42,14 +45,31 @@
 
         </com.uguke.android.widget.SlidingTabLayout>
 
+        <!-- 头部布局 -->
+        <FrameLayout
+            android:id="@+id/android_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/android_tab">
+
+        </FrameLayout>
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/android_fragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:overScrollMode="never">
 
         </androidx.viewpager.widget.ViewPager>
 
-    </LinearLayout>
+        <!-- 底部布局 -->
+        <FrameLayout
+            android:id="@+id/android_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+        </FrameLayout>
+
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

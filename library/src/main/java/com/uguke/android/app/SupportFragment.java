@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
@@ -23,6 +24,8 @@ import com.uguke.android.widget.CommonToolbar;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragmentDelegate;
@@ -33,7 +36,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Fragment
  * @author LeiJue
  */
-public class SupportFragment extends RxFragment implements ISupportFragment {
+public class SupportFragment extends RxFragment implements ViewCreatedCallback, ISupportFragment {
 
     public static final int STANDARD = 0;
     public static final int SINGLE_TOP = 1;
@@ -46,12 +49,15 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
     @Retention(RetentionPolicy.SOURCE)
     public @interface LaunchMode {}
 
+
+    public View mContentView;
     /** 标题 **/
     public CommonToolbar mToolbar;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
 
-    final LayoutDelegate mLayoutDelegate = new LayoutDelegate(this);
+    final CompositeDisposable mDisposable = new CompositeDisposable();
+    final ViewDelegate mLayoutDelegate = new ViewDelegate(this);
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
     public SupportActivity mActivity;
 
@@ -93,14 +99,7 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
     @Override
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mLayoutDelegate.onCreate(savedInstanceState);
-        mLayoutDelegate.addLifeCallback(new LayoutLifeCallback() {
-            @Override
-            public void onViewCreated(View view) {
-                // 初始化控件
-                mToolbar = mLayoutDelegate.getToolbar();
-                mRefreshLayout = mLayoutDelegate.getRefreshLayout();
-            }
-        });
+        mLayoutDelegate.addLifeCallback(this);
         onCreating(savedInstanceState);
         // 获取设置的界面
         View view = mLayoutDelegate.getContentView();
@@ -132,6 +131,7 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
 
     @Override
     public void onDestroy() {
+        mDisposable.dispose();
         mDelegate.onDestroy();
         super.onDestroy();
     }
@@ -219,6 +219,7 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
     @Override
     public void onSupportVisible() {
         mDelegate.onSupportVisible();
+        mLayoutDelegate.onViewVisible();
     }
 
     /**
@@ -228,6 +229,7 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
     @Override
     public void onSupportInvisible() {
         mDelegate.onSupportInvisible();
+        mLayoutDelegate.onViewInvisible();
     }
 
     @Override
@@ -301,6 +303,16 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
 
     //============ 设置界面方法 ============//
 
+    @Override
+    public void onViewCreated(View view) {
+        // 处理头部和底部
+        onHandleCreators(view);
+        mContentView = view;
+        // 初始化控件
+        mToolbar = mLayoutDelegate.getToolbar();
+        mRefreshLayout = mLayoutDelegate.getRefreshLayout();
+    }
+
     public final void setContentView(@LayoutRes int id) {
         mLayoutDelegate.setContentView(id);
     }
@@ -325,11 +337,11 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
         mLayoutDelegate.setNativeContentView(view);
     }
 
-    public LayoutCreator onCreateHeader(ViewGroup container) {
+    public ViewCreator onCreateHeader(ViewGroup container) {
         return null;
     }
 
-    public LayoutCreator onCreateFooter(ViewGroup container) {
+    public ViewCreator onCreateFooter(ViewGroup container) {
         return null;
     }
 
@@ -350,6 +362,47 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
 
     public void hideLoading() {
         mLayoutDelegate.hideLoading();
+    }
+
+    public void addDisposable(Disposable disposable) {
+        mDisposable.add(disposable);
+    }
+
+    protected void onHandleCreators(View view) {
+        ViewGroup headerParent = view.findViewById(R.id.android_header);
+        ViewGroup footerParent = view.findViewById(R.id.android_footer);
+        ViewCreator headerCreator = onCreateHeader(headerParent);
+        ViewCreator footerCreator = onCreateFooter(footerParent);
+        // 初始化头部
+        if (headerCreator != null) {
+            headerParent.removeAllViews();
+            // 根据额外数据来判定是否浮动
+            Object extras = headerCreator.getExtras();
+            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+            View header = LayoutInflater.from(mActivity).inflate(headerCreator.getLayoutResId(), headerParent, true);
+            header.bringToFront();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (!floating) {
+                params.addRule(RelativeLayout.BELOW, R.id.android_header);
+            }
+            mRefreshLayout.setLayoutParams(params);
+        }
+        // 初始化底部
+        if (footerCreator != null) {
+            // 根据额外数据来判定是否浮动
+            Object extras = footerCreator.getExtras();
+            // 额外数据为空，直接判定为不浮动
+            // 额外数据为布尔类型，false为不浮动
+            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+            View footer = LayoutInflater.from(mActivity).inflate(footerCreator.getLayoutResId(), footerParent, true);
+            footer.bringToFront();
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (!floating) {
+                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
+            }
+            mRefreshLayout.setLayoutParams(params);
+        }
     }
 
     /**
@@ -523,5 +576,14 @@ public class SupportFragment extends RxFragment implements ISupportFragment {
      */
     public <T extends ISupportFragment> T findChildFragmentByTag(String tag) {
         return SupportHelper.findFragment(getChildFragmentManager(), tag);
+    }
+
+    public void hideToolbar() {
+        View view = findViewById(R.id.android_bar);
+        if (view != null) {
+            view.setVisibility(View.GONE);
+        } else if (mToolbar != null) {
+            mToolbar.setVisibility(View.GONE);
+        }
     }
 }

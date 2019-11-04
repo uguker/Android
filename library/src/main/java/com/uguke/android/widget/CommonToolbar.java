@@ -1,12 +1,10 @@
 package com.uguke.android.widget;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -21,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
@@ -33,6 +32,13 @@ import com.uguke.android.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 标题栏
@@ -63,10 +69,7 @@ public class CommonToolbar extends RelativeLayout {
     private float [] mTextSizes;
     /** 文本颜色 **/
     private int [] mTextColors;
-    /** 自定义图标 **/
-    private Drawable mBackDrawable;
     private Context mContext;
-
     /** 标题 **/
     private TextView mTitle;
     /** 返回文本 **/
@@ -74,13 +77,18 @@ public class CommonToolbar extends RelativeLayout {
     /** 行为文本 **/
     private TextView mActionText;
     /** 返回图标 **/
-    //private ImageView mBackIcon;
+    private ImageView mBackIcon;
     /** 图标容器 **/
     private LinearLayout mContainer;
     /** 分割线 **/
     private View mDivider;
     /** 图标列表 **/
     private SparseArray<ImageView> mActionIcons;
+
+    //private SparseArray<View> mActionViews;
+
+    private LinkedHashMap<Integer, View> mActionViews;
+
 
     /** 点击事件监听 **/
     private View.OnClickListener mBackListener;
@@ -99,21 +107,21 @@ public class CommonToolbar extends RelativeLayout {
         super(context);
         mContext = context;
         initViews();
-        initAttrs(null);
+        obtainAttributes(null);
     }
 
     public CommonToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initViews();
-        initAttrs(attrs);
+        obtainAttributes(attrs);
     }
 
     public CommonToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         initViews();
-        initAttrs(attrs);
+        obtainAttributes(attrs);
     }
 
     /**
@@ -121,6 +129,7 @@ public class CommonToolbar extends RelativeLayout {
      */
     private void initViews() {
         mActionIcons = new SparseArray<>();
+        mActionViews = new LinkedHashMap<>();
         mRippleEnable = true;
         mMaterialStyle = false;
         mTextSizes = new float[3];
@@ -138,87 +147,21 @@ public class CommonToolbar extends RelativeLayout {
         mActionSpace = ResUtils.getDip(mContext, R.dimen.smaller);
         LayoutInflater.from(getContext()).inflate(R.layout.android_widget_layout_toolbar, this, true);
         mTitle = findViewById(R.id.android_toolbar_title);
-        mBackText = findViewById(R.id.android_toolbar_back);
+        mBackIcon = findViewById(R.id.android_toolbar_back_icon);
+        mBackText = findViewById(R.id.android_toolbar_back_text);
         mActionText = findViewById(R.id.android_toolbar_action_text);
         mDivider = findViewById(R.id.android_toolbar_divider);
         mContainer = findViewById(R.id.android_toolbar_action_container);
-
-
-//        // 添加标题
-//        mTitle = new AppCompatTextView(mContext);
-//        mTitle.setId(R.id.android_toolbar_title);
-//        mTitle.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-//        addView(mTitle);
-//        // 初始化Back部分
-//        initBack();
-//        // 初始化Action部分
-//        initAction();
-//        // 添加分割线
-//        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-//                mContext.getResources().getDimensionPixelOffset(R.dimen.divider));
-//        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//        mDivider = new View(mContext);
-//        mDivider.setLayoutParams(params);
-//        mDivider.setBackgroundResource(R.color.divider);
-//        addView(mDivider);
-    }
-
-    private void initBack() {
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        // 添加Back容器
-        RelativeLayout layout = new RelativeLayout(mContext);
-        layout.setId(R.id.android_toolbar_back_container);
-        layout.setLayoutParams(params);
-        addView(layout);
-        // 添加返回图标
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-//        mBackIcon = new AppCompatImageView(mContext);
-//        mBackIcon.setId(R.id.android_toolbar_back_icon);
-//        mBackIcon.setLayoutParams(params);
-//        mBackIcon.setFocusable(true);
-//        mBackIcon.setClickable(true);
-//        ViewCompat.setBackground(mBackIcon, createItemBackground());
-//        layout.addView(mBackIcon);
-        // 添加返回文本
-        params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        params.addRule(RIGHT_OF, R.id.android_toolbar_back_icon);
-        mBackText = new AppCompatTextView(mContext);
-        mBackText.setId(R.id.android_toolbar_back_text);
-        mBackText.setLayoutParams(params);
-        mBackText.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        mBackIcon.setFocusable(true);
+        mBackIcon.setClickable(true);
+        ViewCompat.setBackground(mBackIcon, createItemBackground());
         mBackText.setFocusable(true);
         mBackText.setClickable(true);
         ViewCompat.setBackground(mBackText, createItemBackground());
-        layout.addView(mBackText);
+
     }
 
-    private void initAction() {
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        // 添加Action容器
-        mContainer = new LinearLayout(mContext);
-        mContainer.setClipChildren(false);
-        mContainer.setId(R.id.android_toolbar_action_container);
-        mContainer.setLayoutParams(params);
-        mContainer.setOrientation(LinearLayout.HORIZONTAL);
-        mContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        mContainer.setPadding(0, 0, ResUtils.toPixel(16), 0);
-        addView(mContainer);
-        // 添加Action文本
-        mActionText = new AppCompatTextView(mContext);
-        mActionText.setId(R.id.android_toolbar_back_text);
-        mActionText.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        mActionText.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        mActionText.setFocusable(true);
-        mActionText.setClickable(true);
-        ViewCompat.setBackground(mActionText, createItemBackground());
-        mContainer.addView(mActionText);
-    }
-
-    @SuppressLint("CustomViewStyleable")
-    private void initAttrs(AttributeSet attrs) {
+    private void obtainAttributes(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.CommonToolbar);
             // 返回按钮
@@ -269,9 +212,9 @@ public class CommonToolbar extends RelativeLayout {
             ViewUtils.setTextBold(mBackText, backBold);
             ViewUtils.setTextBold(mActionText, actionBold);
             // 设置图像
-//            mBackIcon.setImageDrawable(backIcon);
-//            mBackIcon.setVisibility(backIconVisible ? View.VISIBLE : View.GONE);
-//            mBackIcon.setOnClickListener(backIconEnable ? mFinishListener : mBackListener);
+            mBackIcon.setImageDrawable(backIcon);
+            mBackIcon.setVisibility(backIconVisible ? View.VISIBLE : View.GONE);
+            mBackIcon.setOnClickListener(backIconEnable ? mFinishListener : mBackListener);
             mBackText.setVisibility(backTextVisible ? VISIBLE : GONE);
             mActionText.setVisibility(actionTextVisible ? VISIBLE : GONE);
             mDivider.setVisibility(dividerVisible ? VISIBLE : GONE);
@@ -302,7 +245,7 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     private void refreshToolbar() {
-        boolean iconGone = false;// mBackIcon.getVisibility() == GONE;
+        boolean iconGone = mBackIcon.getVisibility() == GONE;
         boolean textGone = mBackText.getVisibility() == GONE;
         MarginLayoutParams params = (MarginLayoutParams) mTitle.getLayoutParams();
         if (iconGone && textGone) {
@@ -313,9 +256,9 @@ public class CommonToolbar extends RelativeLayout {
             params.leftMargin = 0;
         } else if (!iconGone && textGone) {
             // 文字显示图标不显示
-//            mBackIcon.setPadding(
-//                    ResUtils.toPixel(mInnerSpace), 0,
-//                    ResUtils.toPixel(mInnerSpace), 0);
+            mBackIcon.setPadding(
+                    ResUtils.toPixel(mInnerSpace), 0,
+                    ResUtils.toPixel(mInnerSpace), 0);
             mTitle.setPadding(0, 0, 0, 0);
             int space = ResUtils.toPixel(mTitleSpace) -
                     ResUtils.toPixel(mInnerSpace);
@@ -331,9 +274,9 @@ public class CommonToolbar extends RelativeLayout {
             params.leftMargin = mMaterialStyle ? space : 0;
         } else {
             // 都显示
-//            mBackIcon.setPadding(
-//                    ResUtils.toPixel(mInnerSpace), 0,
-//                    ResUtils.toPixel(mInnerSpace), 0);
+            mBackIcon.setPadding(
+                    ResUtils.toPixel(mInnerSpace), 0,
+                    ResUtils.toPixel(mInnerSpace), 0);
             mBackText.setPadding(0, 0, 0, 0);
             // 设置mTitle间隔
             params.leftMargin = mMaterialStyle ? ResUtils.toPixel(mTitleSpace) : 0;
@@ -344,44 +287,38 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setTitleTextGravity(@Gravity int gravity) {
-        // 状态没做变化则不做处理
-        if (mTitle.getGravity() == gravity) {
-            return this;
+        if (mTitle.getGravity() != gravity) {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+            if (gravity == START) {
+                params.addRule(RelativeLayout.RIGHT_OF, R.id.android_toolbar_back_container);
+                params.addRule(RelativeLayout.LEFT_OF, R.id.android_toolbar_action_container);
+            }
+            mTitle.setLayoutParams(params);
+            mTitle.setGravity(gravity);
         }
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        if (gravity == START) {
-            params.addRule(RelativeLayout.RIGHT_OF, R.id.android_toolbar_back_container);
-            params.addRule(RelativeLayout.LEFT_OF, R.id.android_toolbar_action_container);
-        }
-        mTitle.setLayoutParams(params);
-        mTitle.setGravity(gravity);
         return this;
     }
 
     public CommonToolbar setRippleEnable(boolean rippleEnable) {
-        // 状态没做变化则不做处理
-        if (mRippleEnable == rippleEnable) {
-            return this;
-        }
-        mRippleEnable = rippleEnable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && rippleEnable) {
-            //ViewCompat.setBackground(mBackIcon, createItemBackground());
-            ViewCompat.setBackground(mBackText, createItemBackground());
-            ViewCompat.setBackground(mActionText, createItemBackground());
-            for (int i = 0; i < mActionIcons.size(); i ++) {
-                ImageView view = mActionIcons.valueAt(i);
-                ViewCompat.setBackground(view, createItemBackground());
-            }
+        if (mRippleEnable != rippleEnable) {
+            mRippleEnable = rippleEnable;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && rippleEnable) {
+                ViewCompat.setBackground(mBackIcon, createItemBackground());
+                ViewCompat.setBackground(mBackText, createItemBackground());
+                ViewCompat.setBackground(mActionText, createItemBackground());
+                for (int i = 0; i < mActionIcons.size(); i ++) {
+                    ImageView view = mActionIcons.valueAt(i);
+                    ViewCompat.setBackground(view, createItemBackground());
+                }
 
-        } else {
-            //ViewCompat.setBackground(mBackIcon, null);
-            ViewCompat.setBackground(mBackText, null);
-            ViewCompat.setBackground(mActionText, null);
-            for (int i = 0; i < mActionIcons.size(); i ++) {
-                ImageView view = mActionIcons.valueAt(i);
-                ViewCompat.setBackground(view, null);
+            } else {
+                ViewCompat.setBackground(mBackIcon, null);
+                ViewCompat.setBackground(mBackText, null);
+                ViewCompat.setBackground(mActionText, null);
+                for (int i = 0; i < mActionIcons.size(); i ++) {
+                    ImageView view = mActionIcons.valueAt(i);
+                    ViewCompat.setBackground(view, null);
+                }
             }
         }
         return this;
@@ -392,10 +329,6 @@ public class CommonToolbar extends RelativeLayout {
         refreshToolbar();
         return this;
     }
-
-    /////////////////////////
-    // 标题部分
-    /////////////////////////
 
     public CommonToolbar setTitle(CharSequence title) {
         mTitle.setText(title);
@@ -429,55 +362,56 @@ public class CommonToolbar extends RelativeLayout {
         return this;
     }
 
-    /////////////////////////
-    // Back部分
-    /////////////////////////
-
     public CommonToolbar setBackIcon(@DrawableRes int resId) {
-        mBackDrawable = ContextCompat.getDrawable(mContext, resId);
-//        mBackIcon.setImageResource(resId);
+        mBackIcon.setImageResource(resId);
         return this;
     }
 
     public CommonToolbar setBackIcon(Drawable drawable) {
-        mBackDrawable = drawable;
-//        mBackIcon.setImageDrawable(drawable);
+        mBackIcon.setImageDrawable(drawable);
         return this;
     }
 
     public CommonToolbar setBackIcon(Bitmap bitmap) {
-        mBackDrawable = new BitmapDrawable(getResources(), bitmap);
-//        mBackIcon.setImageBitmap(bitmap);
+        mBackIcon.setImageBitmap(bitmap);
         return this;
     }
 
     public CommonToolbar setBackIconVisible(boolean visible) {
         // 状态未变动
-//        if ((mBackIcon.getVisibility() == VISIBLE) == visible) {
-//            return this;
-//        }
-//        mBackIcon.setVisibility(visible ? VISIBLE : GONE);
-//        refreshToolbar();
+        if ((mBackIcon.getVisibility() == VISIBLE) == visible) {
+            return this;
+        }
+        mBackIcon.setVisibility(visible ? VISIBLE : GONE);
+        refreshToolbar();
         return this;
     }
 
     public CommonToolbar setBackIconEnable(boolean enable) {
-//        mBackIcon.setOnClickListener(enable ? mFinishListener : mBackListener);
-//        mBackIcon.setTag(enable);
+        mBackIcon.setOnClickListener(enable ? mFinishListener : mBackListener);
+        mBackIcon.setTag(enable);
+        return this;
+    }
+
+    public CommonToolbar setBackListener(View.OnClickListener listener) {
+        mBackListener = listener;
+        mBackText.setOnClickListener(listener);
+        Boolean enable = (Boolean) mBackIcon.getTag();
+        setBackIconEnable(enable == null ? true : enable);
         return this;
     }
 
     public CommonToolbar setBackIconListener(View.OnClickListener listener) {
         mBackListener = listener;
-//        Boolean enable = (Boolean) mBackIcon.getTag();
-//        setBackIconEnable(enable == null ? true : enable);
+        Boolean enable = (Boolean) mBackIcon.getTag();
+        setBackIconEnable(enable == null ? true : enable);
         return this;
     }
 
     public CommonToolbar setFinishListener(View.OnClickListener listener) {
         mFinishListener = listener;
-//        Boolean enable = (Boolean) mBackIcon.getTag();
-//        setBackIconEnable(enable == null ? true : enable);
+        Boolean enable = (Boolean) mBackIcon.getTag();
+        setBackIconEnable(enable == null ? true : enable);
         return this;
     }
 
@@ -486,7 +420,7 @@ public class CommonToolbar extends RelativeLayout {
         return this;
     }
 
-    public CommonToolbar setBackText(int id) {
+    public CommonToolbar setBackText(@StringRes int id) {
         mBackText.setText(id);
         return this;
     }
@@ -502,29 +436,29 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setBackTextBold(boolean bold) {
-        mBackText.setTypeface(Typeface.defaultFromStyle(bold ?
-                Typeface.BOLD : Typeface.NORMAL));
+        mBackText.setTypeface(Typeface.defaultFromStyle(bold ? Typeface.BOLD : Typeface.NORMAL));
         return this;
     }
 
-    public CommonToolbar setBackTextVisible(boolean visible) {
-        // 状态未变动
-        if ((mBackText.getVisibility() == VISIBLE) == visible) {
-            return this;
+    public CommonToolbar setActionText(int key, CharSequence text) {
+        View view = mActionViews.get(key);
+        if (view != null) {
+            mContainer.removeView(view);
         }
-        mBackText.setVisibility(visible ? VISIBLE : GONE);
-        refreshToolbar();
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-2, -2);
+        TextView tv = new AppCompatTextView(mContext);
+        tv.setText(text);
+        tv.setLayoutParams(params);
+        tv.setClickable(true);
+        tv.setFocusable(true);
+        if (mRippleEnable) {
+            ViewCompat.setBackground(tv, createItemBackground());
+        }
+        mActionViews.put(key, tv);
+        mContainer.addView(view, 0);
+        setActionSpace(mActionSpace);
         return this;
     }
-
-    public CommonToolbar setBackTextListener(View.OnClickListener listener) {
-        mBackText.setOnClickListener(listener);
-        return this;
-    }
-
-    /////////////////////////
-    // Action部分
-    /////////////////////////
 
     public CommonToolbar setActionText(CharSequence text) {
         mActionText.setText(text);
@@ -568,24 +502,70 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar addActionIcon(int key, @DrawableRes int resId) {
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        ImageView view = new AppCompatImageView(mContext);
-        view.setImageResource(resId);
-        view.setLayoutParams(params);
-        view.setClickable(true);
-        view.setFocusable(true);
-        if (mRippleEnable) {
-            ViewCompat.setBackground(view, createItemBackground());
+
+        // 如果对应key有控件
+        View view = mActionViews.get(key);
+        if (view != null) {
+            //int index = mActionViews.
+            mActionViews.remove(key);
+            //mContainer.addView(iv, index);
+            mContainer.removeView(view);
         }
-        mActionIcons.put(key, view);
-        mContainer.addView(view, 0);
+
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-2, -1);
+        ImageView iv = new AppCompatImageView(mContext);
+        iv.setImageResource(resId);
+        iv.setLayoutParams(params);
+        iv.setClickable(true);
+        iv.setFocusable(true);
+        if (mRippleEnable) {
+            ViewCompat.setBackground(iv, createItemBackground());
+        }
+        mActionViews.put(key, iv);
+        List<Map.Entry<Integer, View>> list = new ArrayList<>(mActionViews.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Integer, View>>() {
+            @Override
+            public int compare(Map.Entry<Integer, View> o1, Map.Entry<Integer, View> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+
+        int index = 0;
+        mActionViews.clear();
+        for (int i = 0; i < list.size(); i++) {
+            Map.Entry<Integer, View> entry = list.get(i);
+           if (key == entry.getKey()) {
+               index = 0;
+           }
+           mActionViews.put(entry.getKey(), entry.getValue());
+        }
+        mContainer.addView(iv, index);
+
+//        // 如果对应key有控件
+//        View view = mActionViews.get(key);
+//        if (view != null) {
+//            //int index = mActionViews.
+//            mActionViews.remove(key);
+//            mContainer.addView(iv, index);
+//            mContainer.removeView(view);
+//        } else {
+//            int count = mActionViews.size();
+//            int index = 0;
+//            if (count == 1) {
+//                index = mActionViews.keyAt(0) > key ? 0 : 1;
+//            } else if (count > 1) {
+//
+//            }
+//
+//            mActionViews.append();
+//            mActionViews.setValueAt(key, iv);
+//            mContainer.addView(iv, 0);
+//        }
         setActionSpace(mActionSpace);
         return this;
     }
 
-    public CommonToolbar setActionIconVisble(int key, boolean visible) {
+    public CommonToolbar setActionIconVisible(int key, boolean visible) {
         ImageView view = mActionIcons.get(key);
         if (view != null) {
             // 状态未变动
@@ -624,10 +604,6 @@ public class CommonToolbar extends RelativeLayout {
         return this;
     }
 
-    /////////////////////////
-    // 分割线部分
-    /////////////////////////
-
     public CommonToolbar setDividerColor(int color) {
         mDivider.setBackgroundColor(color);
         return this;
@@ -638,17 +614,15 @@ public class CommonToolbar extends RelativeLayout {
         return this;
     }
 
-    public CommonToolbar setDividerSpace(float space) {
-        ViewUtils.setMargins(mDivider, space, 0, space, 0);
+    public CommonToolbar setDividerMargin(float left, float right) {
+        ViewUtils.setMargins(mDivider, left, 0, right, 0);
         return this;
     }
 
     public CommonToolbar setDividerVisible(boolean visible) {
-        // 状态未改变
-        if ((mDivider.getVisibility() == VISIBLE) == visible) {
-            return this;
+        if ((mDivider.getVisibility() == VISIBLE) != visible) {
+            mDivider.setVisibility(visible ? VISIBLE : GONE);
         }
-        mDivider.setVisibility(visible ? VISIBLE : GONE);
         return this;
     }
 

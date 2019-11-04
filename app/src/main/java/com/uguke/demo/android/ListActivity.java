@@ -27,7 +27,6 @@ public class ListActivity extends SupportActivity {
         tv = findViewById(R.id.tv);
         loadRootFragment(R.id.content, new TestFragment());
 
-
         start(new SSFragment());
 
 //        mToolbar.setTitle("测试标题");

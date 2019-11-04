@@ -28,6 +28,15 @@ public class SSFragment extends SlidingFragment {
 //                .setSwipeEdgePercent(0.1f);
         //applyToolbar();
 
+        mToolbar.setRippleEnable(true)
+                .setBackIcon(R.drawable.def_back_material_dark)
+                .setActionIconVisible(0, true)
+                .addActionIcon(0, R.drawable.ic_empty)
+                .setBackText("返回")
+                .setBackIconVisible(true)
+                //.setActionText("6666")
+                .setActionTextVisible(true);
+
         loadMultipleFragment(
                 new FragmentTab("我的", TestFragment.class),
                 new FragmentTab("她的", TestFragment.class)

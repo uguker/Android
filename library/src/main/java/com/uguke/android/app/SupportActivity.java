@@ -181,8 +181,16 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
         onHandleCreators(view);
         mContentView = view;
         // 初始化控件
-        mToolbar = mLayoutDelegate.getToolbar();
         mRefreshLayout = mLayoutDelegate.getRefreshLayout();
+        mToolbar = mLayoutDelegate.getToolbar();
+        if (mToolbar != null) {
+            mToolbar.setBackListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
     }
 
     public final void setSimpleContentView(@LayoutRes int id) {

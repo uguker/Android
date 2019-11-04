@@ -7,7 +7,7 @@
     tools:ignore="RelativeOverlap, UseCompoundDrawables">
 
     <LinearLayout
-        android:id="@id/android_toolbar_container"
+        android:id="@id/android_toolbar_back_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -30,15 +30,6 @@
             android:textColor="@color/text"
             android:textSize="@dimen/h3" />
 
-        <ImageView
-            android:id="@id/android_toolbar_navigation_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:paddingLeft="@dimen/content"
-            android:paddingRight="@dimen/content"
-            android:scaleType="centerInside" />
-
     </LinearLayout>
 
     <TextView
@@ -46,7 +37,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="7777777777" />
+        android:textColor="@color/text"
+        android:textSize="@dimen/h1"
+        android:maxLines="1"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@id/android_toolbar_action_text"
@@ -59,6 +53,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/content"
+        android:paddingRight="@dimen/content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

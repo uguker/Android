@@ -1,6 +1,7 @@
 package com.uguke.demo.android;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.uguke.android.app.FragmentTab;
 import com.uguke.android.app.SlidingFragment;
 import com.uguke.android.app.ViewCreator;
 import com.uguke.android.bus.RxBus;
+import com.uguke.android.widget.CommonToolbar;
 
 /**
  * @author LeiJue
@@ -31,9 +33,17 @@ public class SSFragment extends SlidingFragment {
         mToolbar.setRippleEnable(true)
                 .setBackIcon(R.drawable.def_back_material_dark)
                 .setActionIconVisible(0, true)
-                .addActionIcon(0, R.drawable.ic_empty)
+                .setActionIcon(1, R.drawable.ic_empty)
+                .setActionText(0, "你好")
+                .setActionTextBold(true)
+                .setActionTextColor(Color.WHITE)
+                .setActionTextSize(18)
                 .setBackText("返回")
                 .setBackIconVisible(true)
+                .setBackTextVisible(true)
+                .setTitle("你好啊")
+                .setTitleMargin(16)
+                .setTitleTextGravity(CommonToolbar.START)
                 //.setActionText("6666")
                 .setActionTextVisible(true);
 

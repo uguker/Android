@@ -69,9 +69,9 @@ public class LoadingLayout extends RelativeLayout {
     public LoadingLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        mLoadingResId = R.layout._loading_layout_loading;
-        mErrorResId = R.layout._loading_layout_error;
-        mEmptyResId = R.layout._loading_layout_empty;
+        mLoadingResId = R.layout.android_widget_layout_loading_;
+        mErrorResId = R.layout.android_widget_layout_loading_error;
+        mEmptyResId = R.layout.android_widget_layout_loading_empty;
 
         mTextSize = getResources().getDimensionPixelSize(R.dimen.body);
         mButtonTextSize = getResources().getDimensionPixelSize(R.dimen.body);
@@ -107,13 +107,13 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initErrorLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(mErrorResId, this, true);
-        ImageView iv = layout.findViewById(R.id.error_image);
+        ImageView iv = layout.findViewById(R.id.android_loading_error_img);
         iv.setImageResource(mErrorImage);
-        TextView tv = layout.findViewById(R.id.error_text);
+        TextView tv = layout.findViewById(R.id.android_loading_error_text);
         tv.setText(mErrorText);
         tv.setTextColor(mTextColor);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-        TextView retry = layout.findViewById(R.id.retry_button);
+        TextView retry = layout.findViewById(R.id.android_loading_error_retry);
         retry.setText(mRetryText);
         retry.setTextColor(mButtonTextColor);
         retry.setTextSize(TypedValue.COMPLEX_UNIT_PX, mButtonTextSize);
@@ -124,11 +124,11 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initEmptyLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(mEmptyResId, this, true);
-        ImageView iv = layout.findViewById(R.id.empty_image);
+        ImageView iv = layout.findViewById(R.id.android_loading_empty_img);
         iv.setImageResource(mEmptyImage);
         ViewGroup.MarginLayoutParams params = (MarginLayoutParams) iv.getLayoutParams();
         params.bottomMargin = mEmptyMargin;
-        TextView tv = layout.findViewById(R.id.empty_text);
+        TextView tv = layout.findViewById(R.id.android_loading_empty_text);
         tv.setText(mEmptyText);
         tv.setTextColor(mTextColor);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
@@ -167,31 +167,31 @@ public class LoadingLayout extends RelativeLayout {
 
     public LoadingLayout setEmptyImage(@DrawableRes int resId) {
         mEmptyImage = resId;
-        setImage(mEmptyResId, R.id.empty_image, mEmptyImage);
+        setImage(mEmptyResId, R.id.android_loading_empty_img, mEmptyImage);
         return this;
     }
 
     public LoadingLayout setEmptyText(CharSequence text) {
         mEmptyText = text;
-        setText(mEmptyResId, R.id.empty_text, mEmptyText);
+        setText(mEmptyResId, R.id.android_loading_empty_text, mEmptyText);
         return this;
     }
 
     public LoadingLayout setErrorImage(@DrawableRes int resId) {
         mErrorImage = resId;
-        setImage(mErrorResId, R.id.error_image, mErrorImage);
+        setImage(mErrorResId, R.id.android_loading_error_img, mErrorImage);
         return this;
     }
 
     public LoadingLayout setErrorText(String text) {
         mErrorText = text;
-        setText(mErrorResId, R.id.error_text, mErrorText);
+        setText(mErrorResId, R.id.android_loading_empty_text, mErrorText);
         return this;
     }
 
     public LoadingLayout setRetryText(String text) {
         mRetryText = text;
-        setText(mErrorResId, R.id.retry_button, mRetryText);
+        setText(mErrorResId, R.id.android_loading_error_retry, mRetryText);
         return this;
     }
 

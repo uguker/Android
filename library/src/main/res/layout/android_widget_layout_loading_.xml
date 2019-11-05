@@ -9,16 +9,19 @@
     android:paddingBottom="30dp">
 
     <ProgressBar
+        android:id="@id/android_loading_loading_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:progress="80" />
 
     <TextView
+        android:id="@id/android_loading_loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="加载中..."
         android:textColor="#999999"
         android:textSize="16sp" />
+    
 </LinearLayout>

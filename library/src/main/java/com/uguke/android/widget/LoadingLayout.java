@@ -1,6 +1,7 @@
 package com.uguke.android.widget;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
 import com.uguke.android.R;
@@ -56,6 +58,10 @@ public class LoadingLayout extends RelativeLayout {
     private int mErrorMargin;
     private int mLoadingMargin;
 
+    private int mLoadingColor;
+    private int mLoadingSize;
+    private boolean mLoadingVertical;
+
     private SparseArray<View> mLayouts = new SparseArray<>();
 
     public LoadingLayout(Context context) {
@@ -78,6 +84,7 @@ public class LoadingLayout extends RelativeLayout {
         mEmptyMargin = getResources().getDimensionPixelSize(R.dimen.content);
         mErrorMargin = getResources().getDimensionPixelSize(R.dimen.content);
         mLoadingMargin = getResources().getDimensionPixelSize(R.dimen.content);
+        mLoadingSize = toPixel(40);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LoadingLayout, defStyleAttr, R.style.LoadingLayoutStyle);
         mEmptyImage = a.getResourceId(R.styleable.LoadingLayout_llEmptyImage, R.drawable.ic_empty);
@@ -93,9 +100,13 @@ public class LoadingLayout extends RelativeLayout {
         mTextColor = a.getColor(R.styleable.LoadingLayout_llTextColor, 0xff999999);
         mTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llTextSize, mTextSize);
 
+        mLoadingColor = a.getColor(R.styleable.LoadingLayout_llLoadingColor, ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        mLoadingSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llLoadingSize, mLoadingSize);
+
         mButtonTextColor = a.getColor(R.styleable.LoadingLayout_llRetryTextColor, 0xff999999);
         mButtonTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llRetryTextSize, mButtonTextSize);
         mButtonBackground = a.getDrawable(R.styleable.LoadingLayout_llRetryBackground);
+
 
         a.recycle();
     }
@@ -259,4 +270,10 @@ public class LoadingLayout extends RelativeLayout {
             }
         }
     }
+
+    private int toPixel(float dip) {
+        float density = Resources.getSystem().getDisplayMetrics().density;
+        return (int) Math.ceil(dip * density);
+    }
+
 }

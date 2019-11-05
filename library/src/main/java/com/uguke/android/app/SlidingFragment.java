@@ -34,9 +34,18 @@ public class SlidingFragment extends SupportFragment {
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
         }
-        mToolbar = findViewById(R.id.android_toolbar);
         mViewPager = findViewById(R.id.android_fragment);
         mTabLayout = findViewById(R.id.android_tab);
+        mToolbar = findViewById(R.id.android_toolbar);
+        // 点击回退事件
+        if (mToolbar != null) {
+            mToolbar.setBackListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pop();
+                }
+            });
+        }
     }
 
     @Override

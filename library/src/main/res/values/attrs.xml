@@ -6,11 +6,6 @@
             <enum name="number" value="1" />
             <enum name="password" value="2" />
         </attr>
-        <!--<attr name="inputStyle" format="enum">-->
-        <!--<enum name="default" value="0"/>-->
-        <!--<enum name="center" value="1"/>-->
-        <!--</attr>-->
-
         <attr name="inputCenter" format="boolean" />
         <attr name="inputPadding" format="dimension" />
         <attr name="inputIcon" format="reference" />
@@ -49,40 +44,39 @@
     </declare-styleable>
 
     <declare-styleable name="CommonToolbar">
-        <!-- 内部间隔 -->
-        <attr name="tb_innerSpace" format="dimension" />
+        <attr name="tbPaddingLeft" format="dimension" />
+        <attr name="tbPaddingRight" format="dimension" />
         <!-- 水波纹效果 -->
-        <attr name="tb_rippleEnable" format="boolean" />
+        <attr name="tbRippleEnable" format="boolean" />
         <!-- 标题 -->
-        <attr name="tb_title" format="string" />
-        <attr name="tb_titleTextColor" format="color" />
-        <attr name="tb_titleTextSize" format="dimension" />
-        <attr name="tb_titleTextBold" format="boolean" />
-        <attr name="tb_titleTextGravity" format="enum">
+        <attr name="tbTitle" format="string" />
+        <attr name="tbTitleTextColor" format="color" />
+        <attr name="tbTitleTextSize" format="dimension" />
+        <attr name="tbTitleTextBold" format="boolean" />
+        <attr name="tbTitleTextGravity" format="enum">
             <enum name="start" value="8388627" />
             <enum name="center" value="17" />
         </attr>
-        <attr name="tb_titleMargin" format="dimension" />
+        <attr name="tbTitleMargin" format="dimension" />
         <!-- 返回 -->
-        <attr name="tb_backIcon" format="reference" />
-        <attr name="tb_backIconVisible" format="boolean" />
-        <attr name="tb_backText" format="string" />
-        <attr name="tb_backTextColor" format="color" />
-        <attr name="tb_backTextSize" format="dimension" />
-        <attr name="tb_backTextBold" format="boolean" />
-        <attr name="tb_backTextVisible" format="boolean" />
-        <attr name="tb_backMargin" format="dimension" />
+        <attr name="tbBackIcon" format="reference" />
+        <attr name="tbBackIconVisible" format="boolean" />
+        <attr name="tbBackText" format="string" />
+        <attr name="tbBackTextColor" format="color" />
+        <attr name="tbBackTextSize" format="dimension" />
+        <attr name="tbBackTextBold" format="boolean" />
+        <attr name="tbBackTextVisible" format="boolean" />
+        <attr name="tbBackMargin" format="dimension" />
         <!-- 行为文字 -->
-        <attr name="tb_actionTextColor" format="color" />
-        <attr name="tb_actionTextSize" format="dimension" />
-        <attr name="tb_actionTextBold" format="boolean" />
-        <attr name="tb_actionIconWidth" format="dimension"/>
-        <attr name="tb_actionMargin" format="dimension" />
-        <attr name="tb_dividerColor" format="dimension" />
-        <attr name="tb_dividerHeight" format="dimension" />
-        <attr name="tb_dividerMargin" format="dimension" />
-        <attr name="tb_dividerVisible" format="dimension" />
-
+        <attr name="tbActionTextColor" format="color" />
+        <attr name="tbActionTextSize" format="dimension" />
+        <attr name="tbActionTextBold" format="boolean" />
+        <attr name="tbActionIconWidth" format="dimension" />
+        <attr name="tbActionMargin" format="dimension" />
+        <attr name="tbDividerColor" format="dimension" />
+        <attr name="tbDividerHeight" format="dimension" />
+        <attr name="tbDividerMargin" format="dimension" />
+        <attr name="tbDividerVisible" format="dimension" />
     </declare-styleable>
 
     <attr name="dividerColor" format="dimension" />

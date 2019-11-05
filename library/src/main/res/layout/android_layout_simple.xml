@@ -15,10 +15,11 @@
         <com.uguke.android.widget.CommonToolbar
             android:id="@+id/android_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar">
-            <!--app:backIcon="@drawable/def_back_common_dark"-->
-            <!--app:backIconVisible="true"-->
-            <!--app:rippleEffect="false">-->
+            android:layout_height="@dimen/toolbar"
+            app:tbBackIcon="@drawable/def_back_common_dark"
+            app:tbBackIconVisible="true"
+            app:tbRippleEnable="false"
+            app:tbTitleTextGravity="center">
 
         </com.uguke.android.widget.CommonToolbar>
 

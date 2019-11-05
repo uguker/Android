@@ -43,23 +43,21 @@ import java.util.Map;
  */
 public class CommonToolbar extends RelativeLayout {
 
-    public static final int START = GravityCompat.START | android.view.Gravity.CENTER_VERTICAL;
+    public static final int LEFT = GravityCompat.START | android.view.Gravity.CENTER_VERTICAL;
     public static final int CENTER = android.view.Gravity.CENTER;
 
-    @IntDef({START, CENTER})
+    @IntDef({LEFT, CENTER})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Gravity {}
 
-
     private int mPaddingLeft;
-
     private int mPaddingRight;
     /** 行为间隔 **/
-    private float mActionMargin;
+    private int mActionMargin;
     /** 标题间隔 **/
-    private float mTitleMargin;
+    private int mTitleMargin;
     /** 内部间隔 **/
-    private float mInnerSpace;
+    private int mBackMargin;
     /** 标题文本Gravity **/
     private int mTitleTextGravity;
     /** 是否开始水波纹 **/
@@ -85,8 +83,6 @@ public class CommonToolbar extends RelativeLayout {
     private View mDivider;
     /** Action控件 **/
     private LinkedHashMap<Integer, View> mActionViews;
-    /** 点击事件监听 **/
-    private View.OnClickListener mBackListener;
 
     public CommonToolbar(Context context) {
         super(context);
@@ -113,6 +109,14 @@ public class CommonToolbar extends RelativeLayout {
     public void setPadding(int left, int top, int right, int bottom) {
         mPaddingLeft = left;
         mPaddingRight = right;
+        // 设置间隔
+        mContainer.setPadding(mTitleMargin - mActionMargin / 2, 0, mPaddingRight - mActionMargin / 2 , 0);
+        refreshToolbar();
+    }
+
+    public CommonToolbar setPadding(float left, float right) {
+        setPadding(ResUtils.toPixel(left), 0, ResUtils.toPixel(right), 0);
+        return this;
     }
 
     @Deprecated
@@ -138,65 +142,63 @@ public class CommonToolbar extends RelativeLayout {
         mTextColors[0] = ContextCompat.getColor(mContext, R.color.text);
         mTextColors[1] = ContextCompat.getColor(mContext, R.color.text);
         mTextColors[2] = ContextCompat.getColor(mContext, R.color.text);
-
+        // 左右间距
         mPaddingLeft = ResUtils.getPixel(mContext, R.dimen.content);
         mPaddingRight = ResUtils.getPixel(mContext, R.dimen.content);
         // 间隔
-        mTitleMargin = ResUtils.getDip(mContext, R.dimen.small);
-        mActionMargin = ResUtils.getDip(mContext, R.dimen.smaller);
+        mBackMargin = ResUtils.getPixel(mContext, R.dimen.content);
+        mTitleMargin = ResUtils.getPixel(mContext, R.dimen.content);
+        mActionMargin = ResUtils.getPixel(mContext, R.dimen.small);
+        // 设置布局
         LayoutInflater.from(getContext()).inflate(R.layout.android_widget_layout_toolbar, this, true);
+        // 获取控件
         mTitle = findViewById(R.id.android_toolbar_title);
         mBackIcon = findViewById(R.id.android_toolbar_back_icon);
         mBackText = findViewById(R.id.android_toolbar_back_text);
         mActionText = findViewById(R.id.android_toolbar_action_text);
         mDivider = findViewById(R.id.android_toolbar_divider);
         mContainer = findViewById(R.id.android_toolbar_action_container);
-        mBackIcon.setFocusable(true);
-        mBackIcon.setClickable(true);
+        // 设置背景
         ViewCompat.setBackground(mBackIcon, createItemBackground());
-        mBackText.setFocusable(true);
-        mBackText.setClickable(true);
         ViewCompat.setBackground(mBackText, createItemBackground());
-
     }
 
     private void obtainAttributes(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.CommonToolbar);
             // 返回按钮
-            Drawable backIcon = ta.getDrawable(R.styleable.CommonToolbar_tb_backIcon);
+            Drawable backIcon = ta.getDrawable(R.styleable.CommonToolbar_tbBackIcon);
             // 文本信息
-            String title = ta.getString(R.styleable.CommonToolbar_tb_title);
-            String back = ta.getString(R.styleable.CommonToolbar_tb_backText);
-            mTextBold[0] = ta.getBoolean(R.styleable.CommonToolbar_tb_titleTextBold, false);
-            mTextBold[1] = ta.getBoolean(R.styleable.CommonToolbar_tb_backTextBold, false);
-            mTextBold[2] = ta.getBoolean(R.styleable.CommonToolbar_tb_actionTextBold, false);
-            mTextColors[0] = ta.getColor(R.styleable.CommonToolbar_tb_titleTextColor, mTextColors[0]);
-            mTextColors[1] = ta.getColor(R.styleable.CommonToolbar_tb_backTextColor, mTextColors[1]);
-            mTextColors[2] = ta.getColor(R.styleable.CommonToolbar_tb_actionTextColor, mTextColors[2]);
-            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_titleTextSize,
+            String title = ta.getString(R.styleable.CommonToolbar_tbTitle);
+            String back = ta.getString(R.styleable.CommonToolbar_tbBackText);
+            mPaddingLeft = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbPaddingLeft, mPaddingLeft);
+            mPaddingRight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbPaddingRight, mPaddingRight);
+            mTextBold[0] = ta.getBoolean(R.styleable.CommonToolbar_tbTitleTextBold, false);
+            mTextBold[1] = ta.getBoolean(R.styleable.CommonToolbar_tbBackTextBold, false);
+            mTextBold[2] = ta.getBoolean(R.styleable.CommonToolbar_tbActionTextBold, false);
+            mTextColors[0] = ta.getColor(R.styleable.CommonToolbar_tbTitleTextColor, mTextColors[0]);
+            mTextColors[1] = ta.getColor(R.styleable.CommonToolbar_tbBackTextColor, mTextColors[1]);
+            mTextColors[2] = ta.getColor(R.styleable.CommonToolbar_tbActionTextColor, mTextColors[2]);
+            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbTitleTextSize,
                     ResUtils.toPixel(mTextSizes[0])));
-            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_backTextSize,
+            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbBackTextSize,
                     ResUtils.toPixel(mTextSizes[1])));
-            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionTextSize,
+            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbActionTextSize,
                     ResUtils.toPixel(mTextSizes[2])));
             // 获取间隔信息
-            mInnerSpace = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionMargin,
-                    ResUtils.getPixel(mContext, R.dimen.content)));
-            mTitleMargin = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionMargin,
-                    ResUtils.toPixel(mTitleMargin)));
-            mActionMargin = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_actionMargin,
-                    ResUtils.toPixel(mActionMargin)));
-            mTitleTextGravity = ta.getInt(R.styleable.CommonToolbar_tb_titleTextGravity, CENTER);
+            mBackMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbBackMargin, mBackMargin);
+            mTitleMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbTitleMargin, mTitleMargin);
+            mActionMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbActionMargin, mActionMargin);
+            mTitleTextGravity = ta.getInt(R.styleable.CommonToolbar_tbTitleTextGravity, CENTER);
 
-            boolean backIconVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_backIconVisible, false);
-            boolean backTextVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_backTextVisible, false);
-            mRippleEnable = ta.getBoolean(R.styleable.CommonToolbar_tb_rippleEnable, true);
-            boolean dividerVisible = ta.getBoolean(R.styleable.CommonToolbar_tb_dividerVisible, false);
-            int dividerMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_dividerMargin, 0);
-            int dividerHeight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tb_dividerHeight,
+            mRippleEnable = ta.getBoolean(R.styleable.CommonToolbar_tbRippleEnable, true);
+            boolean backIconVisible = ta.getBoolean(R.styleable.CommonToolbar_tbBackIconVisible, false);
+            boolean backTextVisible = ta.getBoolean(R.styleable.CommonToolbar_tbBackTextVisible, false);
+            boolean dividerVisible = ta.getBoolean(R.styleable.CommonToolbar_tbDividerVisible, false);
+            int dividerMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbDividerMargin, 0);
+            int dividerHeight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbDividerHeight,
                     ResUtils.getPixel(mContext, R.dimen.divider));
-            int dividerColor = ta.getColor(R.styleable.CommonToolbar_tb_dividerColor,
+            int dividerColor = ta.getColor(R.styleable.CommonToolbar_tbDividerColor,
                     ContextCompat.getColor(mContext, R.color.divider));
             ta.recycle();
             // 设置文本信息
@@ -208,17 +210,13 @@ public class CommonToolbar extends RelativeLayout {
             // 设置图像
             mBackIcon.setImageDrawable(backIcon);
             mBackIcon.setVisibility(backIconVisible ? View.VISIBLE : View.GONE);
-            mBackIcon.setOnClickListener(mBackListener);
             mBackText.setVisibility(backTextVisible ? VISIBLE : GONE);
             mDivider.setVisibility(dividerVisible ? VISIBLE : GONE);
             mDivider.setBackgroundColor(dividerColor);
             ViewUtils.setHeight(mDivider, dividerHeight);
             ViewUtils.setMargins(mDivider, dividerMargin, 0, dividerMargin, 0);
         }
-        mContainer.setPadding(
-                ResUtils.getPixel(mContext, R.dimen.content), 0,
-                ResUtils.getPixel(mContext, R.dimen.content) - ResUtils.toPixel(mActionMargin) / 2 , 0);
-
+        mContainer.setPadding(mTitleMargin - mActionMargin / 2, 0, mPaddingRight - mActionMargin / 2 , 0);
         // 设置文本大小
         mTitle.setTextSize(mTextSizes[0]);
         mBackText.setTextSize(mTextSizes[1]);
@@ -227,9 +225,8 @@ public class CommonToolbar extends RelativeLayout {
         mTitle.setTextColor(mTextColors[0]);
         mBackText.setTextColor(mTextColors[1]);
         mActionText.setTextColor(mTextColors[2]);
-        setTitleTextGravity(mTitleTextGravity);
         setRippleEnable(mRippleEnable);
-        refreshToolbar();
+        setTitleTextGravity(mTitleTextGravity);
     }
 
     private Drawable createItemBackground() {
@@ -244,53 +241,47 @@ public class CommonToolbar extends RelativeLayout {
         boolean iconGone = mBackIcon.getVisibility() == GONE;
         boolean textGone = mBackText.getVisibility() == GONE;
         MarginLayoutParams params = (MarginLayoutParams) mTitle.getLayoutParams();
+        mBackIcon.setPadding(
+                Math.min(mBackMargin, mPaddingLeft), 0,
+                Math.min(mBackMargin, mPaddingLeft), 0);
+        mBackText.setPadding(0, 0, 0, 0);
         if (iconGone && textGone) {
             // 图标和文字都没显示
-            mTitle.setPadding(
-                    ResUtils.toPixel(mInnerSpace), 0,
-                    ResUtils.toPixel(mInnerSpace), 0);
-            params.leftMargin = 0;
+            params.leftMargin = mPaddingLeft;
         } else if (!iconGone && textGone) {
-            // 文字显示图标不显示
-            mBackIcon.setPadding(
-                    ResUtils.toPixel(mInnerSpace), 0,
-                    ResUtils.toPixel(mInnerSpace), 0);
-            mTitle.setPadding(0, 0, 0, 0);
-            int space = ResUtils.toPixel(mTitleMargin) -
-                    ResUtils.toPixel(mInnerSpace);
-            params.leftMargin = mTitle.getGravity() == START ? space : 0;
-        } else if (iconGone) {
             // 图标显示文字不显示
-            mBackText.setPadding(
-                    ResUtils.toPixel(mInnerSpace), 0,
-                    ResUtils.toPixel(mInnerSpace), 0);
-            mTitle.setPadding(0, 0, 0, 0);
-            int space = ResUtils.toPixel(mTitleMargin) -
-                    ResUtils.toPixel(mInnerSpace);
-            params.leftMargin = mTitle.getGravity() == START ? space : 0;
-        } else {
-            // 都显示
-            mBackIcon.setPadding(
-                    ResUtils.toPixel(mInnerSpace), 0,
-                    ResUtils.toPixel(mInnerSpace), 0);
-            mBackText.setPadding(0, 0, 0, 0);
-            // 设置mTitle间隔
-            params.leftMargin = mTitle.getGravity() == START ? ResUtils.toPixel(mTitleMargin) : 0;
-            // 设置图标文字间的间隔
+            mBackIcon.setPadding(mPaddingLeft, 0, mPaddingLeft, 0);
+            params.leftMargin = mTitle.getGravity() == LEFT ? mTitleMargin - mPaddingLeft : 0;
+            // 图片间隔
+            params = (MarginLayoutParams) mBackIcon.getLayoutParams();
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+        } else if (iconGone) {
+            // 文字显示图标不显示
+            params.leftMargin = mTitle.getGravity() == LEFT ? mTitleMargin : 0;
+            // 返回文本间隔
             params = (MarginLayoutParams) mBackText.getLayoutParams();
-            params.leftMargin = -ResUtils.toPixel(mInnerSpace / 2);
+            params.leftMargin = mPaddingLeft;
+        } else {
+            // 标题间隔
+            params.leftMargin = mTitle.getGravity() == LEFT ? mTitleMargin : 0;
+            // 返回图标间隔
+            params = (MarginLayoutParams) mBackIcon.getLayoutParams();
+            params.leftMargin = mPaddingLeft > mBackMargin ? mPaddingLeft - mBackMargin : 0;
+            params.rightMargin = Math.min(mPaddingLeft - mBackMargin, 0);
         }
     }
 
     public CommonToolbar setTitleTextGravity(@Gravity int gravity) {
         if (mTitle.getGravity() != gravity) {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-            if (gravity == START) {
+            if (gravity == LEFT) {
                 params.addRule(RelativeLayout.RIGHT_OF, R.id.android_toolbar_back_container);
                 params.addRule(RelativeLayout.LEFT_OF, R.id.android_toolbar_action_container);
             }
             mTitle.setLayoutParams(params);
             mTitle.setGravity(gravity);
+            refreshToolbar();
         }
         return this;
     }
@@ -318,8 +309,8 @@ public class CommonToolbar extends RelativeLayout {
         return this;
     }
 
-    public CommonToolbar setInnerSpace(float space) {
-        mInnerSpace = space;
+    public CommonToolbar setBackMargin(float margin) {
+        mBackMargin = ResUtils.toPixel(margin);
         refreshToolbar();
         return this;
     }
@@ -350,7 +341,8 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setTitleMargin(float margin) {
-        mTitleMargin = margin;
+        mTitleMargin = ResUtils.toPixel(margin);
+        mContainer.setPadding(mTitleMargin - mActionMargin, 0, mPaddingRight - mActionMargin / 2 , 0);
         refreshToolbar();
         return this;
     }
@@ -379,7 +371,7 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setBackListener(View.OnClickListener listener) {
-        mBackListener = listener;
+        mBackIcon.setOnClickListener(listener);
         mBackText.setOnClickListener(listener);
         return this;
     }
@@ -425,8 +417,8 @@ public class CommonToolbar extends RelativeLayout {
             mContainer.removeView(view);
         }
         ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(-2, -1);
-        params.leftMargin = ResUtils.toPixel(mActionMargin) / 2;
-        params.rightMargin = ResUtils.toPixel(mActionMargin) / 2;
+        params.leftMargin = mActionMargin / 2;
+        params.rightMargin = mActionMargin / 2;
         TextView tv = new AppCompatTextView(mContext);
         tv.setText(text);
         tv.setTextSize(mTextSizes[2]);
@@ -435,6 +427,7 @@ public class CommonToolbar extends RelativeLayout {
         tv.setLayoutParams(params);
         tv.setClickable(true);
         tv.setFocusable(true);
+        tv.setVisibility(GONE);
         ViewUtils.setTextBold(tv, mTextBold[2]);
         if (mRippleEnable) {
             ViewCompat.setBackground(tv, createItemBackground());
@@ -566,13 +559,14 @@ public class CommonToolbar extends RelativeLayout {
         }
 
         ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(-2, -1);
-        params.leftMargin = ResUtils.toPixel(mActionMargin) / 2;
-        params.rightMargin = ResUtils.toPixel(mActionMargin) / 2;
+        params.leftMargin = mActionMargin / 2;
+        params.rightMargin = mActionMargin / 2;
         ImageView iv = new AppCompatImageView(mContext);
         iv.setImageResource(resId);
         iv.setLayoutParams(params);
         iv.setClickable(true);
         iv.setFocusable(true);
+        iv.setVisibility(GONE);
         if (mRippleEnable) {
             ViewCompat.setBackground(iv, createItemBackground());
         }
@@ -610,15 +604,14 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setActionMargin(float margin) {
-        mActionMargin = margin;
+        mActionMargin = ResUtils.toPixel(margin);
         for (Map.Entry<Integer, View> entry : mActionViews.entrySet()) {
             View view = entry.getValue();
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            params.leftMargin = ResUtils.toPixel(margin) / 2;
-            params.rightMargin = ResUtils.toPixel(margin) / 2;
+            params.leftMargin = mActionMargin / 2;
+            params.rightMargin = mActionMargin / 2;
         }
-        mContainer.setPadding(ResUtils.getPixel(mContext, R.dimen.content), 0,
-                mPaddingRight - ResUtils.toPixel(margin) / 2 , 0);
+        mContainer.setPadding(mTitleMargin - mActionMargin, 0, mPaddingRight - mActionMargin / 2 , 0);
         return this;
     }
 
@@ -654,16 +647,16 @@ public class CommonToolbar extends RelativeLayout {
         return this;
     }
 
-    public TextView getActionTextView() {
-        return mActionText;
-    }
-
     public TextView getTitleView() {
         return mTitle;
     }
 
     public ImageView getBackIconView() {
         return mBackIcon;
+    }
+
+    public TextView getBackTextView() {
+        return mBackText;
     }
 
     @SuppressWarnings("unchecked")

@@ -49,7 +49,6 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback, 
     @Retention(RetentionPolicy.SOURCE)
     public @interface LaunchMode {}
 
-
     public View mContentView;
     /** 标题 **/
     public CommonToolbar mToolbar;
@@ -309,8 +308,16 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback, 
         onHandleCreators(view);
         mContentView = view;
         // 初始化控件
-        mToolbar = mLayoutDelegate.getToolbar();
         mRefreshLayout = mLayoutDelegate.getRefreshLayout();
+        mToolbar = mLayoutDelegate.getToolbar();
+        if (mToolbar != null) {
+            mToolbar.setBackListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pop();
+                }
+            });
+        }
     }
 
     public final void setContentView(@LayoutRes int id) {

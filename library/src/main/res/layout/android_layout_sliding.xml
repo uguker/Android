@@ -16,11 +16,10 @@
             android:id="@+id/android_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar"
-            app:tb_backIcon="@drawable/def_back_common_dark"
-            app:tb_backIconVisible="true"
-            app:tb_backTextVisible="true"
-            app:tb_rippleEnable="true"
-            app:tb_titleTextGravity="center">
+            app:tbBackIcon="@drawable/def_back_common_dark"
+            app:tbBackIconVisible="true"
+            app:tbRippleEnable="false"
+            app:tbTitleTextGravity="center">
 
         </com.uguke.android.widget.CommonToolbar>
 

@@ -183,6 +183,7 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
         // 初始化控件
         mRefreshLayout = mLayoutDelegate.getRefreshLayout();
         mToolbar = mLayoutDelegate.getToolbar();
+        // 点击回退事件
         if (mToolbar != null) {
             mToolbar.setBackListener(new View.OnClickListener() {
                 @Override

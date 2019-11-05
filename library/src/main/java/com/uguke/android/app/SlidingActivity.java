@@ -35,6 +35,16 @@ public class SlidingActivity extends SupportActivity {
         }
         mViewPager = findViewById(R.id.android_fragment);
         mTabLayout = findViewById(R.id.android_tab);
+        mToolbar = findViewById(R.id.android_toolbar);
+        // 点击回退事件
+        if (mToolbar != null) {
+            mToolbar.setBackListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
     }
 
     @Override

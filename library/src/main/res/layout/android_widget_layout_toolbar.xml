@@ -17,18 +17,24 @@
             android:id="@id/android_toolbar_back_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:clickable="true"
             android:contentDescription="@string/app_name"
+            android:focusable="true"
             android:paddingLeft="@dimen/content"
             android:paddingRight="@dimen/content"
             android:scaleType="centerInside"
-            android:src="@drawable/def_back_common_dark" />
+            android:src="@drawable/def_back_common_dark"
+            android:visibility="gone" />
 
         <TextView
             android:id="@id/android_toolbar_back_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             android:textColor="@color/text"
-            android:textSize="@dimen/h3" />
+            android:textSize="@dimen/h3"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -37,10 +43,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@color/text"
-        android:textSize="@dimen/h1"
+        android:ellipsize="end"
         android:maxLines="1"
-        android:ellipsize="end"/>
+        android:textColor="@color/text"
+        android:textSize="@dimen/h1" />
 
     <TextView
         android:id="@id/android_toolbar_action_text"
@@ -53,10 +59,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:paddingLeft="@dimen/content"
-        android:paddingRight="@dimen/content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/content"
+        android:paddingRight="@dimen/content">
 
     </LinearLayout>
 

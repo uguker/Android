@@ -4,6 +4,7 @@ package com.uguke.demo.android;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
@@ -40,12 +41,15 @@ public class SSFragment extends SlidingFragment {
                 .setActionTextSize(18)
                 .setBackText("返回")
                 .setBackIconVisible(true)
-                .setBackTextVisible(true)
+                .setBackTextVisible(false)
                 .setTitle("你好啊")
                 .setTitleMargin(16)
-                .setTitleTextGravity(CommonToolbar.START)
-                //.setActionText("6666")
+                .setBackMargin(0)
+                .setTitleTextGravity(CommonToolbar.CENTER)
+                .setActionText(1, "6666")
+                .setPadding(16, 16)
                 .setActionTextVisible(true);
+
 
         loadMultipleFragment(
                 new FragmentTab("我的", TestFragment.class),

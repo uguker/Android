@@ -20,6 +20,7 @@ import com.trello.rxlifecycle3.components.support.RxFragment;
 import com.uguke.android.R;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.widget.CommonToolbar;
+import com.uguke.android.widget.LoadingLayout;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -36,7 +37,8 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Fragment
  * @author LeiJue
  */
-public class SupportFragment extends RxFragment implements ViewCreatedCallback, ISupportFragment {
+public class SupportFragment extends RxFragment implements ViewCreatedCallback,
+        ISupportFragment, LoadingProvider  {
 
     public static final int STANDARD = 0;
     public static final int SINGLE_TOP = 1;
@@ -52,6 +54,8 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback, 
     public View mContentView;
     /** 标题 **/
     public CommonToolbar mToolbar;
+    /** 多状态控件（加载） **/
+    public LoadingLayout mLoadingLayout;
     /** 刷新控件 **/
     public SmartRefreshLayout mRefreshLayout;
 
@@ -59,7 +63,8 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback, 
     final ViewDelegate mLayoutDelegate = new ViewDelegate(this);
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
     public SupportActivity mActivity;
-
+    /** 是否是首次加载 **/
+    private boolean mFirstLoading = true;
     @Override
     public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
@@ -305,18 +310,60 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback, 
     @Override
     public void onViewCreated(View view) {
         // 处理头部和底部
-        onHandleCreators(view);
+        //onHandleCreators(view);
         mContentView = view;
         // 初始化控件
+        mLoadingLayout = mLayoutDelegate.getLoadingLayout();
         mRefreshLayout = mLayoutDelegate.getRefreshLayout();
         mToolbar = mLayoutDelegate.getToolbar();
-        if (mToolbar != null) {
-            mToolbar.setBackListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pop();
-                }
-            });
+    }
+
+    @Override
+    public void showContent() {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showContent();
+        }
+    }
+
+    @Override
+    public void showEmpty() {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showEmpty();
+        }
+    }
+
+    @Override
+    public void showEmpty(String text) {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showError(text);
+        }
+    }
+
+    @Override
+    public void showError() {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showError();
+        }
+    }
+
+    @Override
+    public void showError(String text) {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showError(text);
+        }
+    }
+
+    @Override
+    public void showLoading() {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showLoading();
+        }
+    }
+
+    @Override
+    public void showLoading(String text) {
+        if (mLoadingLayout != null) {
+            mLoadingLayout.showLoading(text);
         }
     }
 
@@ -363,54 +410,46 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback, 
         mLayoutDelegate.showTips(tips);
     }
 
-    public void showLoading(String ...texts) {
-        mLayoutDelegate.showLoading(texts);
-    }
-
-    public void hideLoading() {
-        mLayoutDelegate.hideLoading();
-    }
-
     public void addDisposable(Disposable disposable) {
         mDisposable.add(disposable);
     }
 
-    protected void onHandleCreators(View view) {
-        ViewGroup headerParent = view.findViewById(R.id.android_header);
-        ViewGroup footerParent = view.findViewById(R.id.android_footer);
-        ViewCreator headerCreator = onCreateHeader(headerParent);
-        ViewCreator footerCreator = onCreateFooter(footerParent);
-        // 初始化头部
-        if (headerCreator != null) {
-            headerParent.removeAllViews();
-            // 根据额外数据来判定是否浮动
-            Object extras = headerCreator.getExtras();
-            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-            View header = LayoutInflater.from(mActivity).inflate(headerCreator.getLayoutResId(), headerParent, true);
-            header.bringToFront();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-            if (!floating) {
-                params.addRule(RelativeLayout.BELOW, R.id.android_header);
-            }
-            mRefreshLayout.setLayoutParams(params);
-        }
-        // 初始化底部
-        if (footerCreator != null) {
-            // 根据额外数据来判定是否浮动
-            Object extras = footerCreator.getExtras();
-            // 额外数据为空，直接判定为不浮动
-            // 额外数据为布尔类型，false为不浮动
-            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-            View footer = LayoutInflater.from(mActivity).inflate(footerCreator.getLayoutResId(), footerParent, true);
-            footer.bringToFront();
-
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-            if (!floating) {
-                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
-            }
-            mRefreshLayout.setLayoutParams(params);
-        }
-    }
+//    protected void onHandleCreators(View view) {
+//        ViewGroup headerParent = view.findViewById(R.id.android_header);
+//        ViewGroup footerParent = view.findViewById(R.id.android_footer);
+//        ViewCreator headerCreator = onCreateHeader(headerParent);
+//        ViewCreator footerCreator = onCreateFooter(footerParent);
+//        // 初始化头部
+//        if (headerCreator != null) {
+//            headerParent.removeAllViews();
+//            // 根据额外数据来判定是否浮动
+//            Object extras = headerCreator.getExtras();
+//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+//            View header = LayoutInflater.from(mActivity).inflate(headerCreator.getLayoutResId(), headerParent, true);
+//            header.bringToFront();
+//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+//            if (!floating) {
+//                params.addRule(RelativeLayout.BELOW, R.id.android_header);
+//            }
+//            mRefreshLayout.setLayoutParams(params);
+//        }
+//        // 初始化底部
+//        if (footerCreator != null) {
+//            // 根据额外数据来判定是否浮动
+//            Object extras = footerCreator.getExtras();
+//            // 额外数据为空，直接判定为不浮动
+//            // 额外数据为布尔类型，false为不浮动
+//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
+//            View footer = LayoutInflater.from(mActivity).inflate(footerCreator.getLayoutResId(), footerParent, true);
+//            footer.bringToFront();
+//
+//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+//            if (!floating) {
+//                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
+//            }
+//            mRefreshLayout.setLayoutParams(params);
+//        }
+//    }
 
     /**
      * 是否支持侧滑返回 true 支持 false 不支持

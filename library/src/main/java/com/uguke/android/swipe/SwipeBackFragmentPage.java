@@ -29,6 +29,7 @@ class SwipeBackFragmentPage implements SwipeBack<SwipeBackFragmentPage> {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
             mSwipeLayout.setLayoutParams(params);
             mSwipeLayout.setBackgroundColor(Color.TRANSPARENT);
+            mSwipeLayout.setSwipeEdgePercent(0.1f);
         }
     }
 

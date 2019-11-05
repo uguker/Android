@@ -8,12 +8,10 @@
     android:orientation="vertical"
     android:paddingBottom="30dp">
 
-    <ProgressBar
+    <com.uguke.android.widget.LoadingView
         android:id="@id/android_loading_loading_view"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:progress="80" />
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
     <TextView
         android:id="@id/android_loading_loading_text"

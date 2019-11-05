@@ -194,6 +194,10 @@ public class SwipeBackLayout extends FrameLayout {
                 if (mHelper.getCapturedView() != null) {
                     int leftOffset = (int) ((mHelper.getCapturedView().getLeft() - getWidth()) * mOffsetPercent * mScrimOpacity);
                     mPreFragment.getView().setX(leftOffset > 0 ? 0 : leftOffset);
+                    // 防止滑动了之后上级Fragment不归位
+                    if (mHelper.getCapturedView().getLeft() == 0) {
+                        mPreFragment.getView().setX(0);
+                    }
                 }
             }
             // Activity中上一个SwipeBackLayout变化情况

@@ -20,6 +20,7 @@
         <attr name="llRetryTextSize" format="dimension" />
         <attr name="llRetryBackground" format="reference" />
         <!-- 加载布局页面 -->
+        <attr name="llLoadingText" format="string" />
         <attr name="llLoadingColor" format="dimension" />
         <attr name="llLoadingSize" format="dimension" />
         <attr name="llLoadingMargin" format="dimension" />

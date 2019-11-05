@@ -3,7 +3,7 @@ package com.uguke.android.app;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +16,7 @@ import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.util.KeyboardUtils;
 import com.uguke.android.widget.CommonToolbar;
+import com.uguke.android.widget.LoadingLayout;
 
 import java.util.Stack;
 
@@ -31,7 +32,8 @@ public class AppDelegate {
 
     private Stack<Activity> mStack = new Stack<>();
     private ViewHandler<AppBarLayout, CommonToolbar> mToolbarHandler;
-    private ViewHandler<RelativeLayout, SmartRefreshLayout> mRefreshHandler;
+    private ViewHandler<ViewGroup, SmartRefreshLayout> mRefreshHandler;
+    private ViewHandler<ViewGroup, LoadingLayout> mLoadingHandler;
     private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
     private LifecycleAdapter mLifecycleAdapter;
     private int mAliveCount = 0;
@@ -96,8 +98,13 @@ public class AppDelegate {
         return this;
     }
 
-    public AppDelegate setRefreshHandler(ViewHandler<RelativeLayout, SmartRefreshLayout> handler) {
+    public AppDelegate setRefreshHandler(ViewHandler<ViewGroup, SmartRefreshLayout> handler) {
         mRefreshHandler = handler;
+        return this;
+    }
+
+    public AppDelegate setLoadingHandler(ViewHandler<ViewGroup, LoadingLayout> handler) {
+        mLoadingHandler = handler;
         return this;
     }
 
@@ -122,8 +129,12 @@ public class AppDelegate {
         return mToolbarHandler;
     }
 
-    public ViewHandler<RelativeLayout, SmartRefreshLayout> getRefreshHandler() {
+    public ViewHandler<ViewGroup, SmartRefreshLayout> getRefreshHandler() {
         return mRefreshHandler;
+    }
+
+    public ViewHandler<ViewGroup, LoadingLayout> getLoadingHandler() {
+        return mLoadingHandler;
     }
 
     // ======== Activity管理 ======== //

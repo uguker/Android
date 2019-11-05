@@ -27,6 +27,7 @@ public class TabbedActivity extends SupportActivity {
     @Override
     public void onCreating(Bundle savedInstanceState) {
         setNativeContentView(R.layout.android_layout_tabbed);
+        mLayoutDelegate.initHeaderAndFooter();
         // 恢复选项位置
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
@@ -55,41 +56,41 @@ public class TabbedActivity extends SupportActivity {
         outState.putInt("currentTab", mCurrentTab);
     }
 
-    @Override
-    protected void onHandleCreators(View view) {
-        ViewGroup headerParent = view.findViewById(R.id.android_header);
-        ViewGroup footerParent = view.findViewById(R.id.android_footer);
-        // 创建Header和Footer内容
-        ViewCreator headerCreator = onCreateHeader(headerParent);
-        ViewCreator footerCreator = onCreateFooter(footerParent);
-        RelativeLayout.LayoutParams params;
-        // 初始化头部
-        if (headerCreator != null) {
-            if (headerParent.getChildCount() == 0) {
-                View header = LayoutInflater.from(this).inflate(headerCreator.getLayoutResId(), headerParent, true);
-                header.bringToFront();
-            }
-            boolean floating = headerCreator.isFloating();
-            params = new RelativeLayout.LayoutParams(-1, -1);
-            if (!floating) {
-                params.addRule(RelativeLayout.BELOW, R.id.android_header);
-            }
-            findViewById(R.id.android_fragment).setLayoutParams(params);
-        }
-        // 初始化底部
-        if (footerCreator != null) {
-            if (footerParent.getChildCount() == 0) {
-                View footer = LayoutInflater.from(this).inflate(footerCreator.getLayoutResId(), footerParent, true);
-                footer.bringToFront();
-            }
-            boolean floating = footerCreator.isFloating();
-            params = new RelativeLayout.LayoutParams(-1, -1);
-            if (!floating) {
-                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
-            }
-            findViewById(R.id.android_fragment).setLayoutParams(params);
-        }
-    }
+//    @Override
+//    protected void onHandleCreators(View view) {
+//        ViewGroup headerParent = view.findViewById(R.id.android_header);
+//        ViewGroup footerParent = view.findViewById(R.id.android_footer);
+//        // 创建Header和Footer内容
+//        ViewCreator headerCreator = onCreateHeader(headerParent);
+//        ViewCreator footerCreator = onCreateFooter(footerParent);
+//        RelativeLayout.LayoutParams params;
+//        // 初始化头部
+//        if (headerCreator != null) {
+//            if (headerParent.getChildCount() == 0) {
+//                View header = LayoutInflater.from(this).inflate(headerCreator.getLayoutResId(), headerParent, true);
+//                header.bringToFront();
+//            }
+//            boolean floating = headerCreator.isFloating();
+//            params = new RelativeLayout.LayoutParams(-1, -1);
+//            if (!floating) {
+//                params.addRule(RelativeLayout.BELOW, R.id.android_header);
+//            }
+//            findViewById(R.id.android_fragment).setLayoutParams(params);
+//        }
+//        // 初始化底部
+//        if (footerCreator != null) {
+//            if (footerParent.getChildCount() == 0) {
+//                View footer = LayoutInflater.from(this).inflate(footerCreator.getLayoutResId(), footerParent, true);
+//                footer.bringToFront();
+//            }
+//            boolean floating = footerCreator.isFloating();
+//            params = new RelativeLayout.LayoutParams(-1, -1);
+//            if (!floating) {
+//                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
+//            }
+//            findViewById(R.id.android_fragment).setLayoutParams(params);
+//        }
+//    }
 
     public void showFragment(int position) {
         mDelegate.showHideFragment(mFragments[position]);

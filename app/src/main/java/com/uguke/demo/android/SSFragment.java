@@ -1,11 +1,10 @@
 package com.uguke.demo.android;
 
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -20,6 +19,8 @@ import com.uguke.android.widget.CommonToolbar;
  */
 public class SSFragment extends SlidingFragment {
 
+    TextView tv;
+
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
@@ -30,6 +31,8 @@ public class SSFragment extends SlidingFragment {
 //        SwipeBackHelper.getCurrentPage(this)
 //                .setSwipeEdgePercent(0.1f);
         //applyToolbar();
+
+
 
         mToolbar.setRippleEnable(true)
                 .setBackIcon(R.drawable.def_back_material_dark)
@@ -49,6 +52,8 @@ public class SSFragment extends SlidingFragment {
                 .setActionText(1, "6666")
                 .setPadding(16, 16)
                 .setActionTextVisible(true);
+
+        //showLoading("我在加载中");
 
 
         loadMultipleFragment(
@@ -70,12 +75,15 @@ public class SSFragment extends SlidingFragment {
                 }, throwable -> {
                     Log.e("数据", "失败2:" + throwable.getMessage());
                 });
+//
+//        tv = findViewById(R.id.text2);
+//        tv.setText("测试");
 
     }
 
     @Override
     public ViewCreator onCreateHeader(ViewGroup container) {
-        return ViewCreator.create(R.layout.bottom, container);
+        return ViewCreator.create(R.layout.bottom2, container);
     }
 
     //    @OnClick(R.id.tv)

@@ -33,6 +33,7 @@ class SwipeBackActivityPage implements SwipeBack<SwipeBackActivityPage> {
                     ViewGroup.LayoutParams.MATCH_PARENT);
             mSwipeLayout = new SwipeBackLayout(mActivity);
             mSwipeLayout.setLayoutParams(params);
+            mSwipeLayout.setSwipeEdgePercent(0.1f);
         }
     }
 

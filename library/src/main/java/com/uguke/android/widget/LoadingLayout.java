@@ -102,6 +102,7 @@ public class LoadingLayout extends RelativeLayout {
 
         mLoadingColor = a.getColor(R.styleable.LoadingLayout_llLoadingColor, ContextCompat.getColor(getContext(), R.color.colorPrimary));
         mLoadingSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llLoadingSize, mLoadingSize);
+        mLoadingVertical = a.getInt(R.styleable.LoadingLayout_llLoadingOrientation, 0) == 0;
 
         mButtonTextColor = a.getColor(R.styleable.LoadingLayout_llRetryTextColor, 0xff999999);
         mButtonTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llRetryTextSize, mButtonTextSize);

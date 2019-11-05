@@ -29,7 +29,6 @@ import com.uguke.android.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * 类IOS TabLayout
  * @author LeiJue
@@ -158,7 +157,6 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
         mBarColor = ta.getColor(R.styleable.SegmentTabLayout_tl_bar_color, Color.TRANSPARENT);
         mBarStrokeColor = ta.getColor(R.styleable.SegmentTabLayout_tl_bar_stroke_color, mIndicatorColor);
         mBarStrokeWidth = ta.getDimension(R.styleable.SegmentTabLayout_tl_bar_stroke_width, toPixel(1));
-
         ta.recycle();
     }
 

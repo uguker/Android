@@ -22,6 +22,10 @@ import com.uguke.android.R;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 多状态布局
+ * @author LeiJue
+ */
 public class LoadingLayout extends FrameLayout {
     public interface OnInflateListener {
         void onInflate(View inflated);
@@ -33,6 +37,7 @@ public class LoadingLayout extends FrameLayout {
     public static LoadingLayout wrap(Fragment fragment) {
         return wrap(fragment.getView());
     }
+
     public static LoadingLayout wrap(View view) {
         if (view == null) {
             throw new RuntimeException("content view can not be null");

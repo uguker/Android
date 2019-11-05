@@ -1,6 +1,7 @@
 package com.uguke.android.widget;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -24,8 +25,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 
-import com.uguke.android.util.ResUtils;
-import com.uguke.android.util.ViewUtils;
 import com.uguke.android.R;
 
 import java.lang.annotation.Retention;
@@ -36,6 +35,8 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
 /**
  * 标题栏
@@ -115,7 +116,7 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setPadding(float left, float right) {
-        setPadding(ResUtils.toPixel(left), 0, ResUtils.toPixel(right), 0);
+        setPadding(toPixel(left), 0, toPixel(right), 0);
         return this;
     }
 
@@ -135,20 +136,20 @@ public class CommonToolbar extends RelativeLayout {
         mTextSizes = new float[3];
         mTextColors = new int[3];
         // 文字大小
-        mTextSizes[0] = ResUtils.getDip(mContext, R.dimen.h1);
-        mTextSizes[1] = ResUtils.getDip(mContext, R.dimen.h3);
-        mTextSizes[2] = ResUtils.getDip(mContext, R.dimen.h3);
+        mTextSizes[0] = getResources().getDimension(R.dimen.h1);
+        mTextSizes[1] = getResources().getDimension(R.dimen.h3);
+        mTextSizes[2] = getResources().getDimension(R.dimen.h3);
         // 颜色
         mTextColors[0] = ContextCompat.getColor(mContext, R.color.text);
         mTextColors[1] = ContextCompat.getColor(mContext, R.color.text);
         mTextColors[2] = ContextCompat.getColor(mContext, R.color.text);
         // 左右间距
-        mPaddingLeft = ResUtils.getPixel(mContext, R.dimen.content);
-        mPaddingRight = ResUtils.getPixel(mContext, R.dimen.content);
+        mPaddingLeft = getResources().getDimensionPixelSize(R.dimen.content);
+        mPaddingRight = getResources().getDimensionPixelSize(R.dimen.content);
         // 间隔
-        mBackMargin = ResUtils.getPixel(mContext, R.dimen.content);
-        mTitleMargin = ResUtils.getPixel(mContext, R.dimen.content);
-        mActionMargin = ResUtils.getPixel(mContext, R.dimen.small);
+        mBackMargin = getResources().getDimensionPixelSize(R.dimen.content);
+        mTitleMargin = getResources().getDimensionPixelSize(R.dimen.content);
+        mActionMargin = getResources().getDimensionPixelSize(R.dimen.small);
         // 设置布局
         LayoutInflater.from(getContext()).inflate(R.layout.android_widget_layout_toolbar, this, true);
         // 获取控件
@@ -179,12 +180,9 @@ public class CommonToolbar extends RelativeLayout {
             mTextColors[0] = ta.getColor(R.styleable.CommonToolbar_tbTitleTextColor, mTextColors[0]);
             mTextColors[1] = ta.getColor(R.styleable.CommonToolbar_tbBackTextColor, mTextColors[1]);
             mTextColors[2] = ta.getColor(R.styleable.CommonToolbar_tbActionTextColor, mTextColors[2]);
-            mTextSizes[0] = ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbTitleTextSize,
-                    ResUtils.toPixel(mTextSizes[0])));
-            mTextSizes[1] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbBackTextSize,
-                    ResUtils.toPixel(mTextSizes[1])));
-            mTextSizes[2] =  ResUtils.toDip(ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbActionTextSize,
-                    ResUtils.toPixel(mTextSizes[2])));
+            mTextSizes[0] = ta.getDimension(R.styleable.CommonToolbar_tbTitleTextSize, mTextSizes[0]);
+            mTextSizes[1] =  ta.getDimension(R.styleable.CommonToolbar_tbBackTextSize, mTextSizes[1]);
+            mTextSizes[2] =  ta.getDimension(R.styleable.CommonToolbar_tbActionTextSize, mTextSizes[2]);
             // 获取间隔信息
             mBackMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbBackMargin, mBackMargin);
             mTitleMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbTitleMargin, mTitleMargin);
@@ -197,7 +195,7 @@ public class CommonToolbar extends RelativeLayout {
             boolean dividerVisible = ta.getBoolean(R.styleable.CommonToolbar_tbDividerVisible, false);
             int dividerMargin = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbDividerMargin, 0);
             int dividerHeight = ta.getDimensionPixelOffset(R.styleable.CommonToolbar_tbDividerHeight,
-                    ResUtils.getPixel(mContext, R.dimen.divider));
+                    getResources().getDimensionPixelSize(R.dimen.divider));
             int dividerColor = ta.getColor(R.styleable.CommonToolbar_tbDividerColor,
                     ContextCompat.getColor(mContext, R.color.divider));
             ta.recycle();
@@ -205,22 +203,23 @@ public class CommonToolbar extends RelativeLayout {
             mTitle.setText(title);
             mBackText.setText(back);
             // 设置粗体
-            ViewUtils.setTextBold(mTitle, mTextBold[0]);
-            ViewUtils.setTextBold(mBackText, mTextBold[1]);
+            mTitle.setTypeface(Typeface.defaultFromStyle(mTextBold[0] ? Typeface.BOLD : Typeface.NORMAL));
+            mBackText.setTypeface(Typeface.defaultFromStyle(mTextBold[1] ? Typeface.BOLD : Typeface.NORMAL));
             // 设置图像
             mBackIcon.setImageDrawable(backIcon);
             mBackIcon.setVisibility(backIconVisible ? View.VISIBLE : View.GONE);
             mBackText.setVisibility(backTextVisible ? VISIBLE : GONE);
             mDivider.setVisibility(dividerVisible ? VISIBLE : GONE);
             mDivider.setBackgroundColor(dividerColor);
-            ViewUtils.setHeight(mDivider, dividerHeight);
-            ViewUtils.setMargins(mDivider, dividerMargin, 0, dividerMargin, 0);
+            mDivider.getLayoutParams().height = dividerHeight;
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mDivider.getLayoutParams();
+            params.setMargins(dividerMargin, 0, dividerMargin, 0);
         }
         mContainer.setPadding(mTitleMargin - mActionMargin / 2, 0, mPaddingRight - mActionMargin / 2 , 0);
         // 设置文本大小
-        mTitle.setTextSize(mTextSizes[0]);
-        mBackText.setTextSize(mTextSizes[1]);
-        mActionText.setTextSize(mTextSizes[2]);
+        mTitle.setTextSize(COMPLEX_UNIT_PX, mTextSizes[0]);
+        mBackText.setTextSize(COMPLEX_UNIT_PX, mTextSizes[1]);
+        mActionText.setTextSize(COMPLEX_UNIT_PX, mTextSizes[2]);
         // 设置文本颜色
         mTitle.setTextColor(mTextColors[0]);
         mBackText.setTextColor(mTextColors[1]);
@@ -310,7 +309,7 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setBackMargin(float margin) {
-        mBackMargin = ResUtils.toPixel(margin);
+        mBackMargin = toPixel(margin);
         refreshToolbar();
         return this;
     }
@@ -336,12 +335,12 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setTitleTextBold(boolean bold) {
-        ViewUtils.setTextBold(mTitle, bold);
+        mTitle.setTypeface(Typeface.defaultFromStyle(bold ? Typeface.BOLD : Typeface.NORMAL));
         return this;
     }
 
     public CommonToolbar setTitleMargin(float margin) {
-        mTitleMargin = ResUtils.toPixel(margin);
+        mTitleMargin = toPixel(margin);
         mContainer.setPadding(mTitleMargin - mActionMargin, 0, mPaddingRight - mActionMargin / 2 , 0);
         refreshToolbar();
         return this;
@@ -421,14 +420,14 @@ public class CommonToolbar extends RelativeLayout {
         params.rightMargin = mActionMargin / 2;
         TextView tv = new AppCompatTextView(mContext);
         tv.setText(text);
-        tv.setTextSize(mTextSizes[2]);
+        tv.setTextSize(COMPLEX_UNIT_PX, mTextSizes[2]);
         tv.setTextColor(mTextColors[2]);
         tv.setGravity(android.view.Gravity.CENTER);
         tv.setLayoutParams(params);
         tv.setClickable(true);
         tv.setFocusable(true);
         tv.setVisibility(GONE);
-        ViewUtils.setTextBold(tv, mTextBold[2]);
+        tv.setTypeface(Typeface.defaultFromStyle(mTextBold[2] ? Typeface.BOLD : Typeface.NORMAL));
         if (mRippleEnable) {
             ViewCompat.setBackground(tv, createItemBackground());
         }
@@ -479,7 +478,6 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setActionTextSize(float size) {
-        mTextSizes[2] = size;
         for (Map.Entry<Integer, View> entry : mActionViews.entrySet()) {
             View view = entry.getValue();
             if (view instanceof TextView) {
@@ -504,7 +502,7 @@ public class CommonToolbar extends RelativeLayout {
         for (Map.Entry<Integer, View> entry : mActionViews.entrySet()) {
             View view = entry.getValue();
             if (view instanceof TextView) {
-                ViewUtils.setTextBold((TextView) view, bold);
+                ((TextView) view).setTypeface(Typeface.defaultFromStyle(bold ? Typeface.BOLD : Typeface.NORMAL));
             }
         }
         return this;
@@ -514,7 +512,7 @@ public class CommonToolbar extends RelativeLayout {
         View view = mActionViews.get(key);
         if (view != null) {
             if (view instanceof TextView) {
-                ViewUtils.setTextBold((TextView) view, bold);
+                ((TextView) view).setTypeface(Typeface.defaultFromStyle(bold ? Typeface.BOLD : Typeface.NORMAL));
             }
         }
         return this;
@@ -604,7 +602,7 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setActionMargin(float margin) {
-        mActionMargin = ResUtils.toPixel(margin);
+        mActionMargin = toPixel(margin);
         for (Map.Entry<Integer, View> entry : mActionViews.entrySet()) {
             View view = entry.getValue();
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -631,12 +629,14 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     public CommonToolbar setDividerHeight(float height) {
-        ViewUtils.setHeight(mDivider, height);
+        mDivider.getLayoutParams().height = toPixel(height);
         return this;
     }
 
     public CommonToolbar setDividerMargin(float left, float right) {
-        ViewUtils.setMargins(mDivider, left, 0, right, 0);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mDivider.getLayoutParams();
+        params.leftMargin = toPixel(left);
+        params.rightMargin = toPixel(right);
         return this;
     }
 
@@ -662,5 +662,10 @@ public class CommonToolbar extends RelativeLayout {
     @SuppressWarnings("unchecked")
     public <T> T getActionView(int key) {
         return (T) mActionViews.get(key);
+    }
+
+    private int toPixel(float dip) {
+        float density = Resources.getSystem().getDisplayMetrics().density;
+        return (int) Math.ceil(dip * density);
     }
 }

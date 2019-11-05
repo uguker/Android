@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <item name="empty_image" type="id" />
-    <item name="empty_text" type="id" />
-
-    <item name="error_image" type="id" />
-    <item name="error_text" type="id" />
-    <item name="retry_button" type="id" />
 
     <attr name="styleLoadingLayout" format="reference" />
 
-
     <declare-styleable name="LoadingLayout">
+        <attr name="llTextColor" format="color" />
+        <attr name="llTextSize" format="dimension" />
         <!-- 空布局 -->
         <attr name="llEmptyImage" format="reference" />
         <attr name="llEmptyText" format="string" />
         <attr name="llEmptyMargin" format="dimension" />
-
         <!-- 错误布局 -->
         <attr name="llErrorImage" format="reference" />
         <attr name="llErrorText" format="string" />
         <attr name="llErrorMargin" format="dimension" />
         <attr name="llRetryText" format="string" />
-        <attr name="llTextColor" format="color" />
-        <!-- 文本尺寸 -->
-        <attr name="llTextSize" format="dimension" />
-        <!-- 按钮文本颜色 -->
         <attr name="llRetryTextColor" format="color" />
-        <!-- 按钮文本尺寸 -->
         <attr name="llRetryTextSize" format="dimension" />
-        <!-- 按钮背景 -->
         <attr name="llRetryBackground" format="reference" />
-        <!-- 错误布局间隔 -->
+        <!-- 加载布局页面 -->
+        <attr name="llLoadingColor" format="dimension" />
+        <attr name="llLoadingSize" format="dimension" />
         <attr name="llLoadingMargin" format="dimension" />
         <attr name="llLoadingOrientation" format="enum">
             <enum name="vertical" value="0" />
@@ -40,18 +30,16 @@
     </declare-styleable>
 
     <style name="LoadingLayoutStyle">
-
         <item name="llTextColor">#999999</item>
         <item name="llTextSize">@dimen/body</item>
-
         <item name="llRetryTextColor">#999999</item>
         <item name="llRetryTextSize">@dimen/body</item>
         <item name="llRetryBackground">@drawable/_loading_layout_button</item>
-
         <item name="llEmptyImage">@null</item>
         <item name="llEmptyText">暂无数据</item>
         <item name="llErrorImage">@null</item>
         <item name="llErrorText">无网络连接，请检查您的网络...</item>
         <item name="llRetryText">加载失败，点击重试~~</item>
     </style>
+
 </resources>

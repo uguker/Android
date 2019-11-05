@@ -102,6 +102,12 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initLoadingLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(mLoadingResId, this, true);
+        TextView tv = layout.findViewById(R.id.android_loading_error_text);
+        tv.setText("");
+        tv.setTextColor(mTextColor);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+        ViewGroup.MarginLayoutParams params = (MarginLayoutParams) tv.getLayoutParams();
+        params.topMargin = mLoadingMargin;
         mLayouts.put(mLoadingResId, layout);
     }
 
@@ -109,6 +115,8 @@ public class LoadingLayout extends RelativeLayout {
         View layout = LayoutInflater.from(getContext()).inflate(mErrorResId, this, true);
         ImageView iv = layout.findViewById(R.id.android_loading_error_img);
         iv.setImageResource(mErrorImage);
+        ViewGroup.MarginLayoutParams params = (MarginLayoutParams) iv.getLayoutParams();
+        params.bottomMargin = mErrorMargin;
         TextView tv = layout.findViewById(R.id.android_loading_error_text);
         tv.setText(mErrorText);
         tv.setTextColor(mTextColor);
@@ -118,6 +126,8 @@ public class LoadingLayout extends RelativeLayout {
         retry.setTextColor(mButtonTextColor);
         retry.setTextSize(TypedValue.COMPLEX_UNIT_PX, mButtonTextSize);
         retry.setOnClickListener(mRetryButtonClickListener);
+        params = (MarginLayoutParams) retry.getLayoutParams();
+        params.topMargin = mErrorMargin;
         ViewCompat.setBackground(retry, mButtonBackground);
         mLayouts.put(mErrorResId, layout);
     }

@@ -20,7 +20,10 @@ public class DefaultLoadingAdapter implements LoadingAdapter {
     public void convert(Object obj, CoordinatorLayout parent, LoadingView view) {
         mParent = parent;
         mView = view;
-
+        mView.setArcCount(3);
+        mView.setArcIntervalAngle(60);
+        mView.setArcShakeRatio(0.5f);
+        mView.setRoundUseTime(1000);
         mView.getLayoutParams().width = ResUtils.toPixel(50);
         mView.getLayoutParams().height = ResUtils.toPixel(50);
     }

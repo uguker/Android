@@ -1,60 +1,30 @@
 package com.uguke.android.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
-import androidx.fragment.app.Fragment;
+import androidx.core.view.ViewCompat;
 
 import com.uguke.android.R;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 多状态布局
  * @author LeiJue
  */
-public class LoadingLayout extends FrameLayout {
+public class LoadingLayout extends RelativeLayout {
     public interface OnInflateListener {
         void onInflate(View inflated);
-    }
-
-    public static LoadingLayout wrap(Activity activity) {
-        return wrap(((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0));
-    }
-    public static LoadingLayout wrap(Fragment fragment) {
-        return wrap(fragment.getView());
-    }
-
-    public static LoadingLayout wrap(View view) {
-        if (view == null) {
-            throw new RuntimeException("content view can not be null");
-        }
-        ViewGroup parent = (ViewGroup)view.getParent();
-        if (parent == null) {
-            throw new RuntimeException("parent view can not be null");
-        }
-        ViewGroup.LayoutParams lp = view.getLayoutParams();
-        int index = parent.indexOfChild(view);
-        parent.removeView(view);
-
-        LoadingLayout layout = new LoadingLayout(view.getContext());
-        parent.addView(layout, index, lp);
-        layout.addView(view);
-        layout.setContentView(view);
-        return layout;
     }
 
     int mEmptyImage;
@@ -78,11 +48,15 @@ public class LoadingLayout extends FrameLayout {
     int mTextColor, mTextSize;
     int mButtonTextColor, mButtonTextSize;
     Drawable mButtonBackground;
-    int mEmptyResId = NO_ID, mLoadingResId = NO_ID, mErrorResId = NO_ID;
-    int mContentId = NO_ID;
+    int mEmptyResId;
+    int mLoadingResId;
+    int mErrorResId;
 
-    Map<Integer, View> mLayouts = new HashMap<>();
+    private int mEmptyMargin;
+    private int mErrorMargin;
+    private int mLoadingMargin;
 
+    private SparseArray<View> mLayouts = new SparseArray<>();
 
     public LoadingLayout(Context context) {
         this(context, null, R.attr.styleLoadingLayout);
@@ -95,106 +69,129 @@ public class LoadingLayout extends FrameLayout {
     public LoadingLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        mInflater = LayoutInflater.from(context);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LoadingLayout, defStyleAttr, R.style.LoadingLayout_Style);
-        mEmptyImage = a.getResourceId(R.styleable.LoadingLayout_llEmptyImage, NO_ID);
-        mEmptyText = a.getString(R.styleable.LoadingLayout_llEmptyText);
+        mLoadingResId = R.layout._loading_layout_loading;
+        mErrorResId = R.layout._loading_layout_error;
+        mEmptyResId = R.layout._loading_layout_empty;
 
-        mErrorImage = a.getResourceId(R.styleable.LoadingLayout_llErrorImage, NO_ID);
+        mTextSize = getResources().getDimensionPixelSize(R.dimen.body);
+        mButtonTextSize = getResources().getDimensionPixelSize(R.dimen.body);
+        mEmptyMargin = getResources().getDimensionPixelSize(R.dimen.content);
+        mErrorMargin = getResources().getDimensionPixelSize(R.dimen.content);
+        mLoadingMargin = getResources().getDimensionPixelSize(R.dimen.content);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LoadingLayout, defStyleAttr, R.style.LoadingLayoutStyle);
+        mEmptyImage = a.getResourceId(R.styleable.LoadingLayout_llEmptyImage, R.drawable.ic_empty);
+        mEmptyText = a.getString(R.styleable.LoadingLayout_llEmptyText);
+        mEmptyMargin = a.getDimensionPixelSize(R.styleable.LoadingLayout_llEmptyMargin, mEmptyMargin);
+        mErrorMargin = a.getDimensionPixelSize(R.styleable.LoadingLayout_llErrorMargin, mErrorMargin);
+        mLoadingMargin = a.getDimensionPixelSize(R.styleable.LoadingLayout_llLoadingMargin, mLoadingMargin);
+
+        mErrorImage = a.getResourceId(R.styleable.LoadingLayout_llErrorImage, R.drawable.ic_empty);
         mErrorText = a.getString(R.styleable.LoadingLayout_llErrorText);
         mRetryText = a.getString(R.styleable.LoadingLayout_llRetryText);
 
         mTextColor = a.getColor(R.styleable.LoadingLayout_llTextColor, 0xff999999);
-        mTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llTextSize, dp2px(16));
+        mTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llTextSize, mTextSize);
 
-        mButtonTextColor = a.getColor(R.styleable.LoadingLayout_llButtonTextColor, 0xff999999);
-        mButtonTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llButtonTextSize, dp2px(16));
-        mButtonBackground = a.getDrawable(R.styleable.LoadingLayout_llButtonBackground);
+        mButtonTextColor = a.getColor(R.styleable.LoadingLayout_llRetryTextColor, 0xff999999);
+        mButtonTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llRetryTextSize, mButtonTextSize);
+        mButtonBackground = a.getDrawable(R.styleable.LoadingLayout_llRetryBackground);
 
-        mEmptyResId = a.getResourceId(R.styleable.LoadingLayout_llEmptyResId, R.layout._loading_layout_empty);
-        mLoadingResId = a.getResourceId(R.styleable.LoadingLayout_llLoadingResId, R.layout._loading_layout_loading);
-        mErrorResId = a.getResourceId(R.styleable.LoadingLayout_llErrorResId, R.layout._loading_layout_error);
         a.recycle();
     }
 
-    int dp2px(float dp) {
-        return (int) (getResources().getDisplayMetrics().density * dp);
+    private void initLoadingLayout() {
+        View layout = LayoutInflater.from(getContext()).inflate(mLoadingResId, this, true);
+        mLayouts.put(mLoadingResId, layout);
     }
 
+    private void initErrorLayout() {
+        View layout = LayoutInflater.from(getContext()).inflate(mErrorResId, this, true);
+        ImageView iv = layout.findViewById(R.id.error_image);
+        iv.setImageResource(mErrorImage);
+        TextView tv = layout.findViewById(R.id.error_text);
+        tv.setText(mErrorText);
+        tv.setTextColor(mTextColor);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+        TextView retry = layout.findViewById(R.id.retry_button);
+        retry.setText(mRetryText);
+        retry.setTextColor(mButtonTextColor);
+        retry.setTextSize(TypedValue.COMPLEX_UNIT_PX, mButtonTextSize);
+        retry.setOnClickListener(mRetryButtonClickListener);
+        ViewCompat.setBackground(retry, mButtonBackground);
+        mLayouts.put(mErrorResId, layout);
+    }
 
-    LayoutInflater mInflater;
+    private void initEmptyLayout() {
+        View layout = LayoutInflater.from(getContext()).inflate(mEmptyResId, this, true);
+        ImageView iv = layout.findViewById(R.id.empty_image);
+        iv.setImageResource(mEmptyImage);
+        ViewGroup.MarginLayoutParams params = (MarginLayoutParams) iv.getLayoutParams();
+        params.bottomMargin = mEmptyMargin;
+        TextView tv = layout.findViewById(R.id.empty_text);
+        tv.setText(mEmptyText);
+        tv.setTextColor(mTextColor);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+        if (mOnEmptyInflateListener != null) {
+            mOnEmptyInflateListener.onInflate(layout);
+        }
+        mLayouts.put(mEmptyResId, layout);
+    }
+
+    private void initLayout(int layoutId) {
+        if (layoutId != NO_ID && mLayouts.get(layoutId) == null) {
+            if (layoutId == mLoadingResId) {
+                initLoadingLayout();
+            } else if (layoutId == mErrorResId) {
+                initErrorLayout();
+            } else if (layoutId == mEmptyResId) {
+                initEmptyLayout();
+            }
+        }
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         if (getChildCount() == 0) {
             return;
         }
-        if (getChildCount() > 1) {
-            removeViews(1, getChildCount() - 1);
-        }
-        View view = getChildAt(0);
-        setContentView(view);
-        showLoading();
+//        if (getChildCount() > 1) {
+//            removeViews(1, getChildCount() - 1);
+//        }
+//        View view = getChildAt(0);
+//        setContentView(view);
+        showEmpty();
     }
 
-    private void setContentView(View view) {
-        mContentId = view.getId();
-        mLayouts.put(mContentId, view);
-    }
-
-    public LoadingLayout setLoading(@LayoutRes int id) {
-        if (mLoadingResId != id) {
-            remove(mLoadingResId);
-            mLoadingResId = id;
-        }
-        return this;
-    }
-    public LoadingLayout setEmpty(@LayoutRes int id) {
-        if (mEmptyResId != id) {
-            remove(mEmptyResId);
-            mEmptyResId = id;
-        }
-        return this;
-    }
-    public LoadingLayout setOnEmptyInflateListener(OnInflateListener listener) {
-        mOnEmptyInflateListener = listener;
-        if (mOnEmptyInflateListener != null && mLayouts.containsKey(mEmptyResId)) {
-            listener.onInflate(mLayouts.get(mEmptyResId));
-        }
-        return this;
-    }
-    public LoadingLayout setOnErrorInflateListener(OnInflateListener listener) {
-        mOnErrorInflateListener = listener;
-        if (mOnErrorInflateListener != null && mLayouts.containsKey(mErrorResId)) {
-            listener.onInflate(mLayouts.get(mErrorResId));
-        }
-        return this;
-    }
 
     public LoadingLayout setEmptyImage(@DrawableRes int resId) {
         mEmptyImage = resId;
-        image(mEmptyResId, R.id.empty_image, mEmptyImage);
+        setImage(mEmptyResId, R.id.empty_image, mEmptyImage);
         return this;
     }
-    public LoadingLayout setEmptyText(String value) {
-        mEmptyText = value;
-        text(mEmptyResId, R.id.empty_text, mEmptyText);
+
+    public LoadingLayout setEmptyText(CharSequence text) {
+        mEmptyText = text;
+        setText(mEmptyResId, R.id.empty_text, mEmptyText);
         return this;
     }
+
     public LoadingLayout setErrorImage(@DrawableRes int resId) {
         mErrorImage = resId;
-        image(mErrorResId, R.id.error_image, mErrorImage);
+        setImage(mErrorResId, R.id.error_image, mErrorImage);
         return this;
     }
-    public LoadingLayout setErrorText(String value) {
-        mErrorText = value;
-        text(mErrorResId, R.id.error_text, mErrorText);
+
+    public LoadingLayout setErrorText(String text) {
+        mErrorText = text;
+        setText(mErrorResId, R.id.error_text, mErrorText);
         return this;
     }
 
     public LoadingLayout setRetryText(String text) {
         mRetryText = text;
-        text(mErrorResId, R.id.retry_button, mRetryText);
+        setText(mErrorResId, R.id.retry_button, mRetryText);
         return this;
     }
 
@@ -202,28 +199,6 @@ public class LoadingLayout extends FrameLayout {
         mRetryListener = listener;
         return this;
     }
-
-
-//    public LoadingLayout setTextColor(@ColorInt int color) {
-//        mTextColor = color;
-//        return this;
-//    }
-//    public LoadingLayout setTextSize(@ColorInt int dp) {
-//        mTextColor = dp2px(dp);
-//        return this;
-//    }
-//    public LoadingLayout setButtonTextColor(@ColorInt int color) {
-//        mButtonTextColor = color;
-//        return this;
-//    }
-//    public LoadingLayout setButtonTextSize(@ColorInt int dp) {
-//        mButtonTextColor = dp2px(dp);
-//        return this;
-//    }
-//    public LoadingLayout setButtonBackground(Drawable drawable) {
-//        mButtonBackground = drawable;
-//        return this;
-//    }
 
     public void showLoading() {
         show(mLoadingResId);
@@ -238,84 +213,37 @@ public class LoadingLayout extends FrameLayout {
     }
 
     public void showContent() {
-        show(mContentId);
+        show(NO_ID);
     }
 
     private void show(int layoutId) {
-        for (View view : mLayouts.values()) {
-            view.setVisibility(GONE);
+        // 初始化布局
+        initLayout(layoutId);
+        // 显示或隐藏相应的布局
+        for (int i = 0; i < mLayouts.size(); i++) {
+            int id = mLayouts.keyAt(i);
+            View view = mLayouts.valueAt(i);
+            view.setVisibility(layoutId == id ? VISIBLE : GONE);
+            if (layoutId == id) {
+                view.bringToFront();
+            }
         }
-        layout(layoutId).setVisibility(VISIBLE);
     }
 
-    private void remove(int layoutId) {
-        if (mLayouts.containsKey(layoutId)) {
-            View vg = mLayouts.remove(layoutId);
-            removeView(vg);
-        }
-    }
-
-    private View layout(int layoutId) {
-        if (mLayouts.containsKey(layoutId)) {
-            return mLayouts.get(layoutId);
-        }
-        View layout = mInflater.inflate(layoutId, this, false);
-        layout.setVisibility(GONE);
-        addView(layout);
-        mLayouts.put(layoutId, layout);
-
-        if (layoutId == mEmptyResId) {
-            ImageView img = (ImageView) layout.findViewById(R.id.empty_image);
-            if (img != null) {
-                img.setImageResource(mEmptyImage);
-            }
-            TextView view = (TextView) layout.findViewById(R.id.empty_text);
-            if (view != null) {
-                view.setText(mEmptyText);
-                view.setTextColor(mTextColor);
-                view.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-            }
-            if (mOnEmptyInflateListener != null) {
-                mOnEmptyInflateListener.onInflate(layout);
-            }
-        } else if (layoutId == mErrorResId) {
-            ImageView img = (ImageView) layout.findViewById(R.id.error_image);
-            if (img != null) {
-                img.setImageResource(mErrorImage);
-            }
-            TextView txt = (TextView) layout.findViewById(R.id.error_text);
-            if (txt != null) {
-                txt.setText(mErrorText);
-                txt.setTextColor(mTextColor);
-                txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-            }
-            TextView btn = (TextView) layout.findViewById(R.id.retry_button);
-            if (btn != null) {
-                btn.setText(mRetryText);
-                btn.setTextColor(mButtonTextColor);
-                btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, mButtonTextSize);
-                btn.setBackground(mButtonBackground);
-                btn.setOnClickListener(mRetryButtonClickListener);
-            }
-            if (mOnErrorInflateListener != null) {
-                mOnErrorInflateListener.onInflate(layout);
-            }
-        }
-        return layout;
-    }
-
-    private void text(int layoutId, int ctrlId, CharSequence value) {
-        if (mLayouts.containsKey(layoutId)) {
-            TextView view = (TextView) mLayouts.get(layoutId).findViewById(ctrlId);
+    private void setText(int layoutId, int tvId, CharSequence value) {
+        View layout = mLayouts.get(layoutId);
+        if (layout != null) {
+            TextView view = layout.findViewById(tvId);
             if (view != null) {
                 view.setText(value);
             }
         }
     }
 
-    private void image(int layoutId, int ctrlId, int resId) {
-        if (mLayouts.containsKey(layoutId)) {
-            ImageView view = (ImageView) mLayouts.get(layoutId).findViewById(ctrlId);
+    private void setImage(int layoutId, int ivId, int resId) {
+        View layout = mLayouts.get(layoutId);
+        if (layout != null) {
+            ImageView view = layout.findViewById(ivId);
             if (view != null) {
                 view.setImageResource(resId);
             }

@@ -29,8 +29,8 @@
     <item name="android_toolbar_action_text" type="id" />
     <item name="android_toolbar_divider" type="id" />
 
-    <item name="android_header" type="id"/>
-    <item name="android_footer" type="id"/>
+    <item name="android_header" type="id" />
+    <item name="android_footer" type="id" />
     <!-- 布局父容器ID -->
     <item name="android_parent_container" type="id" />
 
@@ -38,4 +38,14 @@
     <item name="android_input_toggle" type="id" />
     <item name="hierarchy" type="id" />
     <item name="isexpand" type="id" />
+
+    <!-- 多状态（LoadingLayout）容器ID -->
+    <item name="android_loading_empty_img" type="id" />
+    <item name="android_loading_empty_text" type="id" />
+    <item name="android_loading_error_img" type="id" />
+    <item name="android_loading_error_text" type="id" />
+    <item name="android_loading_error_retry" type="id" />
+    <item name="android_loading_loading_view" type="id" />
+    <item name="android_loading_loading_text" type="id" />
+
 </resources>

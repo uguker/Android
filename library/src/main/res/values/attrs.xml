@@ -79,6 +79,10 @@
         <attr name="tbDividerVisible" format="dimension" />
     </declare-styleable>
 
+    <style name="CommonToolbarStyle">
+        <item name="android:id">@id/__android_toolbar</item>
+    </style>
+
     <attr name="dividerColor" format="dimension" />
     <attr name="dividerHeight" format="dimension" />
     <attr name="dividerSpace" format="dimension" />

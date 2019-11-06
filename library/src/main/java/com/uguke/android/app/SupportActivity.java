@@ -163,17 +163,17 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
     public void onCreating(@Nullable Bundle savedInstanceState) {}
 
     @Override
-    public final void setContentView(@LayoutRes int id) {
+    public void setContentView(@LayoutRes int id) {
         mLayoutDelegate.setContentView(id);
     }
 
     @Override
-    public final void setContentView(View view) {
+    public void setContentView(View view) {
         mLayoutDelegate.setContentView(view);
     }
 
     @Override
-    public final void setContentView(View view, ViewGroup.LayoutParams params) {
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
         view.setLayoutParams(params);
         mLayoutDelegate.setContentView(view);
     }
@@ -193,66 +193,52 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
 
     @Override
     public void showContent() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showContent();
-        }
+        mLayoutDelegate.showContent();
     }
 
     @Override
     public void showEmpty() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showEmpty();
-        }
+        mLayoutDelegate.showEmpty();
     }
 
     @Override
     public void showEmpty(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError(text);
-        }
+        mLayoutDelegate.showEmpty(text);
     }
 
     @Override
     public void showError() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError();
-        }
+        mLayoutDelegate.showError();
     }
 
     @Override
     public void showError(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError(text);
-        }
+        mLayoutDelegate.showError(text);
     }
 
     @Override
     public void showLoading() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showLoading();
-        }
+        mLayoutDelegate.showLoading();
     }
 
     @Override
     public void showLoading(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showLoading(text);
-        }
+        mLayoutDelegate.showLoading(text);
     }
 
-    public final void setSimpleContentView(@LayoutRes int id) {
+    public void setSimpleContentView(@LayoutRes int id) {
         mLayoutDelegate.setSimpleContentView(id);
     }
 
-    public final void setSimpleContentView(View view) {
+    public void setSimpleContentView(View view) {
         mLayoutDelegate.setSimpleContentView(view);
     }
 
-    public final void setNativeContentView(@LayoutRes int id) {
+    public void setNativeContentView(@LayoutRes int id) {
         mLayoutDelegate.setNativeContentView(id);
     }
 
-    public final void setNativeContentView(View view) {
+    public void setNativeContentView(View view) {
         mLayoutDelegate.setNativeContentView(view);
     }
 

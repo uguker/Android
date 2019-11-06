@@ -165,8 +165,15 @@ public class CommonToolbar extends RelativeLayout {
     }
 
     private void obtainAttributes(AttributeSet attrs) {
+        // 设置默认的标题ID
+        if (getId() == NO_ID) {
+            setId(R.id.__android_toolbar);
+        }
+
         if (attrs != null) {
             TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.CommonToolbar);
+            String w = ta.getString(0);
+
             // 返回按钮
             Drawable backIcon = ta.getDrawable(R.styleable.CommonToolbar_tbBackIcon);
             // 文本信息

@@ -6,14 +6,16 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-
+import com.uguke.android.app.GeneralActivity;
+import com.uguke.android.app.SimpleActivity;
 import com.uguke.android.app.SupportActivity;
+import com.uguke.android.widget.CommonToolbar;
 
 /**
  * @author LeiJue
  */
 @SuppressLint("Registered")
-public class ListActivity extends SupportActivity {
+public class ListActivity extends SimpleActivity {
 
 //    @BindView(R.id.tv)
     TextView tv;
@@ -21,16 +23,18 @@ public class ListActivity extends SupportActivity {
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
-        setNativeContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         setDefaultFragmentBackground(R.color.background);
         //setNativeContentView(R.layout.activity_main);
         tv = findViewById(R.id.tv);
-        loadRootFragment(R.id.content, new TestFragment());
+        //loadRootFragment(R.id.content, new TestFragment());
 
-        start(new SSFragment());
+        //start(new SSFragment());
 
 
+//        new CommonToolbar(this);
 
+showLoading();
 
 //        mToolbar.setTitle("测试标题");
 

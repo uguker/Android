@@ -31,7 +31,7 @@ public class TestFragment extends SupportFragment {
         hideToolbar();
         showContent();
         tv.setText("填词啊");
-        //showLoading("我在加载中");
+        showLoading("我在加载中");
 
 
 //                .onNext(event -> {

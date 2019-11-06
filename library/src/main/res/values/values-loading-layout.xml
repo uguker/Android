@@ -5,6 +5,7 @@
     <attr name="styleLoadingLayout" format="reference" />
 
     <declare-styleable name="LoadingLayout">
+        <attr name="llBackground" format="reference" />
         <attr name="llTextColor" format="color" />
         <attr name="llTextSize" format="dimension" />
         <!-- 空布局 -->
@@ -31,9 +32,10 @@
     </declare-styleable>
 
     <style name="LoadingLayoutStyle">
-        <item name="llTextColor">#999999</item>
+        <item name="android:id">@id/__android_loading</item>
+        <item name="llTextColor">@color/tint</item>
         <item name="llTextSize">@dimen/body</item>
-        <item name="llRetryTextColor">#999999</item>
+        <item name="llRetryTextColor">@color/tint</item>
         <item name="llRetryTextSize">@dimen/body</item>
         <item name="llRetryBackground">@drawable/_loading_layout_button</item>
         <item name="llEmptyImage">@null</item>
@@ -41,6 +43,7 @@
         <item name="llErrorImage">@null</item>
         <item name="llErrorText">无网络连接，请检查您的网络...</item>
         <item name="llRetryText">加载失败，点击重试~~</item>
+        <item name="llBackground">@color/background</item>
     </style>
 
 </resources>

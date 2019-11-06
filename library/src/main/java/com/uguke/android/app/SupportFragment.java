@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
@@ -318,51 +317,37 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
 
     @Override
     public void showContent() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showContent();
-        }
+        mLayoutDelegate.showContent();
     }
 
     @Override
     public void showEmpty() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showEmpty();
-        }
+        mLayoutDelegate.showEmpty();
     }
 
     @Override
     public void showEmpty(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError(text);
-        }
+        mLayoutDelegate.showEmpty(text);
     }
 
     @Override
     public void showError() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError();
-        }
+        mLayoutDelegate.showError();
     }
 
     @Override
     public void showError(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError(text);
-        }
+        mLayoutDelegate.showError(text);
     }
 
     @Override
     public void showLoading() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showLoading();
-        }
+        mLayoutDelegate.showLoading();
     }
 
     @Override
     public void showLoading(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showLoading(text);
-        }
+        mLayoutDelegate.showLoading(text);
     }
 
     public final void setContentView(@LayoutRes int id) {
@@ -406,6 +391,14 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
 
     public void showTips(String tips) {
         mLayoutDelegate.showTips(tips);
+    }
+
+    public void showLoadingTips(String tips) {
+        mLayoutDelegate.showLoadingTips(tips);
+    }
+
+    public void hideLoadingTips() {
+        mLayoutDelegate.hideLoadingTips();
     }
 
     public void addDisposable(Disposable disposable) {

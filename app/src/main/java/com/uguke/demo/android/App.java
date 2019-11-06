@@ -18,6 +18,9 @@ public class App extends Application {
         AppDelegate.getInstance()
                 .init(this)
                 .setSwipeBackSupport(true);
+        AppDelegate.getInstance()
+                .init(this)
+                .setSwipeBackSupport(true);
 
     }
 }

@@ -33,7 +33,7 @@ public class TabbedFragment extends SupportFragment {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
         }
         // Tab选项
-        mTabLayout = findViewById(R.id.android_tab);
+        mTabLayout = findViewById(R.id.__android_tab);
         mTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
 
             @Override
@@ -130,7 +130,7 @@ public class TabbedFragment extends SupportFragment {
             for (int i = 0, len = tabs.length; i < len; i++) {
                 mFragments[i] = tabs[i].newFragment();
             }
-            mDelegate.loadMultipleRootFragment(R.id.android_fragment, 0, mFragments);
+            mDelegate.loadMultipleRootFragment(R.id.__android_fragment, 0, mFragments);
         } else {
             for (int i = 0, len = tabs.length; i < len; i++) {
                 mFragments[i] = findFragmentByTag(tabs[0].getTag());

@@ -8,32 +8,32 @@
 
     <!-- 头部布局 -->
     <FrameLayout
-        android:id="@+id/android_header"
+        android:id="@id/__android_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/android_fragment"
+        android:id="@id/__android_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/android_footer"
-        android:layout_below="@id/android_header">
+        android:layout_above="@id/__android_footer"
+        android:layout_below="@id/__android_header">
 
     </FrameLayout>
 
     <!-- 底部布局 -->
     <FrameLayout
-        android:id="@+id/android_footer"
+        android:id="@id/__android_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/android_tab">
+        android:layout_above="@id/__android_tab">
 
     </FrameLayout>
 
     <com.uguke.android.widget.CommonTabLayout
-        android:id="@+id/android_tab"
+        android:id="@id/__android_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tabbed"
         android:layout_alignParentBottom="true"

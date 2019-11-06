@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@id/android_loading_empty_img"
+        android:id="@id/__android_loading_empty_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -16,7 +16,7 @@
         android:contentDescription="@string/app_name" />
 
     <TextView
-        android:id="@id/android_loading_empty_text"
+        android:id="@id/__android_loading_empty_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

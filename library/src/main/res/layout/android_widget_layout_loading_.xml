@@ -9,12 +9,12 @@
     android:paddingBottom="30dp">
 
     <com.uguke.android.widget.LoadingView
-        android:id="@id/android_loading_loading_view"
+        android:id="@id/__android_loading_loading_view"
         android:layout_width="50dp"
         android:layout_height="50dp" />
 
     <TextView
-        android:id="@id/android_loading_loading_text"
+        android:id="@id/__android_loading_loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

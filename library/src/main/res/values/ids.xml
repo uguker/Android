@@ -17,20 +17,10 @@
     <item name="rightCheckBoxId" type="id" />
     <item name="rightSwitchId" type="id" />
 
-    <!-- Toolbar ID资源 -->
-    <item name="android_toolbar_title" type="id" />
-    <item name="android_toolbar_back" type="id" />
-    <item name="android_toolbar_back_text" type="id" />
-    <item name="android_toolbar_back_icon" type="id" />
-    <item name="android_toolbar_navigation_icon" type="id" />
-    <item name="android_toolbar_back_container" type="id" />
-    <item name="android_toolbar_container" type="id" />
-    <item name="android_toolbar_action_container" type="id" />
-    <item name="android_toolbar_action_text" type="id" />
-    <item name="android_toolbar_divider" type="id" />
+
 
     <!-- 布局父容器ID -->
-    <item name="android_parent_container" type="id" />
+
 
     <item name="android_input_delete" type="id" />
     <item name="android_input_toggle" type="id" />
@@ -38,21 +28,35 @@
     <item name="isexpand" type="id" />
 
     <!-- 多状态（LoadingLayout）容器ID -->
-    <item name="android_loading_empty_img" type="id" />
-    <item name="android_loading_empty_text" type="id" />
-    <item name="android_loading_error_img" type="id" />
-    <item name="android_loading_error_text" type="id" />
-    <item name="android_loading_error_retry" type="id" />
-    <item name="android_loading_loading_view" type="id" />
-    <item name="android_loading_loading_text" type="id" />
+    <item name="__android_loading_empty_img" type="id" />
+    <item name="__android_loading_empty_text" type="id" />
+    <item name="__android_loading_error_img" type="id" />
+    <item name="__android_loading_error_text" type="id" />
+    <item name="__android_loading_error_retry" type="id" />
+    <item name="__android_loading_loading_view" type="id" />
+    <item name="__android_loading_loading_text" type="id" />
 
-    <!-- 布局ID -->
-    <item name="android_bar" type="id" />
-    <item name="android_toolbar" type="id" />
-    <item name="android_loading" type="id" />
-    <item name="android_content" type="id" />
-    <item name="android_fragment" type="id" />
-    <item name="android_header" type="id" />
-    <item name="android_footer" type="id" />
+    <!-- 自定义控件CommonToolbar ID资源 -->
+    <item name="__android_toolbar_title" type="id" />
+    <item name="__android_toolbar_back" type="id" />
+    <item name="__android_toolbar_back_text" type="id" />
+    <item name="__android_toolbar_back_icon" type="id" />
+    <item name="__android_toolbar_navigation_icon" type="id" />
+    <item name="__android_toolbar_back_container" type="id" />
+    <item name="__android_toolbar_container" type="id" />
+    <item name="__android_toolbar_action_container" type="id" />
+    <item name="__android_toolbar_action_text" type="id" />
+    <item name="__android_toolbar_divider" type="id" />
+
+    <!-- 默认布局 ID资源 -->
+    <item name="__android_bar" type="id" />
+    <item name="__android_tab" type="id" />
+    <item name="__android_toolbar" type="id" />
+    <item name="__android_loading" type="id" />
+    <item name="__android_content" type="id" />
+    <item name="__android_fragment" type="id" />
+    <item name="__android_header" type="id" />
+    <item name="__android_footer" type="id" />
+    <item name="__android_parent_container" type="id" />
 
 </resources>

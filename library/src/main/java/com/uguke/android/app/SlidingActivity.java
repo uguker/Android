@@ -1,5 +1,6 @@
 package com.uguke.android.app;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,9 @@ public class SlidingActivity extends SupportActivity {
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);
         }
-        mViewPager = findViewById(R.id.android_fragment);
-        mTabLayout = findViewById(R.id.android_tab);
-        mToolbar = findViewById(R.id.android_toolbar);
+        mViewPager = findViewById(R.id.__android_fragment);
+        mTabLayout = findViewById(R.id.__android_tab);
+        mToolbar = findViewById(R.id.__android_toolbar);
         // 点击回退事件
         if (mToolbar != null) {
             mToolbar.setBackListener(new View.OnClickListener() {

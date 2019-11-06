@@ -309,8 +309,6 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
 
     @Override
     public void onViewCreated(View view) {
-        // 处理头部和底部
-        //onHandleCreators(view);
         mContentView = view;
         // 初始化控件
         mLoadingLayout = mLayoutDelegate.getLoadingLayout();
@@ -391,11 +389,11 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
         mLayoutDelegate.setNativeContentView(view);
     }
 
-    public ViewCreator onCreateHeader(ViewGroup container) {
+    public ViewCreator onCreateHeader(@NonNull ViewGroup container) {
         return null;
     }
 
-    public ViewCreator onCreateFooter(ViewGroup container) {
+    public ViewCreator onCreateFooter(@NonNull ViewGroup container) {
         return null;
     }
 
@@ -413,43 +411,6 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     public void addDisposable(Disposable disposable) {
         mDisposable.add(disposable);
     }
-
-//    protected void onHandleCreators(View view) {
-//        ViewGroup headerParent = view.findViewById(R.id.android_header);
-//        ViewGroup footerParent = view.findViewById(R.id.android_footer);
-//        ViewCreator headerCreator = onCreateHeader(headerParent);
-//        ViewCreator footerCreator = onCreateFooter(footerParent);
-//        // 初始化头部
-//        if (headerCreator != null) {
-//            headerParent.removeAllViews();
-//            // 根据额外数据来判定是否浮动
-//            Object extras = headerCreator.getExtras();
-//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-//            View header = LayoutInflater.from(mActivity).inflate(headerCreator.getLayoutResId(), headerParent, true);
-//            header.bringToFront();
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-//            if (!floating) {
-//                params.addRule(RelativeLayout.BELOW, R.id.android_header);
-//            }
-//            mRefreshLayout.setLayoutParams(params);
-//        }
-//        // 初始化底部
-//        if (footerCreator != null) {
-//            // 根据额外数据来判定是否浮动
-//            Object extras = footerCreator.getExtras();
-//            // 额外数据为空，直接判定为不浮动
-//            // 额外数据为布尔类型，false为不浮动
-//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-//            View footer = LayoutInflater.from(mActivity).inflate(footerCreator.getLayoutResId(), footerParent, true);
-//            footer.bringToFront();
-//
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-//            if (!floating) {
-//                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
-//            }
-//            mRefreshLayout.setLayoutParams(params);
-//        }
-//    }
 
     /**
      * 是否支持侧滑返回 true 支持 false 不支持
@@ -625,7 +586,7 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     }
 
     public void hideToolbar() {
-        View view = findViewById(R.id.android_bar);
+        View view = findViewById(R.id.__android_bar);
         if (view != null) {
             view.setVisibility(View.GONE);
         } else if (mToolbar != null) {

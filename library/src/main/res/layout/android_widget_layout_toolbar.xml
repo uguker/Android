@@ -7,14 +7,14 @@
     tools:ignore="RelativeOverlap, UseCompoundDrawables">
 
     <LinearLayout
-        android:id="@id/android_toolbar_back_container"
+        android:id="@id/__android_toolbar_back_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@id/android_toolbar_back_icon"
+            android:id="@id/__android_toolbar_back_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -27,7 +27,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@id/android_toolbar_back_text"
+            android:id="@id/__android_toolbar_back_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@id/android_toolbar_title"
+        android:id="@id/__android_toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -49,12 +49,12 @@
         android:textSize="@dimen/h1" />
 
     <TextView
-        android:id="@id/android_toolbar_action_text"
+        android:id="@id/__android_toolbar_action_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:id="@id/android_toolbar_action_container"
+        android:id="@id/__android_toolbar_action_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -67,7 +67,7 @@
     </LinearLayout>
 
     <View
-        android:id="@id/android_toolbar_divider"
+        android:id="@id/__android_toolbar_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider"
         android:layout_alignParentBottom="true"

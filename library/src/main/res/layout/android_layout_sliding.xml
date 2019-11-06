@@ -7,13 +7,13 @@
 
     <!-- 标题容器 -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@id/android_bar"
+        android:id="@id/__android_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
         <com.uguke.android.widget.CommonToolbar
-            android:id="@id/android_toolbar"
+            android:id="@id/__android_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar"
             app:tbBackIcon="@drawable/def_back_common_dark"
@@ -32,7 +32,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.uguke.android.widget.SlidingTabLayout
-            android:id="@id/android_tab"
+            android:id="@id/__android_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
             android:layout_alignParentTop="true"
@@ -46,26 +46,26 @@
 
         <!-- 头部布局 -->
         <FrameLayout
-            android:id="@id/android_header"
+            android:id="@id/__android_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/android_tab">
+            android:layout_below="@id/__android_tab">
 
         </FrameLayout>
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@id/android_fragment"
+            android:id="@id/__android_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/android_header"
-            android:layout_above="@id/android_footer"
+            android:layout_below="@id/__android_header"
+            android:layout_above="@id/__android_footer"
             android:overScrollMode="never">
 
         </androidx.viewpager.widget.ViewPager>
 
         <!-- 底部布局 -->
         <FrameLayout
-            android:id="@id/android_footer"
+            android:id="@id/__android_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">

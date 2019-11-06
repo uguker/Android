@@ -1,22 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.uguke.android.widget.LoadingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/__android_loading"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/android_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+    <!-- 头部布局 -->
     <FrameLayout
-        android:id="@+id/android_empty"
+        android:id="@id/__android_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
     </FrameLayout>
 
-</FrameLayout>
+    <!-- 底部布局 -->
+    <FrameLayout
+        android:id="@id/__android_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+    </FrameLayout>
+
+    <!-- 刷新界面 -->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/__android_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/__android_footer"
+        android:layout_below="@id/__android_header"
+        android:overScrollMode="never"
+        app:srlEnablePureScrollMode="true"
+        app:srlEnableScrollContentWhenRefreshed="false"
+        app:srlFixedFooterViewId="@id/footer_fixed"
+        app:srlFixedHeaderViewId="@id/header_fixed"
+        app:srlFooterTranslationViewId="@id/footer_translation"
+        app:srlHeaderTranslationViewId="@id/header_translation">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/android_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <FrameLayout
+            android:id="@+id/android_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+        </FrameLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</com.uguke.android.widget.LoadingLayout>

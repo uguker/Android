@@ -25,7 +25,7 @@ public abstract class BasePageActivity<T> extends SupportActivity {
     @Override
     public void onCreating(@Nullable Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
-        setContentView(R.layout.android_layout_refresh);
+        setContentView(R.layout.android_layout_page);
         mRecycler = findViewById(R.id.android_recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = onCreateAdapter();

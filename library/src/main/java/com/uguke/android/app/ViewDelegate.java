@@ -1,7 +1,6 @@
 package com.uguke.android.app;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
 import com.uguke.android.adapter.LifecycleAdapter;
-import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.helper.TipsHelper;
 import com.uguke.android.util.CloneUtils;
 import com.uguke.android.widget.CommonToolbar;
@@ -36,14 +34,23 @@ class ViewDelegate {
 
     private SupportActivity mActivity;
     private SupportFragment mFragment;
-    private TipsHelper mTipsHelper;
-    private CommonToolbar mToolbar;
+    /** 布局加载器 **/
     private LayoutInflater mInflater;
-    private View mContentView;
+    /** 总的布局 **/
+    private View mGeneralView;
+    /** 标题栏 **/
+    private CommonToolbar mToolbar;
+    /** 父容器 **/
     private ViewGroup mParentContainer;
+    /** 刷新界面 **/
     private ViewGroup mRefreshLayout;
+    /** 加载布局 **/
     private LoadingLayout mLoadingLayout;
+    /** 提示辅助工具 **/
+    private TipsHelper mTipsHelper;
+    /** 简单生命周期适配器 **/
     private LifecycleAdapter mLifecycleAdapter;
+    /** 页面创建完毕回调 **/
     private List<ViewCreatedCallback> mLifeCallbacks = new ArrayList<>();
 
     public ViewDelegate(SupportActivity activity) {
@@ -55,7 +62,6 @@ class ViewDelegate {
         mFragment = fragment;
         initLifecycleAdapter();
     }
-
     /**
      * 创建布局
      */
@@ -85,7 +91,7 @@ class ViewDelegate {
             // 如果不能获取到根容器，则手动生成一个根容器
             if (mParentContainer == null) {
                 mParentContainer = new FrameLayout(mActivity);
-                mParentContainer.setTag(R.id.android_parent_container, PARENT_VIEW_TAG);
+                mParentContainer.setTag(R.id.__android_parent_container, PARENT_VIEW_TAG);
                 mParentContainer.setLayoutParams(new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
@@ -127,10 +133,10 @@ class ViewDelegate {
      */
     public void setContentView(@LayoutRes int id) {
         // 默认界面，常用的刷新界面
-        mContentView = mInflater.inflate(R.layout.android_layout_default, mParentContainer, false);
-        mRefreshLayout = mContentView.findViewById(R.id.android_refresh);
-        mLoadingLayout = mContentView.findViewById(R.id.android_loading);
-        mToolbar = mContentView.findViewById(R.id.android_toolbar);
+        mGeneralView = mInflater.inflate(R.layout.android_layout_default, mParentContainer, false);
+        mRefreshLayout = mGeneralView.findViewById(R.id.__android_refresh);
+        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
+        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
         mInflater.inflate(id, mRefreshLayout, true);
         // 初始化头部和底部
         initHeaderAndFooter();
@@ -146,10 +152,10 @@ class ViewDelegate {
      */
     public void setContentView(View view) {
         // 默认界面，常用的刷新界面
-        mContentView = mInflater.inflate(R.layout.android_layout_default, mParentContainer, false);
-        mRefreshLayout = mContentView.findViewById(R.id.android_refresh);
-        mLoadingLayout = mContentView.findViewById(R.id.android_loading);
-        mToolbar = mContentView.findViewById(R.id.android_toolbar);
+        mGeneralView = mInflater.inflate(R.layout.android_layout_default, mParentContainer, false);
+        mRefreshLayout = mGeneralView.findViewById(R.id.__android_refresh);
+        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
+        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
         mRefreshLayout.addView(view);
         // 初始化头部和底部
         initHeaderAndFooter();
@@ -165,12 +171,12 @@ class ViewDelegate {
      */
     public void setSimpleContentView(@LayoutRes int id) {
         // 简单布局界面，只有标题
-        mContentView = mInflater.inflate(R.layout.android_layout_simple, mParentContainer, false);
-        mLoadingLayout = mContentView.findViewById(R.id.android_loading);
-        mToolbar = mContentView.findViewById(R.id.android_toolbar);
+        mGeneralView = mInflater.inflate(R.layout.android_layout_simple, mParentContainer, false);
+        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
+        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
         View view = mInflater.inflate(id, mLoadingLayout, false);
         mLoadingLayout.addView(view);
-        view.setId(R.id.android_content);
+        view.setId(R.id.__android_content);
         // 初始化头部和底部
         initHeaderAndFooter();
         // 全局处理控件
@@ -185,11 +191,11 @@ class ViewDelegate {
      */
     public void setSimpleContentView(View view) {
         // 简单布局界面，只有标题
-        mContentView = mInflater.inflate(R.layout.android_layout_simple, mParentContainer, false);
-        mLoadingLayout = mContentView.findViewById(R.id.android_loading);
-        mToolbar = mContentView.findViewById(R.id.android_toolbar);
+        mGeneralView = mInflater.inflate(R.layout.android_layout_simple, mParentContainer, false);
+        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
+        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
         mLoadingLayout.addView(view);
-        view.setId(R.id.android_content);
+        view.setId(R.id.__android_content);
         // 初始化头部和底部
         initHeaderAndFooter();
         // 全局处理控件
@@ -203,14 +209,14 @@ class ViewDelegate {
      * @param id 布局界面资源ID
      */
     public void setNativeContentView(@LayoutRes int id) {
-        Object tag = mParentContainer.getTag(R.id.android_parent_container);
+        Object tag = mParentContainer.getTag(R.id.__android_parent_container);
         if (PARENT_VIEW_TAG.equals(tag)) {
             // 如果是手动添加的容器则清空控件
             mParentContainer.removeAllViews();
             mInflater.inflate(id, mParentContainer, true);
-            mContentView = mParentContainer;
+            mGeneralView = mParentContainer;
         } else {
-            mContentView = mInflater.inflate(id, mParentContainer, false);
+            mGeneralView = mInflater.inflate(id, mParentContainer, false);
         }
         // 初始化头部和底部
         initHeaderAndFooter();
@@ -225,16 +231,15 @@ class ViewDelegate {
      *  @param view 布局界面
      */
     public void setNativeContentView(View view) {
-        Object tag = mParentContainer.getTag(R.id.android_parent_container);
+        Object tag = mParentContainer.getTag(R.id.__android_parent_container);
         if (PARENT_VIEW_TAG.equals(tag)) {
             // 如果是手动添加的容器则清空控件
             mParentContainer.removeAllViews();
             mParentContainer.addView(view);
-            mContentView = mParentContainer;
+            mGeneralView = mParentContainer;
         } else {
-            mContentView = view;
+            mGeneralView = view;
         }
-
         initHeaderAndFooter();
         // 全局处理控件
         handleViews();
@@ -243,58 +248,11 @@ class ViewDelegate {
         // 初始化头部和底部
     }
 
-//    public ViewCreator onCreateHeader(ViewGroup container) {
-//        return null;
-//    }
-//
-//    public ViewCreator onCreateFooter(ViewGroup container) {
-//        return null;
-//    }
-
     public void showTips(String tips) {
         if (mTipsHelper == null) {
-            mTipsHelper = TipsHelper.make(mContentView);
+            mTipsHelper = TipsHelper.make(mGeneralView);
         }
         mTipsHelper.setText(tips).show();
-    }
-
-
-//    /**
-//     * 显示加载
-//     */
-//    public void showLoading(String ...texts) {
-//        if (mContentView == null) {
-//            throw new IllegalStateException("can't request showLoading before contentView inflated.");
-//        }
-//        // 初始化加载容器
-//        initLoadingContainer();
-//        LoadingAdapter adapter = AppDelegate.getInstance().getLoadingAdapter();
-//        boolean isUseTexts = adapter.isUseTexts();
-//        boolean isEmptyText = texts == null || texts.length == 0;
-//        // 如果加载框使用文本信息或文本信息为空
-//        if (isUseTexts || isEmptyText) {
-//            adapter.show(texts);
-//        } else {
-//            if (mTipsHelper == null) {
-//                mTipsHelper = TipsHelper.make(mLoadingLayout);
-//            }
-//            mLoadingLayout.setVisibility(View.VISIBLE);
-//            mTipsHelper.setView(mLoadingLayout)
-//                    .setDuration(TipsHelper.DURATION_MANUAL)
-//                    .setText(texts[0])
-//                    .show();
-//        }
-//    }
-
-    /**
-     * 隐藏加载
-     */
-    public void hideLoading() {
-        LoadingAdapter adapter = AppDelegate.getInstance().getLoadingAdapter();
-        adapter.hide();
-        if (mTipsHelper != null) {
-            mTipsHelper.hide();
-        }
     }
 
     public void addLifeCallback(@NonNull ViewCreatedCallback callback) {
@@ -308,118 +266,53 @@ class ViewDelegate {
         }
     }
 
+    /**
+     * 初始化头部和底部
+     */
     void initHeaderAndFooter() {
-        ViewGroup headerParent = mContentView.findViewById(R.id.android_header);
-        ViewGroup footerParent = mContentView.findViewById(R.id.android_footer);
+        ViewGroup headerParent = mGeneralView.findViewById(R.id.__android_header);
+        ViewGroup footerParent = mGeneralView.findViewById(R.id.__android_footer);
         ViewCreator headerCreator = mFragment == null ?
                 mActivity.onCreateHeader(headerParent) :
                 mFragment.onCreateHeader(headerParent);
         ViewCreator footerCreator = mFragment == null ?
                 mActivity.onCreateFooter(footerParent) :
                 mFragment.onCreateFooter(footerParent);
-//        View contentView = null;
-        if (mContentView.getId() == R.id.android_fragment ||
-                mContentView.getId() == R.id.android_content) {
-            Log.e("数据", "是这样的");
-//            ViewGroup parent = (ViewGroup) mContentView;
-//            if (parent.getChildCount() > 0) {
-//                contentView = parent.getChildAt(0).findViewById(R.id.android_fragment);
-//                if (contentView == null) {
-//                    contentView = parent.getChildAt(0).findViewById(R.id.android_content);
-//                }
-//            }
-        }
-//        else {
-//            Log.e("数据", "是这样的2");
-//            contentView = mContentView.findViewById(R.id.android_fragment);
-//            if (contentView == null) {
-//                contentView = mContentView.findViewById(R.id.android_content);
-//            }
-//        }
-//        if (contentView == null) {
-//            return;
-//        }
-//
-//        Log.e("数据", "是这样的3");
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
         // 初始化头部
         if (headerCreator != null) {
-            if (headerParent.getChildCount() == 0) {
-                View header = LayoutInflater.from(mActivity).inflate(headerCreator.getLayoutResId(), headerParent, true);
-                //header.bringToFront();
-            }
+            headerParent.removeAllViews();
+            headerParent.addView(headerCreator.getView());
             boolean floating = headerCreator.isFloating();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+
             if (!floating) {
-                params.addRule(RelativeLayout.BELOW, R.id.android_header);
+                params.addRule(RelativeLayout.BELOW, R.id.__android_header);
             }
-            if (mContentView.findViewById(R.id.android_fragment) != null) {
-                mContentView.findViewById(R.id.android_fragment).setLayoutParams(params);
-            }
-
-            if (mContentView.findViewById(R.id.android_content) != null) {
-                Log.e("数据", "是这样的2");
-                mContentView.findViewById(R.id.android_content).setLayoutParams(params);
-            }
-            //contentView.setLayoutParams(params);
-//
-//            params = (RelativeLayout.LayoutParams) headerParent.getLayoutParams();
-//            params.addRule(RelativeLayout.BELOW, R.id.android_tab);
-
-//            headerParent.removeAllViews();
-//            // 根据额外数据来判定是否浮动
-//            Object extras = headerCreator.getExtras();
-//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-//            View header = LayoutInflater.from(mActivity).inflate(headerCreator.getLayoutResId(), headerParent, true);
-//            header.bringToFront();
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-//            if (!floating) {
-//                params.addRule(RelativeLayout.BELOW, R.id.android_header);
-//            }
-//            contentView.setLayoutParams(params);
         }
         // 初始化底部
         if (footerCreator != null) {
-//            // 根据额外数据来判定是否浮动
-//            Object extras = footerCreator.getExtras();
-//            // 额外数据为空，直接判定为不浮动
-//            // 额外数据为布尔类型，false为不浮动
-//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-//            View footer = LayoutInflater.from(mActivity).inflate(footerCreator.getLayoutResId(), footerParent, true);
-//            footer.bringToFront();
-//
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-//            if (!floating) {
-//                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
-//            }
-//            contentView.setLayoutParams(params);
-
-            if (footerParent.getChildCount() == 0) {
-                View footer = LayoutInflater.from(mActivity).inflate(footerCreator.getLayoutResId(), footerParent, true);
-                //footer.bringToFront();
-            }
+            footerParent.removeAllViews();
+            footerParent.addView(footerCreator.getView());
             boolean floating = footerCreator.isFloating();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
             if (!floating) {
-                params.addRule(RelativeLayout.ABOVE, R.id.android_footer);
+                params.addRule(RelativeLayout.ABOVE, R.id.__android_footer);
             }
-            if (mContentView.findViewById(R.id.android_fragment) != null) {
-                mContentView.findViewById(R.id.android_fragment).setLayoutParams(params);
-            }
-
-            if (mContentView.findViewById(R.id.android_content) != null) {
-                mContentView.findViewById(R.id.android_content).setLayoutParams(params);
-            }
-
-
-            //contentView.setLayoutParams(params);
+        }
+        // 针对SlidingActivity、SlidingFragment、TabbedActivity、TabbedFragment
+        if (mGeneralView.findViewById(R.id.__android_fragment) != null) {
+            mGeneralView.findViewById(R.id.__android_fragment).setLayoutParams(params);
+        }
+        // 针对常规布局
+        if (mGeneralView.findViewById(R.id.__android_content) != null) {
+            mGeneralView.findViewById(R.id.__android_content).setLayoutParams(params);
         }
     }
 
     void handleViews() {
         // 标题
         ViewHandler<AppBarLayout, CommonToolbar> toolbarHandler = AppDelegate.getInstance().getToolbarHandler();
-        AppBarLayout bar = mContentView.findViewById(R.id.android_bar);
-        CommonToolbar toolbar = mContentView.findViewById(R.id.android_toolbar);
+        AppBarLayout bar = mGeneralView.findViewById(R.id.__android_bar);
+        CommonToolbar toolbar = mGeneralView.findViewById(R.id.__android_toolbar);
         if (toolbar != null) {
             toolbar.setBackListener(new View.OnClickListener() {
                 @Override
@@ -442,29 +335,12 @@ class ViewDelegate {
         }
         // 加载控件
         ViewHandler<ViewGroup, LoadingLayout> loadingHandler = AppDelegate.getInstance().getLoadingHandler();
-        LoadingLayout loadingLayout = mContentView.findViewById(R.id.android_loading);
+        LoadingLayout loadingLayout = mGeneralView.findViewById(R.id.__android_loading);
         if (loadingHandler != null && loadingLayout != null) {
             loadingHandler.onHandle(mFragment == null ? mActivity : mFragment, null, loadingLayout);
         }
 
     }
-
-//    /**
-//     * 初始化加载容器
-//     */
-//    void initLoadingContainer() {
-//        // 添加布局
-//        if (mLoadingLayout == null) {
-//            ViewGroup parent = mContentLayout == null ? mParentContainer : mContentLayout;
-//            // 初始化加载容器
-//            mLoadingLayout = (CoordinatorLayout) mInflater.inflate(R.layout.android_layout_loading, parent, false);
-//            parent.addView(mLoadingLayout);
-//            LoadingView view = (LoadingView) mLoadingLayout.getChildAt(0);
-//            AppDelegate.getInstance()
-//                    .getLoadingAdapter()
-//                    .convert(mFragment == null ? mActivity : mFragment, mLoadingLayout, view);
-//        }
-//    }
 
     /**
      * 通知状态变化
@@ -472,11 +348,11 @@ class ViewDelegate {
     void notifyStateChanged() {
         // 设置布局
         for (ViewCreatedCallback callback : mLifeCallbacks) {
-            callback.onViewCreated(mContentView);
+            callback.onViewCreated(mGeneralView);
         }
         // 简单生命周期
         if (mLifecycleAdapter != null) {
-            mLifecycleAdapter.onViewCreated(mFragment == null ? mActivity : mFragment, mContentView);
+            mLifecycleAdapter.onViewCreated(mFragment == null ? mActivity : mFragment, mGeneralView);
         }
     }
     
@@ -485,7 +361,7 @@ class ViewDelegate {
     }
 
     View getContentView() {
-        return mContentView;
+        return mGeneralView;
     }
 
     SmartRefreshLayout getRefreshLayout() {

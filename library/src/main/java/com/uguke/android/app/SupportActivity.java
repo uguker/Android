@@ -3,14 +3,13 @@ package com.uguke.android.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -257,11 +256,11 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
         mLayoutDelegate.setNativeContentView(view);
     }
 
-    public ViewCreator onCreateHeader(ViewGroup container) {
+    public ViewCreator onCreateHeader(@NonNull ViewGroup container) {
         return null;
     }
 
-    public ViewCreator onCreateFooter(ViewGroup container) {
+    public ViewCreator onCreateFooter(@NonNull ViewGroup container) {
         return null;
     }
 
@@ -269,9 +268,8 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
         mLayoutDelegate.showTips(tips);
     }
 
-
     public void hideToolbar() {
-        View view = findViewById(R.id.android_bar);
+        View view = findViewById(R.id.__android_bar);
         if (view != null) {
             view.setVisibility(View.GONE);
         } else if (mToolbar != null) {

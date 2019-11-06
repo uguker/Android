@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/android_root"
+    android:id="@+id/__android_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- 标题部分 -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@id/android_bar"
+        android:id="@id/__android_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
         <com.uguke.android.widget.CommonToolbar
-            android:id="@id/android_toolbar"
+            android:id="@id/__android_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar"
             app:tbBackIcon="@drawable/def_back_common_dark"
@@ -27,7 +27,7 @@
 
     <!-- 内容部分 -->
     <com.uguke.android.widget.LoadingLayout
-        android:id="@id/android_loading"
+        android:id="@id/__android_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
@@ -35,15 +35,16 @@
 
         <!-- 头部布局 -->
         <FrameLayout
-            android:id="@id/android_header"
+            android:id="@id/__android_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
 
         </FrameLayout>
 
         <!-- 底部布局 -->
         <FrameLayout
-            android:id="@id/android_footer"
+            android:id="@id/__android_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">

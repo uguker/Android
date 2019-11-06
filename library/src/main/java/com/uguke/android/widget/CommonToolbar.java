@@ -153,12 +153,12 @@ public class CommonToolbar extends RelativeLayout {
         // 设置布局
         LayoutInflater.from(getContext()).inflate(R.layout.android_widget_layout_toolbar, this, true);
         // 获取控件
-        mTitle = findViewById(R.id.android_toolbar_title);
-        mBackIcon = findViewById(R.id.android_toolbar_back_icon);
-        mBackText = findViewById(R.id.android_toolbar_back_text);
-        mActionText = findViewById(R.id.android_toolbar_action_text);
-        mDivider = findViewById(R.id.android_toolbar_divider);
-        mContainer = findViewById(R.id.android_toolbar_action_container);
+        mTitle = findViewById(R.id.__android_toolbar_title);
+        mBackIcon = findViewById(R.id.__android_toolbar_back_icon);
+        mBackText = findViewById(R.id.__android_toolbar_back_text);
+        mActionText = findViewById(R.id.__android_toolbar_action_text);
+        mDivider = findViewById(R.id.__android_toolbar_divider);
+        mContainer = findViewById(R.id.__android_toolbar_action_container);
         // 设置背景
         ViewCompat.setBackground(mBackIcon, createItemBackground());
         ViewCompat.setBackground(mBackText, createItemBackground());
@@ -275,8 +275,8 @@ public class CommonToolbar extends RelativeLayout {
         if (mTitle.getGravity() != gravity) {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
             if (gravity == LEFT) {
-                params.addRule(RelativeLayout.RIGHT_OF, R.id.android_toolbar_back_container);
-                params.addRule(RelativeLayout.LEFT_OF, R.id.android_toolbar_action_container);
+                params.addRule(RelativeLayout.RIGHT_OF, R.id.__android_toolbar_back_container);
+                params.addRule(RelativeLayout.LEFT_OF, R.id.__android_toolbar_action_container);
             }
             mTitle.setLayoutParams(params);
             mTitle.setGravity(gravity);

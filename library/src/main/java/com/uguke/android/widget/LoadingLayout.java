@@ -106,11 +106,11 @@ public class LoadingLayout extends RelativeLayout {
     private void initLoadingLayout() {
         LinearLayout layout = (LinearLayout) LayoutInflater.from(getContext()).inflate(LOADING_RES_ID, this, false);
         layout.setOrientation(mLoadingVertical ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
-        LoadingView lv = layout.findViewById(R.id.android_loading_loading_view);
+        LoadingView lv = layout.findViewById(R.id.__android_loading_loading_view);
         lv.getLayoutParams().width = mLoadingSize;
         lv.getLayoutParams().height = mLoadingSize;
         lv.setArcColors(mLoadingColors);
-        TextView tv = layout.findViewById(R.id.android_loading_loading_text);
+        TextView tv = layout.findViewById(R.id.__android_loading_loading_text);
         tv.setText(mLoadingText);
         tv.setTextColor(mTextColor);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
@@ -122,15 +122,15 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initErrorLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(ERROR_RES_ID, this, false);
-        ImageView iv = layout.findViewById(R.id.android_loading_error_img);
+        ImageView iv = layout.findViewById(R.id.__android_loading_error_img);
         iv.setImageResource(mErrorImage);
-        TextView tv = layout.findViewById(R.id.android_loading_error_text);
+        TextView tv = layout.findViewById(R.id.__android_loading_error_text);
         tv.setText(mErrorText);
         tv.setTextColor(mTextColor);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         ViewGroup.MarginLayoutParams params = (MarginLayoutParams) iv.getLayoutParams();
         params.topMargin = mErrorMargin;
-        TextView retry = layout.findViewById(R.id.android_loading_error_retry);
+        TextView retry = layout.findViewById(R.id.__android_loading_error_retry);
         retry.setText(mRetryText);
         retry.setTextColor(mRetryTextColor);
         retry.setTextSize(TypedValue.COMPLEX_UNIT_PX, mRetryTextSize);
@@ -151,9 +151,9 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initEmptyLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(EMPTY_RES_ID, this, false);
-        ImageView iv = layout.findViewById(R.id.android_loading_empty_img);
+        ImageView iv = layout.findViewById(R.id.__android_loading_empty_img);
         iv.setImageResource(mEmptyImage);
-        TextView tv = layout.findViewById(R.id.android_loading_empty_text);
+        TextView tv = layout.findViewById(R.id.__android_loading_empty_text);
         tv.setText(mEmptyText);
         tv.setTextColor(mTextColor);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
@@ -194,72 +194,72 @@ public class LoadingLayout extends RelativeLayout {
 
     public LoadingLayout setTextSize(float size) {
         mTextSize = toPixel(size);
-        setTextSize(EMPTY_RES_ID, R.id.android_loading_empty_text, mTextSize);
-        setTextSize(ERROR_RES_ID, R.id.android_loading_error_text, mTextSize);
-        setTextSize(LOADING_RES_ID, R.id.android_loading_loading_text, mTextSize);
+        setTextSize(EMPTY_RES_ID, R.id.__android_loading_empty_text, mTextSize);
+        setTextSize(ERROR_RES_ID, R.id.__android_loading_error_text, mTextSize);
+        setTextSize(LOADING_RES_ID, R.id.__android_loading_loading_text, mTextSize);
         return this;
     }
 
     public LoadingLayout setTextColor(int color) {
         mTextColor = color;
-        setTextColor(EMPTY_RES_ID, R.id.android_loading_empty_text, mTextColor);
-        setTextColor(ERROR_RES_ID, R.id.android_loading_error_text, mTextColor);
-        setTextColor(LOADING_RES_ID, R.id.android_loading_loading_text, mTextColor);
+        setTextColor(EMPTY_RES_ID, R.id.__android_loading_empty_text, mTextColor);
+        setTextColor(ERROR_RES_ID, R.id.__android_loading_error_text, mTextColor);
+        setTextColor(LOADING_RES_ID, R.id.__android_loading_loading_text, mTextColor);
         return this;
     }
 
     public LoadingLayout setEmptyImage(@DrawableRes int resId) {
         mEmptyImage = resId;
-        setImage(EMPTY_RES_ID, R.id.android_loading_empty_img, mEmptyImage);
+        setImage(EMPTY_RES_ID, R.id.__android_loading_empty_img, mEmptyImage);
         return this;
     }
 
     public LoadingLayout setEmptyText(CharSequence text) {
         mEmptyText = text;
-        setText(EMPTY_RES_ID, R.id.android_loading_empty_text, mEmptyText);
+        setText(EMPTY_RES_ID, R.id.__android_loading_empty_text, mEmptyText);
         return this;
     }
 
     public LoadingLayout setEmptyMargin(float margin) {
         mEmptyMargin = toPixel(margin);
-        setTextMargin(EMPTY_RES_ID, R.id.android_loading_empty_text, mEmptyMargin);
+        setTextMargin(EMPTY_RES_ID, R.id.__android_loading_empty_text, mEmptyMargin);
         return this;
     }
 
     public LoadingLayout setErrorImage(@DrawableRes int resId) {
         mErrorImage = resId;
-        setImage(ERROR_RES_ID, R.id.android_loading_error_img, mErrorImage);
+        setImage(ERROR_RES_ID, R.id.__android_loading_error_img, mErrorImage);
         return this;
     }
 
     public LoadingLayout setErrorText(String text) {
         mErrorText = text;
-        setText(ERROR_RES_ID, R.id.android_loading_empty_text, mErrorText);
+        setText(ERROR_RES_ID, R.id.__android_loading_empty_text, mErrorText);
         return this;
     }
 
     public LoadingLayout setErrorMargin(float margin) {
         mErrorMargin = toPixel(margin);
-        setTextMargin(ERROR_RES_ID, R.id.android_loading_error_text, mEmptyMargin);
-        setTextMargin(ERROR_RES_ID, R.id.android_loading_error_retry, mEmptyMargin);
+        setTextMargin(ERROR_RES_ID, R.id.__android_loading_error_text, mEmptyMargin);
+        setTextMargin(ERROR_RES_ID, R.id.__android_loading_error_retry, mEmptyMargin);
         return this;
     }
 
     public LoadingLayout setRetryText(String text) {
         mRetryText = text;
-        setText(ERROR_RES_ID, R.id.android_loading_error_retry, mRetryText);
+        setText(ERROR_RES_ID, R.id.__android_loading_error_retry, mRetryText);
         return this;
     }
 
     public LoadingLayout setRetryTextColor(int color) {
         mRetryTextColor = color;
-        setTextColor(ERROR_RES_ID, R.id.android_loading_error_retry, mRetryTextColor);
+        setTextColor(ERROR_RES_ID, R.id.__android_loading_error_retry, mRetryTextColor);
         return this;
     }
 
     public LoadingLayout setRetryTextSize(float size) {
         mRetryTextSize = toPixel(size);
-        setTextSize(ERROR_RES_ID, R.id.android_loading_error_retry, mRetryTextSize);
+        setTextSize(ERROR_RES_ID, R.id.__android_loading_error_retry, mRetryTextSize);
         return this;
     }
 
@@ -313,13 +313,13 @@ public class LoadingLayout extends RelativeLayout {
 
     public LoadingLayout setLoadingText(String text) {
         mLoadingText = text;
-        setText(LOADING_RES_ID, R.id.android_loading_loading_text, mLoadingText);
+        setText(LOADING_RES_ID, R.id.__android_loading_loading_text, mLoadingText);
         return this;
     }
 
     public LoadingLayout setLoadingMargin(float margin) {
         mLoadingMargin = toPixel(margin);
-        setTextMargin(mLoadingMargin, R.id.android_loading_loading_text, mLoadingMargin);
+        setTextMargin(mLoadingMargin, R.id.__android_loading_loading_text, mLoadingMargin);
         return this;
     }
 
@@ -430,7 +430,7 @@ public class LoadingLayout extends RelativeLayout {
     private LoadingView getLoadingView() {
         View layout = mLayouts.get(LOADING_RES_ID);
         if (layout != null) {
-            return layout.findViewById(R.id.android_loading_loading_view);
+            return layout.findViewById(R.id.__android_loading_loading_view);
         }
         return null;
     }
@@ -438,7 +438,7 @@ public class LoadingLayout extends RelativeLayout {
     private TextView getRetryTextView() {
         View layout = mLayouts.get(ERROR_RES_ID);
         if (layout != null) {
-            return layout.findViewById(R.id.android_loading_error_retry);
+            return layout.findViewById(R.id.__android_loading_error_retry);
         }
         return null;
     }

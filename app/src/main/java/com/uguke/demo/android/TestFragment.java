@@ -57,8 +57,13 @@ public class TestFragment extends SupportFragment {
         return false;
     }
 
-    @Override
-    public ViewCreator onCreateHeader(ViewGroup container) {
-        return ViewCreator.create(R.layout.bottom2, container);
-    }
+//    @Override
+//    public ViewCreator onCreateHeader(ViewGroup container) {
+//        return ViewCreator.create(R.layout.bottom2, container);
+//    }
+//
+//    @Override
+//    public ViewCreator onCreateFooter(ViewGroup container) {
+//        return ViewCreator.create(R.layout.bottom2, container);
+//    }
 }

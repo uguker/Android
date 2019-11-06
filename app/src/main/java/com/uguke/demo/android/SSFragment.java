@@ -83,7 +83,10 @@ public class SSFragment extends SlidingFragment {
 
     @Override
     public ViewCreator onCreateHeader(ViewGroup container) {
-        return ViewCreator.create(R.layout.bottom2, container);
+        ViewCreator vc = ViewCreator.create(R.layout.bottom2, container);
+        TextView tv = vc.findViewById(R.id.text2);
+        tv.setText("我城东了");
+        return vc;
     }
 
     //    @OnClick(R.id.tv)

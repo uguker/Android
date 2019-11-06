@@ -15,7 +15,7 @@ import com.uguke.android.helper.RefreshHelper;
  * 基础分页界面
  * @author LeiJue
  */
-public abstract class BasePageFragment<T> extends SupportFragment {
+public abstract class BaseRecyclerFragment<T> extends SupportFragment {
 
     protected RecyclerView mRecycler;
     protected RefreshHelper<T> mRefreshHelper;
@@ -24,7 +24,8 @@ public abstract class BasePageFragment<T> extends SupportFragment {
     @Override
     public void onCreating(Bundle savedInstanceState) {
         super.onCreating(savedInstanceState);
-        setContentView(R.layout.android_layout_page);
+        setNativeContentView(R.layout.android_layout_refresh);
+        mRefreshLayout = findViewById(R.id.__android_refresh);
         mRecycler = findViewById(R.id.android_recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = onCreateAdapter();
@@ -40,7 +41,7 @@ public abstract class BasePageFragment<T> extends SupportFragment {
         mRefreshHelper.setOnRefreshListener(new RefreshHelper.OnRefreshListener() {
             @Override
             public void onRefresh(int page, int rows) {
-                BasePageFragment.this.onRefresh(mRefreshHelper, page, rows);
+                BaseRecyclerFragment.this.onRefresh(mRefreshHelper, page, rows);
             }
         });
         mLayoutDelegate.getRefreshLayout().setEnablePureScrollMode(false);

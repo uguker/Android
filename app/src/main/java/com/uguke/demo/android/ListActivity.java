@@ -6,16 +6,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.GeneralActivity;
-import com.uguke.android.app.SimpleActivity;
 import com.uguke.android.app.SupportActivity;
-import com.uguke.android.widget.CommonToolbar;
 
 /**
  * @author LeiJue
  */
 @SuppressLint("Registered")
-public class ListActivity extends SimpleActivity {
+public class ListActivity extends SupportActivity {
 
 //    @BindView(R.id.tv)
     TextView tv;
@@ -34,7 +31,7 @@ public class ListActivity extends SimpleActivity {
 
 //        new CommonToolbar(this);
 
-showLoading();
+        showLoading();
 
 //        mToolbar.setTitle("测试标题");
 

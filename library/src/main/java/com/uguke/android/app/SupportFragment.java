@@ -36,8 +36,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Fragment
  * @author LeiJue
  */
-public class SupportFragment extends RxFragment implements ViewCreatedCallback,
-        ISupportFragment, LoadingProvider  {
+public class SupportFragment extends RxFragment implements ISupportFragment, ViewProvider  {
 
     public static final int STANDARD = 0;
     public static final int SINGLE_TOP = 1;
@@ -59,7 +58,9 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     public SmartRefreshLayout mRefreshLayout;
 
     final CompositeDisposable mDisposable = new CompositeDisposable();
-    final ViewDelegate mLayoutDelegate = new ViewDelegate(this);
+    /** 界面布局委托 **/
+    final ViewDelegate mViewDelegate = new ViewDelegate(this);
+    /** Fragment管理委托 **/
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
     public SupportActivity mActivity;
     /** 是否是首次加载 **/
@@ -101,11 +102,10 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     @Nullable
     @Override
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mLayoutDelegate.onCreate(savedInstanceState);
-        mLayoutDelegate.addLifeCallback(this);
+        mViewDelegate.onCreate(savedInstanceState);
         onCreating(savedInstanceState);
         // 获取设置的界面
-        View view = mLayoutDelegate.getContentView();
+        View view = mViewDelegate.getContentView();
         if (view == null) {
             // 若界面为空，则设置空布局提示
             view = inflater.inflate(R.layout.android_layout_fragment_null, container, false);
@@ -124,7 +124,7 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
 
     @Override
     public void onDestroyView() {
-        mLayoutDelegate.onDestroy();
+        mViewDelegate.onDestroy();
         mDelegate.onDestroyView();
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onDestroyView(this);
@@ -222,7 +222,7 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     @Override
     public void onSupportVisible() {
         mDelegate.onSupportVisible();
-        mLayoutDelegate.onViewVisible();
+        mViewDelegate.onViewVisible();
     }
 
     /**
@@ -232,7 +232,7 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     @Override
     public void onSupportInvisible() {
         mDelegate.onSupportInvisible();
-        mLayoutDelegate.onViewInvisible();
+        mViewDelegate.onViewInvisible();
     }
 
     @Override
@@ -310,68 +310,45 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     public void onViewCreated(View view) {
         mContentView = view;
         // 初始化控件
-        mLoadingLayout = mLayoutDelegate.getLoadingLayout();
-        mRefreshLayout = mLayoutDelegate.getRefreshLayout();
-        mToolbar = mLayoutDelegate.getToolbar();
+        mLoadingLayout = mViewDelegate.getLoadingLayout();
+        mRefreshLayout = mViewDelegate.getRefreshLayout();
+        mToolbar = mViewDelegate.getToolbar();
     }
 
     @Override
     public void showContent() {
-        mLayoutDelegate.showContent();
+        mViewDelegate.showContent();
     }
 
     @Override
-    public void showEmpty() {
-        mLayoutDelegate.showEmpty();
+    public void showEmpty(String... texts) {
+        mViewDelegate.showEmpty(texts);
     }
 
     @Override
-    public void showEmpty(String text) {
-        mLayoutDelegate.showEmpty(text);
+    public void showError(String... texts) {
+        mViewDelegate.showError(texts);
     }
 
     @Override
-    public void showError() {
-        mLayoutDelegate.showError();
-    }
-
-    @Override
-    public void showError(String text) {
-        mLayoutDelegate.showError(text);
-    }
-
-    @Override
-    public void showLoading() {
-        mLayoutDelegate.showLoading();
-    }
-
-    @Override
-    public void showLoading(String text) {
-        mLayoutDelegate.showLoading(text);
+    public void showLoading(String... texts) {
+        mViewDelegate.showLoading(texts);
     }
 
     public final void setContentView(@LayoutRes int id) {
-        mLayoutDelegate.setContentView(id);
+        mViewDelegate.setContentView(id);
     }
 
     public final void setContentView(View view) {
-        mLayoutDelegate.setContentView(view);
-    }
-
-    public final void setSimpleContentView(@LayoutRes int id) {
-        mLayoutDelegate.setSimpleContentView(id);
-    }
-
-    public final void setSimpleContentView(View view) {
-        mLayoutDelegate.setSimpleContentView(view);
+        mViewDelegate.setContentView(view);
     }
 
     public final void setNativeContentView(@LayoutRes int id) {
-        mLayoutDelegate.setNativeContentView(id);
+        mViewDelegate.setNativeContentView(id);
     }
 
     public final void setNativeContentView(View view) {
-        mLayoutDelegate.setNativeContentView(view);
+        mViewDelegate.setNativeContentView(view);
     }
 
     public ViewCreator onCreateHeader(@NonNull ViewGroup container) {
@@ -383,22 +360,22 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
     }
 
     public final <T extends View> T findViewById(@IdRes int id) {
-        if (mLayoutDelegate.getContentView() != null) {
-            return mLayoutDelegate.getContentView().findViewById(id);
+        if (mViewDelegate.getContentView() != null) {
+            return mViewDelegate.getContentView().findViewById(id);
         }
         return null;
     }
 
     public void showTips(String tips) {
-        mLayoutDelegate.showTips(tips);
+        mViewDelegate.showTips(tips);
     }
 
     public void showLoadingTips(String tips) {
-        mLayoutDelegate.showLoadingTips(tips);
+        mViewDelegate.showLoadingTips(tips);
     }
 
     public void hideLoadingTips() {
-        mLayoutDelegate.hideLoadingTips();
+        mViewDelegate.hideLoadingTips();
     }
 
     public void addDisposable(Disposable disposable) {
@@ -410,7 +387,7 @@ public class SupportFragment extends RxFragment implements ViewCreatedCallback,
      * 不支持的情况下{@link SwipeBackHelper}所有方法无效
      */
     public boolean onSwipeBackSupport() {
-        return AppDelegate.getInstance().isSwipeBackSupport();
+        return AndroidDelegate.getInstance().isSwipeBackSupport();
     }
 
     /**

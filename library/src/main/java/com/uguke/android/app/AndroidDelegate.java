@@ -3,16 +3,12 @@ package com.uguke.android.app;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.uguke.android.adapter.DefaultLoadingAdapter;
 import com.uguke.android.adapter.LifecycleAdapter;
-import com.uguke.android.adapter.LoadingAdapter;
 import com.uguke.android.swipe.SwipeBackHelper;
 import com.uguke.android.util.KeyboardUtils;
 import com.uguke.android.widget.CommonToolbar;
@@ -24,28 +20,28 @@ import java.util.Stack;
  * 应用委托
  * @author LeiJue
  */
-public class AppDelegate {
+public class AndroidDelegate {
 
     static final class Holder {
-        static final AppDelegate INSTANCE = new AppDelegate();
+        static final AndroidDelegate INSTANCE = new AndroidDelegate();
     }
 
     private Stack<Activity> mStack = new Stack<>();
-    private ViewHandler<AppBarLayout, CommonToolbar> mToolbarHandler;
-    private ViewHandler<ViewGroup, SmartRefreshLayout> mRefreshHandler;
-    private ViewHandler<ViewGroup, LoadingLayout> mLoadingHandler;
-    private LoadingAdapter mLoadingAdapter = new DefaultLoadingAdapter();
+    private ViewHandler<CommonToolbar> mToolbarHandler;
+    private ViewHandler<SmartRefreshLayout> mRefreshHandler;
+    private ViewHandler<LoadingLayout> mLoadingHandler;
     private LifecycleAdapter mLifecycleAdapter;
     private int mAliveCount = 0;
     private boolean mSwipeBackSupport = false;
 
-    public static AppDelegate getInstance() {
+    public static AndroidDelegate getInstance() {
         return Holder.INSTANCE;
     }
 
-    private AppDelegate() {}
 
-    public AppDelegate init(Application application) {
+    private AndroidDelegate() {}
+
+    public static AndroidDelegate init(Application application) {
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -85,30 +81,30 @@ public class AppDelegate {
                 }
             }
         });
-        return this;
+        return Holder.INSTANCE;
     }
 
-    public AppDelegate setLifecycleAdapter(LifecycleAdapter adapter) {
+    public AndroidDelegate setLifecycleAdapter(LifecycleAdapter adapter) {
         mLifecycleAdapter = adapter;
         return this;
     }
 
-    public AppDelegate setToolbarHandler(ViewHandler<AppBarLayout, CommonToolbar> handler) {
+    public AndroidDelegate setToolbarHandler(ViewHandler<CommonToolbar> handler) {
         mToolbarHandler = handler;
         return this;
     }
 
-    public AppDelegate setRefreshHandler(ViewHandler<ViewGroup, SmartRefreshLayout> handler) {
+    public AndroidDelegate setRefreshHandler(ViewHandler<SmartRefreshLayout> handler) {
         mRefreshHandler = handler;
         return this;
     }
 
-    public AppDelegate setLoadingHandler(ViewHandler<ViewGroup, LoadingLayout> handler) {
+    public AndroidDelegate setLoadingHandler(ViewHandler<LoadingLayout> handler) {
         mLoadingHandler = handler;
         return this;
     }
 
-    public AppDelegate setSwipeBackSupport(boolean support) {
+    public AndroidDelegate setSwipeBackSupport(boolean support) {
         mSwipeBackSupport = support;
         return this;
     }
@@ -117,23 +113,19 @@ public class AppDelegate {
         return mSwipeBackSupport;
     }
 
-    public LoadingAdapter getLoadingAdapter() {
-        return mLoadingAdapter;
-    }
-
     public LifecycleAdapter getLifecycleAdapter() {
         return mLifecycleAdapter;
     }
 
-    public ViewHandler<AppBarLayout, CommonToolbar> getToolbarHandler() {
+    public ViewHandler<CommonToolbar> getToolbarHandler() {
         return mToolbarHandler;
     }
 
-    public ViewHandler<ViewGroup, SmartRefreshLayout> getRefreshHandler() {
+    public ViewHandler<SmartRefreshLayout> getRefreshHandler() {
         return mRefreshHandler;
     }
 
-    public ViewHandler<ViewGroup, LoadingLayout> getLoadingHandler() {
+    public ViewHandler<LoadingLayout> getLoadingHandler() {
         return mLoadingHandler;
     }
 

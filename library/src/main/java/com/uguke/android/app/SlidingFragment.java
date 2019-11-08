@@ -1,6 +1,5 @@
 package com.uguke.android.app;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

@@ -7,39 +7,33 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uguke.android.R;
 import com.uguke.android.adapter.LifecycleAdapter;
 import com.uguke.android.helper.TipsHelper;
-import com.uguke.android.util.CloneUtils;
 import com.uguke.android.widget.CommonToolbar;
 import com.uguke.android.widget.LoadingLayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * 界面代理
  * @author LeiJue
  */
-class ViewDelegate implements LoadingProvider {
-
-//    static final Integer PARENT_VIEW_TAG = Integer.MAX_VALUE - 9999;
-//    static final String FRAGMENTATION_ARG_CONTAINER = "fragmentation_arg_container";
+class ViewDelegate implements ViewProvider {
 
     private SupportActivity mActivity;
     private SupportFragment mFragment;
     /** 布局加载器 **/
     private LayoutInflater mInflater;
     /** 总的布局 **/
-    private View mGeneralView;
+    private View mContentView;
     /** 标题栏 **/
     private CommonToolbar mToolbar;
-    /** 根布局，Activity的android.R.id.content控件 **/
-    private ViewGroup mRootView;
     /** 刷新界面 **/
     private ViewGroup mRefreshLayout;
     /** 加载布局 **/
@@ -48,8 +42,6 @@ class ViewDelegate implements LoadingProvider {
     private TipsHelper mTipsHelper;
     /** 简单生命周期适配器 **/
     private LifecycleAdapter mLifecycleAdapter;
-    /** 页面创建完毕回调 **/
-    private List<ViewCreatedCallback> mLifeCallbacks = new ArrayList<>();
 
     public ViewDelegate(SupportActivity activity) {
         mActivity = activity;
@@ -71,18 +63,23 @@ class ViewDelegate implements LoadingProvider {
             mActivity = (SupportActivity) mFragment.getActivity();
             mInflater = mFragment.getLayoutInflater();
         }
-        mRootView = mActivity.findViewById(android.R.id.content);
         if (mLifecycleAdapter != null) {
             mLifecycleAdapter.onCreate(savedInstanceState);
         }
     }
 
+    /**
+     * 界面显示
+     */
     public void onViewVisible() {
         if (mLifecycleAdapter != null) {
             mLifecycleAdapter.onViewVisible(mFragment == null ? mActivity : mFragment);
         }
     }
 
+    /**
+     * 界面隐藏
+     */
     public void onViewInvisible() {
         if (mLifecycleAdapter != null) {
             mLifecycleAdapter.onViewInvisible(mFragment == null ? mActivity : mFragment);
@@ -108,18 +105,18 @@ class ViewDelegate implements LoadingProvider {
      */
     public void setContentView(@LayoutRes int id) {
         // 默认界面，常用的刷新界面
-        mGeneralView = mInflater.inflate(R.layout.android_layout_default, mRootView, false);
-        mRefreshLayout = mGeneralView.findViewById(R.id.__android_refresh);
-        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
-        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
+        ViewGroup root = mActivity.findViewById(android.R.id.content);
+        mContentView = mInflater.inflate(R.layout.android_layout_default, root, false);
+        mRefreshLayout = mContentView.findViewById(R.id.__android_refresh);
+        mLoadingLayout = mContentView.findViewById(R.id.__android_loading);
+        mToolbar = mContentView.findViewById(R.id.__android_toolbar);
         mInflater.inflate(id, mRefreshLayout, true);
-        //initViews();
         // 初始化头部和底部
         initHeaderAndFooter();
         // 全局处理控件
         handleViews();
         // 通知状态变化
-        notifyStateChanged();
+        onViewCreated(mContentView);
     }
 
     /**
@@ -128,57 +125,18 @@ class ViewDelegate implements LoadingProvider {
      */
     public void setContentView(View view) {
         // 默认界面，常用的刷新界面
-        mGeneralView = mInflater.inflate(R.layout.android_layout_default, mRootView, false);
-        mRefreshLayout = mGeneralView.findViewById(R.id.__android_refresh);
-        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
-        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
+        ViewGroup root = mActivity.findViewById(android.R.id.content);
+        mContentView = mInflater.inflate(R.layout.android_layout_default, root, false);
+        mRefreshLayout = mContentView.findViewById(R.id.__android_refresh);
+        mLoadingLayout = mContentView.findViewById(R.id.__android_loading);
+        mToolbar = mContentView.findViewById(R.id.__android_toolbar);
         mRefreshLayout.addView(view);
-        // initViews();
         // 初始化头部和底部
         initHeaderAndFooter();
         // 全局处理控件
         handleViews();
         // 通知状态变化
-        notifyStateChanged();
-    }
-
-    /**
-     * 设置简单布局界面，附带标题
-     * @param id 布局界面资源ID
-     */
-    public void setSimpleContentView(@LayoutRes int id) {
-        // 简单布局界面，只有标题
-        mGeneralView = mInflater.inflate(R.layout.android_layout_simple, mRootView, false);
-        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
-        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
-        View view = mInflater.inflate(id, mLoadingLayout, false);
-        mLoadingLayout.addView(view);
-        view.setId(R.id.__android_content);
-        // 初始化头部和底部
-        initHeaderAndFooter();
-        // 全局处理控件
-        handleViews();
-        // 通知状态变化
-        notifyStateChanged();
-    }
-
-    /**
-     * 设置简单布局界面，附带标题
-     * @param view 布局界面
-     */
-    public void setSimpleContentView(View view) {
-        // 简单布局界面，只有标题
-        mGeneralView = mInflater.inflate(R.layout.android_layout_simple, mRootView, false);
-        mLoadingLayout = mGeneralView.findViewById(R.id.__android_loading);
-        mToolbar = mGeneralView.findViewById(R.id.__android_toolbar);
-        mLoadingLayout.addView(view);
-        view.setId(R.id.__android_content);
-        // 初始化头部和底部
-        initHeaderAndFooter();
-        // 全局处理控件
-        handleViews();
-        // 通知状态变化
-        notifyStateChanged();
+        onViewCreated(mContentView);
     }
 
     /**
@@ -186,24 +144,14 @@ class ViewDelegate implements LoadingProvider {
      * @param id 布局界面资源ID
      */
     public void setNativeContentView(@LayoutRes int id) {
-//        Object tag = mParentContainer.getTag(R.id.__android_parent_container);
-//        if (PARENT_VIEW_TAG.equals(tag)) {
-//            // 如果是手动添加的容器则清空控件
-//            mParentContainer.removeAllViews();
-//            mInflater.inflate(id, null, true);
-//            mGeneralView = mParentContainer;
-//        } else {
-//            mGeneralView = mInflater.inflate(id, null, false);
-//        }
-
-        mGeneralView = mInflater.inflate(id, mRootView, false);
-
+        ViewGroup root = mActivity.findViewById(android.R.id.content);
+        mContentView = mInflater.inflate(id, root, false);
         // 初始化头部和底部
         initHeaderAndFooter();
         // 全局处理控件
         handleViews();
         // 全局处理控件
-        notifyStateChanged();
+        onViewCreated(mContentView);
     }
 
     /**
@@ -211,35 +159,24 @@ class ViewDelegate implements LoadingProvider {
      *  @param view 布局界面
      */
     public void setNativeContentView(View view) {
-//        Object tag = mParentContainer.getTag(R.id.__android_parent_container);
-//        if (PARENT_VIEW_TAG.equals(tag)) {
-//            // 如果是手动添加的容器则清空控件
-//            mParentContainer.removeAllViews();
-//            mParentContainer.addView(view);
-//            mGeneralView = mParentContainer;
-//        } else {
-//            mGeneralView = view;
-//        }
-        mGeneralView = view;
-
+        mContentView = view;
         initHeaderAndFooter();
         // 全局处理控件
         handleViews();
         // 全局处理控件
-        notifyStateChanged();
-        // 初始化头部和底部
+        onViewCreated(mContentView);
     }
 
     public void showTips(String tips) {
         if (mTipsHelper == null) {
-            mTipsHelper = TipsHelper.make(mGeneralView);
+            mTipsHelper = TipsHelper.make(mContentView);
         }
         mTipsHelper.setText(tips).show();
     }
 
     public void showLoadingTips(String tips) {
         if (mTipsHelper == null) {
-            mTipsHelper = TipsHelper.make(mGeneralView);
+            mTipsHelper = TipsHelper.make(mContentView);
         }
         mTipsHelper.setText(tips)
                 .setDuration(TipsHelper.DURATION_MANUAL)
@@ -255,23 +192,29 @@ class ViewDelegate implements LoadingProvider {
         }
     }
 
-    public void addLifeCallback(@NonNull ViewCreatedCallback callback) {
-        mLifeCallbacks.add(callback);
-    }
-
     void initLifecycleAdapter() {
-        LifecycleAdapter adapter = AppDelegate.getInstance().getLifecycleAdapter();
-        if (adapter != null) {
-            mLifecycleAdapter = CloneUtils.clone(adapter);
-        }
+        LifecycleAdapter adapter = AndroidDelegate.getInstance().getLifecycleAdapter();
+        try {
+            //写入字节流
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream obs = new ObjectOutputStream(out);
+            obs.writeObject(adapter);
+            obs.close();
+            //分配内存，写入原始对象，生成新对象
+            ByteArrayInputStream ios = new ByteArrayInputStream(out.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(ios);
+            //返回生成的新对象
+            mLifecycleAdapter = (LifecycleAdapter) ois.readObject();
+            ois.close();
+        } catch (Exception ignored) {}
     }
 
     /**
      * 初始化头部和底部
      */
     void initHeaderAndFooter() {
-        ViewGroup headerParent = mGeneralView.findViewById(R.id.__android_header);
-        ViewGroup footerParent = mGeneralView.findViewById(R.id.__android_footer);
+        ViewGroup headerParent = mContentView.findViewById(R.id.__android_header);
+        ViewGroup footerParent = mContentView.findViewById(R.id.__android_footer);
         ViewCreator headerCreator = mFragment == null ?
                 mActivity.onCreateHeader(headerParent) :
                 mFragment.onCreateHeader(headerParent);
@@ -284,7 +227,6 @@ class ViewDelegate implements LoadingProvider {
             headerParent.removeAllViews();
             headerParent.addView(headerCreator.getView());
             boolean floating = headerCreator.isFloating();
-
             if (!floating) {
                 params.addRule(RelativeLayout.BELOW, R.id.__android_header);
             }
@@ -299,22 +241,21 @@ class ViewDelegate implements LoadingProvider {
             }
         }
         // 针对SlidingActivity、SlidingFragment、TabbedActivity、TabbedFragment
-        if (mGeneralView.findViewById(R.id.__android_fragment) != null) {
-            mGeneralView.findViewById(R.id.__android_fragment).setLayoutParams(params);
+        if (mContentView.findViewById(R.id.__android_fragment) != null) {
+            mContentView.findViewById(R.id.__android_fragment).setLayoutParams(params);
         }
         // 针对常规布局
-        if (mGeneralView.findViewById(R.id.__android_content) != null) {
-            mGeneralView.findViewById(R.id.__android_content).setLayoutParams(params);
+        if (mContentView.findViewById(R.id.__android_content) != null) {
+            mContentView.findViewById(R.id.__android_content).setLayoutParams(params);
         }
     }
 
     void handleViews() {
+        Object target = mFragment == null ? mActivity : mFragment;
         // 标题
-        ViewHandler<AppBarLayout, CommonToolbar> toolbarHandler = AppDelegate.getInstance().getToolbarHandler();
-        AppBarLayout bar = mGeneralView.findViewById(R.id.__android_bar);
-        CommonToolbar toolbar = mGeneralView.findViewById(R.id.__android_toolbar);
-        if (toolbar != null) {
-            toolbar.setBackListener(new View.OnClickListener() {
+        ViewHandler<CommonToolbar> toolbarHandler = AndroidDelegate.getInstance().getToolbarHandler();
+        if (mToolbar != null) {
+            mToolbar.setBackListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mFragment == null) {
@@ -324,35 +265,19 @@ class ViewDelegate implements LoadingProvider {
                     }
                 }
             });
-        }
-        if (toolbarHandler != null && toolbar != null) {
-            toolbarHandler.onHandle(mFragment == null ? mActivity : mFragment, bar, toolbar);
+            if (toolbarHandler != null) {
+                toolbarHandler.onHandle(target, mToolbar);
+            }
         }
         // 刷新控件
-        ViewHandler<ViewGroup, SmartRefreshLayout> refreshHandler = AppDelegate.getInstance().getRefreshHandler();
+        ViewHandler<SmartRefreshLayout> refreshHandler = AndroidDelegate.getInstance().getRefreshHandler();
         if (refreshHandler != null && mRefreshLayout != null && mRefreshLayout instanceof SmartRefreshLayout) {
-            refreshHandler.onHandle(mFragment == null ? mActivity : mFragment, null, (SmartRefreshLayout) mRefreshLayout);
+            refreshHandler.onHandle(target, (SmartRefreshLayout) mRefreshLayout);
         }
         // 加载控件
-        ViewHandler<ViewGroup, LoadingLayout> loadingHandler = AppDelegate.getInstance().getLoadingHandler();
-        LoadingLayout loadingLayout = mGeneralView.findViewById(R.id.__android_loading);
-        if (loadingHandler != null && loadingLayout != null) {
-            loadingHandler.onHandle(mFragment == null ? mActivity : mFragment, null, loadingLayout);
-        }
-
-    }
-
-    /**
-     * 通知状态变化
-     */
-    void notifyStateChanged() {
-        // 设置布局
-        for (ViewCreatedCallback callback : mLifeCallbacks) {
-            callback.onViewCreated(mGeneralView);
-        }
-        // 简单生命周期
-        if (mLifecycleAdapter != null) {
-            mLifecycleAdapter.onViewCreated(mFragment == null ? mActivity : mFragment, mGeneralView);
+        ViewHandler<LoadingLayout> loadingHandler = AndroidDelegate.getInstance().getLoadingHandler();
+        if (loadingHandler != null && mLoadingLayout != null) {
+            loadingHandler.onHandle(target, mLoadingLayout);
         }
     }
 
@@ -361,7 +286,7 @@ class ViewDelegate implements LoadingProvider {
     }
 
     View getContentView() {
-        return mGeneralView;
+        return mContentView;
     }
 
     SmartRefreshLayout getRefreshLayout() {
@@ -376,6 +301,20 @@ class ViewDelegate implements LoadingProvider {
     }
 
     @Override
+    public void onViewCreated(View view) {
+        // 设置布局
+        if (mFragment == null) {
+            mActivity.onViewCreated(view);
+        } else {
+            mFragment.onViewCreated(view);
+        }
+        // 简单生命周期
+        if (mLifecycleAdapter != null) {
+            mLifecycleAdapter.onViewCreated(mFragment == null ? mActivity : mFragment, view);
+        }
+    }
+
+    @Override
     public void showContent() {
         if (mLoadingLayout != null) {
             mLoadingLayout.showContent();
@@ -383,45 +322,35 @@ class ViewDelegate implements LoadingProvider {
     }
 
     @Override
-    public void showEmpty() {
+    public void showEmpty(String... texts) {
         if (mLoadingLayout != null) {
-            mLoadingLayout.showEmpty();
+            if (texts == null || texts.length == 0) {
+                mLoadingLayout.showEmpty();
+            } else {
+                mLoadingLayout.showEmpty(texts[0]);
+            }
         }
     }
 
     @Override
-    public void showEmpty(String text) {
+    public void showError(String... texts) {
         if (mLoadingLayout != null) {
-            mLoadingLayout.showEmpty(text);
+            if (texts == null || texts.length == 0) {
+                mLoadingLayout.showError();
+            } else {
+                mLoadingLayout.showError(texts[0]);
+            }
         }
     }
 
     @Override
-    public void showError() {
+    public void showLoading(String... texts) {
         if (mLoadingLayout != null) {
-            mLoadingLayout.showError();
+            if (texts == null || texts.length == 0) {
+                mLoadingLayout.showLoading();
+            } else {
+                mLoadingLayout.showLoading(texts[0]);
+            }
         }
-    }
-
-    @Override
-    public void showError(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showError(text);
-        }
-    }
-
-    @Override
-    public void showLoading() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showLoading();
-        }
-    }
-
-    @Override
-    public void showLoading(String text) {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showLoading(text);
-        }
-
     }
 }

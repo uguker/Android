@@ -36,14 +36,14 @@ public abstract class BasePageFragment<T> extends SupportFragment {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
         // 初始化刷新工具
-        mRefreshHelper = new RefreshHelper<>(mLayoutDelegate.getRefreshLayout(), mAdapter);
+        mRefreshHelper = new RefreshHelper<>(mViewDelegate.getRefreshLayout(), mAdapter);
         mRefreshHelper.setOnRefreshListener(new RefreshHelper.OnRefreshListener() {
             @Override
             public void onRefresh(int page, int rows) {
                 BasePageFragment.this.onRefresh(mRefreshHelper, page, rows);
             }
         });
-        mLayoutDelegate.getRefreshLayout().setEnablePureScrollMode(false);
+        mViewDelegate.getRefreshLayout().setEnablePureScrollMode(false);
     }
 
     /**

@@ -31,8 +31,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * 基础Activity
  * @author LeiJue
  */
-public class SupportActivity extends RxAppCompatActivity implements ViewCreatedCallback,
-        ISupportActivity, LoadingProvider {
+public class SupportActivity extends RxAppCompatActivity implements ISupportActivity, ViewProvider {
 
     public View mContentView;
     /** 标题 **/
@@ -43,7 +42,9 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
     public SmartRefreshLayout mRefreshLayout;
 
     final CompositeDisposable mDisposable = new CompositeDisposable();
+    /** 界面布局委托 **/
     final ViewDelegate mLayoutDelegate = new ViewDelegate(this);
+    /** Fragment管理委托 **/
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
     /** 是否是首次加载 **/
     private boolean mFirstLoading = true;
@@ -53,7 +54,6 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
         mLayoutDelegate.onCreate(savedInstanceState);
-        mLayoutDelegate.addLifeCallback(this);
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onCreate(this);
         }
@@ -197,41 +197,18 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
     }
 
     @Override
-    public void showEmpty() {
-        mLayoutDelegate.showEmpty();
+    public void showEmpty(String... texts) {
+        mLayoutDelegate.showEmpty(texts);
     }
 
     @Override
-    public void showEmpty(String text) {
-        mLayoutDelegate.showEmpty(text);
+    public void showError(String... texts) {
+        mLayoutDelegate.showError(texts);
     }
 
     @Override
-    public void showError() {
-        mLayoutDelegate.showError();
-    }
-
-    @Override
-    public void showError(String text) {
-        mLayoutDelegate.showError(text);
-    }
-
-    @Override
-    public void showLoading() {
-        mLayoutDelegate.showLoading();
-    }
-
-    @Override
-    public void showLoading(String text) {
-        mLayoutDelegate.showLoading(text);
-    }
-
-    public void setSimpleContentView(@LayoutRes int id) {
-        mLayoutDelegate.setSimpleContentView(id);
-    }
-
-    public void setSimpleContentView(View view) {
-        mLayoutDelegate.setSimpleContentView(view);
+    public void showLoading(String... texts) {
+        mLayoutDelegate.showLoading(texts);
     }
 
     public void setNativeContentView(@LayoutRes int id) {
@@ -267,50 +244,12 @@ public class SupportActivity extends RxAppCompatActivity implements ViewCreatedC
         mDisposable.add(disposable);
     }
 
-//    protected void onHandleCreators(View view) {
-//        ViewGroup headerParent = view.findViewById(R.id.android_header);
-//        ViewGroup footerParent = view.findViewById(R.id.android_footer);
-//        View contentView = view.findViewById(R.id.android_content);
-//        ViewCreator headerCreator = onCreateHeader(headerParent);
-//        ViewCreator footerCreator = onCreateFooter(footerParent);
-//        // 初始化头部
-//        if (headerCreator != null) {
-//            headerParent.removeAllViews();
-//            // 根据额外数据来判定是否浮动
-//            Object extras = headerCreator.getExtras();
-//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-//            View header = LayoutInflater.from(this).inflate(headerCreator.getLayoutResId(), headerParent, true);
-//            header.bringToFront();
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-//            if (!floating) {
-//                params.addRule(RelativeLayout.BELOW, R.id.android_header);
-//            }
-//            contentView.setLayoutParams(params);
-//        }
-//        // 初始化底部
-//        if (footerCreator != null) {
-//            // 根据额外数据来判定是否浮动
-//            Object extras = footerCreator.getExtras();
-//            // 额外数据为空，直接判定为不浮动
-//            // 额外数据为布尔类型，false为不浮动
-//            boolean floating = extras != null && (extras instanceof Boolean ? (Boolean) extras : true);
-//            View footer = LayoutInflater.from(this).inflate(footerCreator.getLayoutResId(), footerParent, true);
-//            footer.bringToFront();
-//
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-//            if (!floating) {
-//                params.addRule(RelativeLayout.ABOVE, R.id.android_header);
-//            }
-//            contentView.setLayoutParams(params);
-//        }
-//    }
-
     /**
      * 是否支持侧滑返回 true 支持 false 不支持
      * 不支持的情况下{@link SwipeBackHelper}所有方法无效
      */
     public boolean onSwipeBackSupport() {
-        return AppDelegate.getInstance().isSwipeBackSupport();
+        return AndroidDelegate.getInstance().isSwipeBackSupport();
     }
 
     /**

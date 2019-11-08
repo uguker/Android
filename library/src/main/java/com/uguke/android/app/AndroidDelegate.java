@@ -38,8 +38,11 @@ public class AndroidDelegate {
         return Holder.INSTANCE;
     }
 
-
     private AndroidDelegate() {}
+
+    static void checkInit() {
+        throw new RuntimeException("");
+    }
 
     public static AndroidDelegate init(Application application) {
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {

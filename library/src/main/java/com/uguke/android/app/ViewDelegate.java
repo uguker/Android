@@ -111,10 +111,10 @@ class ViewDelegate implements ViewProvider {
         mLoadingLayout = mContentView.findViewById(R.id.__android_loading);
         mToolbar = mContentView.findViewById(R.id.__android_toolbar);
         mInflater.inflate(id, mRefreshLayout, true);
-        // 初始化头部和底部
-        initHeaderAndFooter();
         // 全局处理控件
-        handleViews();
+        onHandleViews();
+        // 创建头部和底部
+        onCreateHeaderAndFooter();
         // 通知状态变化
         onViewCreated(mContentView);
     }
@@ -131,10 +131,10 @@ class ViewDelegate implements ViewProvider {
         mLoadingLayout = mContentView.findViewById(R.id.__android_loading);
         mToolbar = mContentView.findViewById(R.id.__android_toolbar);
         mRefreshLayout.addView(view);
-        // 初始化头部和底部
-        initHeaderAndFooter();
         // 全局处理控件
-        handleViews();
+        onHandleViews();
+        // 创建头部和底部
+        onCreateHeaderAndFooter();
         // 通知状态变化
         onViewCreated(mContentView);
     }
@@ -146,10 +146,10 @@ class ViewDelegate implements ViewProvider {
     public void setNativeContentView(@LayoutRes int id) {
         ViewGroup root = mActivity.findViewById(android.R.id.content);
         mContentView = mInflater.inflate(id, root, false);
-        // 初始化头部和底部
-        initHeaderAndFooter();
         // 全局处理控件
-        handleViews();
+        onHandleViews();
+        // 创建头部和底部
+        onCreateHeaderAndFooter();
         // 全局处理控件
         onViewCreated(mContentView);
     }
@@ -160,9 +160,10 @@ class ViewDelegate implements ViewProvider {
      */
     public void setNativeContentView(View view) {
         mContentView = view;
-        initHeaderAndFooter();
         // 全局处理控件
-        handleViews();
+        onHandleViews();
+        // 创建头部和底部
+        onCreateHeaderAndFooter();
         // 全局处理控件
         onViewCreated(mContentView);
     }
@@ -210,9 +211,9 @@ class ViewDelegate implements ViewProvider {
     }
 
     /**
-     * 初始化头部和底部
+     * 创建头部和底部
      */
-    void initHeaderAndFooter() {
+    void onCreateHeaderAndFooter() {
         ViewGroup headerParent = mContentView.findViewById(R.id.__android_header);
         ViewGroup footerParent = mContentView.findViewById(R.id.__android_footer);
         ViewCreator headerCreator = mFragment == null ?
@@ -250,7 +251,7 @@ class ViewDelegate implements ViewProvider {
         }
     }
 
-    void handleViews() {
+    void onHandleViews() {
         Object target = mFragment == null ? mActivity : mFragment;
         // 标题
         ViewHandler<CommonToolbar> toolbarHandler = AndroidDelegate.getInstance().getToolbarHandler();

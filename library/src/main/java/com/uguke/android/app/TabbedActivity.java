@@ -23,7 +23,6 @@ public class TabbedActivity extends SupportActivity {
     @Override
     public void onCreating(Bundle savedInstanceState) {
         setNativeContentView(R.layout.android_layout_tabbed);
-        mLayoutDelegate.initHeaderAndFooter();
         // 恢复选项位置
         if (savedInstanceState != null) {
             mCurrentTab = savedInstanceState.getInt("currentTab", 0);

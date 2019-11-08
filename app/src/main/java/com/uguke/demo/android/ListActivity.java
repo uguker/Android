@@ -31,7 +31,7 @@ public class ListActivity extends SupportActivity {
 
 //        new CommonToolbar(this);
 
-        showLoading();
+        showError();
 
 //        mToolbar.setTitle("测试标题");
 

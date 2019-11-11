@@ -1,12 +1,20 @@
 package com.uguke.demo.android;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.SDCardUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.uguke.android.app.SupportActivity;
+import com.uguke.android.widget.CommonToolbar;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author LeiJue
@@ -27,9 +35,33 @@ public class ListActivity extends SupportActivity {
         //loadRootFragment(R.id.content, new TestFragment());
 
         //start(new SSFragment());
+        mToolbar.setRippleEnable(true)
+                //.setBackIcon(R.drawable.def_back_material_dark)
+                .setActionVisible(0, true)
+                .setActionIcon(1, R.drawable.widget_ic_empty)
+                .setActionText(0, "你好")
+                .setActionTextBold(true)
+                .setActionTextColor(Color.WHITE)
+                //.setActionTextSize(18)
+                .setBackText("返回")
+                .setBackIconVisible(true)
+                .setBackTextVisible(true)
+                .setTitle("你好啊")
+                .setActionVisible(1, true)
+                //.setTitleSpace(16)
+                //.setBackSpace(0)
+                .setTitleGravity(CommonToolbar.CENTER)
+                .setActionText(1, "6666");
 
+        Log.e("数据", "" + TimeUtils.getChineseWeek(new Date()) + "|" + TimeUtils.getUSWeek(new Date()));
 
-//        new CommonToolbar(this);
+        Log.e("数据", "" + 0);
+
+        List<SDCardUtils.SDCardInfo> list = SDCardUtils.getSDCardInfo();
+        for (SDCardUtils.SDCardInfo sdi : list) {
+            Log.e("数据", "" + sdi.getPath());
+        }
+
 
 //        showError();
 //        mLoadingLayout

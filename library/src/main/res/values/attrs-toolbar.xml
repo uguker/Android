@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CommonToolbar">
+        <attr name="tbPaddingLeft" format="dimension" />
+        <attr name="tbPaddingRight" format="dimension" />
+        <!-- 水波纹效果 -->
+        <attr name="tbRippleEnable" format="boolean" />
+        <!-- 标题 -->
+        <attr name="tbTitle" format="string" />
+        <attr name="tbTitleTextColor" format="color" />
+        <attr name="tbTitleTextSize" format="dimension" />
+        <attr name="tbTitleTextBold" format="boolean" />
+        <attr name="tbTitleGravity" format="enum">
+            <enum name="start" value="8388627" />
+            <enum name="center" value="17" />
+        </attr>
+        <attr name="tbTitleSpace" format="dimension" />
+        <!-- 返回 -->
+        <attr name="tbBackIcon" format="reference" />
+        <attr name="tbBackIconVisible" format="boolean" />
+        <attr name="tbBackText" format="string" />
+        <attr name="tbBackTextColor" format="color" />
+        <attr name="tbBackTextSize" format="dimension" />
+        <attr name="tbBackTextBold" format="boolean" />
+        <attr name="tbBackTextVisible" format="boolean" />
+        <attr name="tbBackSpace" format="dimension" />
+        <!-- 行为文字 -->
+        <attr name="tbActionTextColor" format="color" />
+        <attr name="tbActionTextSize" format="dimension" />
+        <attr name="tbActionTextBold" format="boolean" />
+        <attr name="tbActionIconWidth" format="dimension" />
+        <attr name="tbActionSpace" format="dimension" />
+        <attr name="tbDividerColor" format="color" />
+        <attr name="tbDividerHeight" format="dimension" />
+        <attr name="tbDividerMargin" format="dimension" />
+        <attr name="tbDividerVisible" format="boolean" />
+    </declare-styleable>
+
+    <style name="CommonToolbarStyle">
+        <item name="tbPaddingLeft">@dimen/content</item>
+        <item name="tbPaddingRight">@dimen/content</item>
+        <item name="tbRippleEnable">true</item>
+        <item name="tbTitleTextColor">@color/white</item>
+        <item name="tbTitleTextSize">@dimen/h1</item>
+        <item name="tbTitleTextBold">false</item>
+        <item name="tbTitleGravity">start</item>
+        <item name="tbTitleSpace">@dimen/content</item>
+        <!-- 返回 -->
+        <item name="tbBackIcon">@drawable/def_back_material_light</item>
+        <item name="tbBackIconVisible">true</item>
+        <item name="tbBackTextColor">@color/white</item>
+        <item name="tbBackTextSize">@dimen/h2</item>
+        <item name="tbBackTextBold" format="boolean" />
+        <item name="tbBackTextVisible" format="boolean" />
+        <item name="tbBackSpace">@dimen/small</item>
+        <!-- 行为文字 -->
+        <item name="tbActionTextColor">@color/white</item>
+        <item name="tbActionTextSize">@dimen/h2</item>
+        <item name="tbActionTextBold">false</item>
+        <item name="tbActionSpace">@dimen/small</item>
+        <item name="tbDividerColor">@color/divider</item>
+        <item name="tbDividerHeight">@dimen/divider</item>
+        <item name="tbDividerMargin">0dp</item>
+        <item name="tbDividerVisible">true</item>
+    </style>
+</resources>

@@ -9,7 +9,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.uguke.android.util.CheckUtils;
 
 import java.util.List;
 
@@ -147,7 +146,7 @@ public class RefreshHelper<T> {
                 mRefreshLayout.finishRefresh(sFinishDelayed);
             }
             // 数据为空
-            if (mOnEmptyListener != null && CheckUtils.isEmpty(data)) {
+            if (mOnEmptyListener != null && data != null && !data.isEmpty()) {
                 mOnEmptyListener.onEmpty();
                 mRefreshLayout.setEnableLoadMore(false);
             } else {

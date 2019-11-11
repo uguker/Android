@@ -15,7 +15,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.ViewCompat;
 
 import com.uguke.android.R;
-import com.uguke.android.util.ResUtils;
 
 /**
  * 用于需要圆角矩形框背景的TextView的情况,减少直接使用TextView时引入的shape资源文件
@@ -57,7 +56,7 @@ public class DotView extends AppCompatTextView {
         mBackgroundColor = ta.getColor(R.styleable.DotView_mvBackgroundColor, Color.TRANSPARENT);
         mCornerRadius = ta.getDimensionPixelSize(R.styleable.DotView_mvCornerRadius, 0);
         mStrokeWidth = ta.getDimensionPixelSize(R.styleable.DotView_mvStrokeWidth, 0);
-        mInnerPadding = ta.getDimensionPixelSize(R.styleable.DotView_mvInnerPadding, ResUtils.toPixel(3));
+        mInnerPadding = ta.getDimensionPixelSize(R.styleable.DotView_mvInnerPadding, toPixel(3));
         mStrokeColor = ta.getColor(R.styleable.DotView_mvStrokeColor, Color.TRANSPARENT);
         mRadiusHalfHeight = ta.getBoolean(R.styleable.DotView_mvRadiusHalfHeight, false);
         mWidthHeightEqual = ta.getBoolean(R.styleable.DotView_mvWidthHeightEqual, false);
@@ -185,4 +184,5 @@ public class DotView extends AppCompatTextView {
         }
         setLayoutParams(params);
     }
+
 }

@@ -45,6 +45,8 @@ dependencies {
     api 'com.lzy.net:okrx2:2.0.2'
 
 
+    implementation 'com.blankj:utilcodex:1.25.9'
+
     implementation 'cn.wanghaomiao:JsoupXpath:2.3.2'
     implementation 'org.jsoup:jsoup:1.12.1'
 }

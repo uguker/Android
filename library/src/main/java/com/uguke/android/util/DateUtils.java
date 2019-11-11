@@ -1,12 +1,16 @@
 package com.uguke.android.util;
 
+import android.text.TextUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -23,10 +27,6 @@ public class DateUtils {
 
 	private DateUtils() {
 		throw new UnsupportedOperationException("can't instantiate me...");
-	}
-
-	public static boolean isDate(String date) {
-		return toDate(date) != null;
 	}
 
 	public static Style getDateStyle(String date) {
@@ -56,7 +56,7 @@ public class DateUtils {
 	}
 
 	public static long toLong(Date date) {
-		return date == null ? 0 : date.getTime();
+		return date == null ? getInvalidDate().getTime() : date.getTime();
 	}
 
 	public static String toString(long millis) {
@@ -102,7 +102,7 @@ public class DateUtils {
 
 	public static String toString(Date date, String pattern) {
 		if (TextUtils.isEmpty(pattern) || date == null) {
-			return null;
+			return toString(getInvalidDate(), pattern);
 		}
 		return getDateFormat(pattern).format(date);
 	}
@@ -118,12 +118,12 @@ public class DateUtils {
 
 	public static Date toDate(String date, String pattern) {
 		if (TextUtils.isEmpty(date) || TextUtils.isEmpty(pattern)) {
-			return null;
+			return getInvalidDate();
 		}
 		try {
-			return getDateFormat(pattern).parse(TextUtils.convertNull(date));
+			return getDateFormat(pattern).parse(date);
 		} catch (ParseException e) {
-			return null;
+			return getInvalidDate();
 		}
 	}
 
@@ -426,7 +426,11 @@ public class DateUtils {
 	}
 
 	private static SimpleDateFormat getDateFormat(String pattern) {
-		return new SimpleDateFormat(TextUtils.convertNull(pattern));
+		return new SimpleDateFormat(pattern == null ? "" : pattern, Locale.getDefault());
+	}
+
+	private static Date getInvalidDate() {
+		return new GregorianCalendar(1900, 0, 1, 0, 0).getTime();
 	}
 
 	private static Date getAccurateDate(List<Long> timestamps) {
@@ -473,7 +477,7 @@ public class DateUtils {
 		if (timestamp != 0) {
 			date = new Date(timestamp);
 		}
-		return date;
+		return date == null ? getInvalidDate() : date;
 	}
 
 	public enum Month {

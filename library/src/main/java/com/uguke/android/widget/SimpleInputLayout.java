@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -22,8 +23,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
-import com.uguke.android.util.ResUtils;
-import com.uguke.android.util.TvUtils;
 import com.uguke.android.R;
 
 /**
@@ -59,7 +58,9 @@ public class SimpleInputLayout extends RelativeLayout {
                 mEditView.setText(null);
             } else if (id == R.id.android_input_toggle){
                 mPasswordVisible = !mPasswordVisible;
-                TvUtils.setPasswordVisible(mEditView, mPasswordVisible);
+                mEditView.setTransformationMethod(mPasswordVisible ? null : PasswordTransformationMethod.getInstance());
+                mEditView.setSelection(mEditView.getSelectionEnd());
+
                 toggleView.setImageResource(mPasswordVisible ?
                         R.drawable.widget_input_visible :
                         R.drawable.widget_input_invisible);
@@ -133,7 +134,15 @@ public class SimpleInputLayout extends RelativeLayout {
 //                mEditView.setKeyListener(DigitsKeyListener.getInstance(
 //                        "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789@._"));
         }
-        TvUtils.setDrawableLeft(mEditView, mInputIcon);
+        if (mInputIcon != null) {
+            mInputIcon.setBounds(0, 0, mInputIcon.getMinimumWidth(), mInputIcon.getMinimumHeight());
+        }
+        // 设置图标
+        mEditView.setCompoundDrawables(
+                mInputIcon,
+                mEditView.getCompoundDrawables()[1],
+                mEditView.getCompoundDrawables()[2],
+                mEditView.getCompoundDrawables()[3]);
     }
 
 
@@ -163,8 +172,12 @@ public class SimpleInputLayout extends RelativeLayout {
                 (int) (mInputPadding / 4), (int) (mInputPadding / 4));
         toggleView.setImageResource(R.drawable.widget_input_invisible);
         toggleView.setClickable(true);
-        ViewCompat.setBackground(toggleView, ResUtils.getDrawableByAttr(getContext(),
-                android.R.attr.selectableItemBackground));
+        // 设置背景
+        TypedArray array = getContext().obtainStyledAttributes(new int[] {android.R.attr.selectableItemBackground});
+        Drawable drawable = array.getDrawable(0);
+        array.recycle();
+        ViewCompat.setBackground(toggleView, drawable);
+
         addView(toggleView);
 
         params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

@@ -15,11 +15,7 @@
         <com.uguke.android.widget.CommonToolbar
             android:id="@id/__android_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar"
-            app:tbBackIcon="@drawable/def_back_common_dark"
-            app:tbBackIconVisible="true"
-            app:tbRippleEnable="false"
-            app:tbTitleTextGravity="center">
+            android:layout_height="@dimen/toolbar">
 
         </com.uguke.android.widget.CommonToolbar>
 

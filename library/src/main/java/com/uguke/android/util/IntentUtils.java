@@ -21,14 +21,6 @@ public class IntentUtils {
         throw new UnsupportedOperationException("can't instantiate me.");
     }
 
-    public static void launch(Context context, String packageName) {
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-        if (intent == null) {
-            return;
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
 
     public static void openDetailSettings(Context context, String packageName) {
         Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
@@ -71,28 +63,6 @@ public class IntentUtils {
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra("sms_body", body);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    public static void installApp(Context context, File file) {
-        Intent intent = new Intent();
-        //判读版本是否在7.0以上
-        if (Build.VERSION.SDK_INT >= 24) {
-            //provider authorities
-            //Uri apkUri = FileProvider.getUriForFile(context, "com.toommi.dapp", file);
-            Uri apkUri = FileProvider.getUriForFile(context, context.getPackageName(), file);
-            //Granting Temporary Permissions to a URI
-            intent.setAction(Intent.ACTION_VIEW);
-            //intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        } else {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        }
         context.startActivity(intent);
     }
 }

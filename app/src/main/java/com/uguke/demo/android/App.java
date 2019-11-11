@@ -25,7 +25,7 @@ public class App extends Application {
 //                .init(this)
 //                .setSwipeBackSupport(true);
 
-        AndroidDelegate.init(this)
+        AndroidDelegate.getInstance()
                 .setLifecycleAdapter(null)
                 .setSwipeBackSupport(true)
                 .setLifecycleAdapter(new LifecycleAdapter() {

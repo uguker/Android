@@ -36,7 +36,6 @@ public class SSFragment extends SlidingFragment {
 
         mToolbar.setRippleEnable(true)
                 .setBackIcon(R.drawable.def_back_material_dark)
-                .setActionIconVisible(0, true)
                 .setActionIcon(1, R.drawable.widget_ic_empty)
                 .setActionText(0, "你好")
                 .setActionTextBold(true)
@@ -46,12 +45,11 @@ public class SSFragment extends SlidingFragment {
                 .setBackIconVisible(true)
                 .setBackTextVisible(false)
                 .setTitle("你好啊")
-                .setTitleMargin(16)
-                .setBackMargin(0)
-                .setTitleTextGravity(CommonToolbar.CENTER)
+                .setTitleSpace(16)
+                .setBackSpace(0)
+                .setTitleGravity(CommonToolbar.CENTER)
                 .setActionText(1, "6666")
-                .setPadding(16, 16)
-                .setActionTextVisible(true);
+                .setPadding(16, 16);
 
         //showLoading("我在加载中");
 

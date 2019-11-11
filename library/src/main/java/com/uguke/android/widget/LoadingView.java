@@ -1,6 +1,7 @@
 package com.uguke.android.widget;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
@@ -14,7 +15,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
 import androidx.core.content.ContextCompat;
 
-import com.uguke.android.util.ResUtils;
 import com.uguke.android.R;
 
 /**
@@ -66,7 +66,7 @@ public class LoadingView extends View {
         mArcColors = new int[] {ContextCompat.getColor(context, R.color.colorAccent)};
         mRotatingArc = new RotatingArc(30, 270, 4);
         mRotatingArc.mIntervalAngle = 30;
-        mRotatingArc.mStrokeWidth = ResUtils.toPixel(3);
+        mRotatingArc.mStrokeWidth = (float) Math.ceil(3 * Resources.getSystem().getDisplayMetrics().density);
     }
 
     @Override

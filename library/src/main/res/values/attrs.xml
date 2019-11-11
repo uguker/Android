@@ -42,49 +42,4 @@
         <attr name="formatText" format="string" />
         <attr name="duration" format="integer" />
     </declare-styleable>
-
-    <declare-styleable name="CommonToolbar">
-        <attr name="tbPaddingLeft" format="dimension" />
-        <attr name="tbPaddingRight" format="dimension" />
-        <!-- 水波纹效果 -->
-        <attr name="tbRippleEnable" format="boolean" />
-        <!-- 标题 -->
-        <attr name="tbTitle" format="string" />
-        <attr name="tbTitleTextColor" format="color" />
-        <attr name="tbTitleTextSize" format="dimension" />
-        <attr name="tbTitleTextBold" format="boolean" />
-        <attr name="tbTitleTextGravity" format="enum">
-            <enum name="start" value="8388627" />
-            <enum name="center" value="17" />
-        </attr>
-        <attr name="tbTitleMargin" format="dimension" />
-        <!-- 返回 -->
-        <attr name="tbBackIcon" format="reference" />
-        <attr name="tbBackIconVisible" format="boolean" />
-        <attr name="tbBackText" format="string" />
-        <attr name="tbBackTextColor" format="color" />
-        <attr name="tbBackTextSize" format="dimension" />
-        <attr name="tbBackTextBold" format="boolean" />
-        <attr name="tbBackTextVisible" format="boolean" />
-        <attr name="tbBackMargin" format="dimension" />
-        <!-- 行为文字 -->
-        <attr name="tbActionTextColor" format="color" />
-        <attr name="tbActionTextSize" format="dimension" />
-        <attr name="tbActionTextBold" format="boolean" />
-        <attr name="tbActionIconWidth" format="dimension" />
-        <attr name="tbActionMargin" format="dimension" />
-        <attr name="tbDividerColor" format="dimension" />
-        <attr name="tbDividerHeight" format="dimension" />
-        <attr name="tbDividerMargin" format="dimension" />
-        <attr name="tbDividerVisible" format="dimension" />
-    </declare-styleable>
-
-    <style name="CommonToolbarStyle">
-        <item name="android:id">@id/__android_toolbar</item>
-    </style>
-
-    <attr name="dividerColor" format="dimension" />
-    <attr name="dividerHeight" format="dimension" />
-    <attr name="dividerSpace" format="dimension" />
-    <attr name="dividerVisible" format="dimension" />
 </resources>

@@ -145,6 +145,7 @@ class ViewDelegate implements ViewProvider {
      */
     public void setNativeContentView(@LayoutRes int id) {
         ViewGroup root = mActivity.findViewById(android.R.id.content);
+        // 布局控件
         mContentView = mInflater.inflate(id, root, false);
         // 全局处理控件
         onHandleViews();

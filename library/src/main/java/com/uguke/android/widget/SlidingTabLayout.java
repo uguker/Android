@@ -139,36 +139,36 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
     private void obtainAttributes(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SlidingTabLayout);
 
-        mIndicatorStyle = ta.getInt(R.styleable.SlidingTabLayout_tl_indicator_style, STYLE_NORMAL);
-        mIndicatorColor = ta.getColor(R.styleable.SlidingTabLayout_tl_indicator_color, Color.parseColor(mIndicatorStyle == STYLE_BLOCK ? "#4B6A87" : "#ffffff"));
-        mIndicatorHeight = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_height,
+        mIndicatorStyle = ta.getInt(R.styleable.SlidingTabLayout_tlIndicatorStyle, STYLE_NORMAL);
+        mIndicatorColor = ta.getColor(R.styleable.SlidingTabLayout_tlIndicatorColor, Color.parseColor(mIndicatorStyle == STYLE_BLOCK ? "#4B6A87" : "#ffffff"));
+        mIndicatorHeight = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorHeight,
                 toPixel(mIndicatorStyle == STYLE_TRIANGLE ? 4 : (mIndicatorStyle == STYLE_BLOCK ? -1 : 2)));
-        mIndicatorWidth = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_width, toPixel(mIndicatorStyle == STYLE_TRIANGLE ? 10 : -1));
-        mIndicatorCornerRadius = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_corner_radius, toPixel(mIndicatorStyle == STYLE_BLOCK ? -1 : 0));
-        mIndicatorMarginLeft = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_margin_left, toPixel(0));
-        mIndicatorMarginTop = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_margin_top, toPixel(mIndicatorStyle == STYLE_BLOCK ? 7 : 0));
-        mIndicatorMarginRight = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_margin_right, toPixel(0));
-        mIndicatorMarginBottom = ta.getDimension(R.styleable.SlidingTabLayout_tl_indicator_margin_bottom, toPixel(mIndicatorStyle == STYLE_BLOCK ? 7 : 0));
-        mIndicatorGravity = ta.getInt(R.styleable.SlidingTabLayout_tl_indicator_gravity, Gravity.BOTTOM);
-        mIndicatorWidthEqualTitle = ta.getBoolean(R.styleable.SlidingTabLayout_tl_indicator_width_equal_title, false);
+        mIndicatorWidth = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorWidth, toPixel(mIndicatorStyle == STYLE_TRIANGLE ? 10 : -1));
+        mIndicatorCornerRadius = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorCornerRadius, toPixel(mIndicatorStyle == STYLE_BLOCK ? -1 : 0));
+        mIndicatorMarginLeft = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorMarginLeft, toPixel(0));
+        mIndicatorMarginTop = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorMarginTop, toPixel(mIndicatorStyle == STYLE_BLOCK ? 7 : 0));
+        mIndicatorMarginRight = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorMarginRight, toPixel(0));
+        mIndicatorMarginBottom = ta.getDimension(R.styleable.SlidingTabLayout_tlIndicatorMarginBottom, toPixel(mIndicatorStyle == STYLE_BLOCK ? 7 : 0));
+        mIndicatorGravity = ta.getInt(R.styleable.SlidingTabLayout_tlIndicatorGravity, Gravity.BOTTOM);
+        mIndicatorWidthEqualTitle = ta.getBoolean(R.styleable.SlidingTabLayout_tlIndicatorWidthEqualTitle, false);
 
-        mUnderlineColor = ta.getColor(R.styleable.SlidingTabLayout_tl_underline_color, Color.parseColor("#ffffff"));
-        mUnderlineHeight = ta.getDimension(R.styleable.SlidingTabLayout_tl_underline_height, toPixel(0));
-        mUnderlineGravity = ta.getInt(R.styleable.SlidingTabLayout_tl_underline_gravity, Gravity.BOTTOM);
+        mUnderlineColor = ta.getColor(R.styleable.SlidingTabLayout_tlUnderlineColor, Color.parseColor("#ffffff"));
+        mUnderlineHeight = ta.getDimension(R.styleable.SlidingTabLayout_tlUnderlineHeight, toPixel(0));
+        mUnderlineGravity = ta.getInt(R.styleable.SlidingTabLayout_tlUnderlineGravity, Gravity.BOTTOM);
 
-        mDividerColor = ta.getColor(R.styleable.SlidingTabLayout_tl_divider_color, Color.parseColor("#ffffff"));
-        mDividerWidth = ta.getDimension(R.styleable.SlidingTabLayout_tl_divider_width, toPixel(0));
-        mDividerPadding = ta.getDimension(R.styleable.SlidingTabLayout_tl_divider_padding, toPixel(12));
+        mDividerColor = ta.getColor(R.styleable.SlidingTabLayout_tlDividerColor, Color.parseColor("#ffffff"));
+        mDividerWidth = ta.getDimension(R.styleable.SlidingTabLayout_tlDividerWidth, toPixel(0));
+        mDividerPadding = ta.getDimension(R.styleable.SlidingTabLayout_tlDividerPadding, toPixel(12));
 
-        mTextSize = ta.getDimension(R.styleable.SlidingTabLayout_tl_textSize, toPixel(14));
-        mTextSelectedColor = ta.getColor(R.styleable.SlidingTabLayout_tl_textSelectedColor, Color.parseColor("#ffffff"));
-        mTextUnselectedColor = ta.getColor(R.styleable.SlidingTabLayout_tl_textUnselectedColor, Color.parseColor("#AAffffff"));
-        mTextBold = ta.getInt(R.styleable.SlidingTabLayout_tl_textBold, TEXT_BOLD_NONE);
-        mTextAllCaps = ta.getBoolean(R.styleable.SlidingTabLayout_tl_textAllCaps, false);
+        mTextSize = ta.getDimension(R.styleable.SlidingTabLayout_tlTextSize, toPixel(14));
+        mTextSelectedColor = ta.getColor(R.styleable.SlidingTabLayout_tlTextSelectedColor, Color.parseColor("#ffffff"));
+        mTextUnselectedColor = ta.getColor(R.styleable.SlidingTabLayout_tlTextUnselectedColor, Color.parseColor("#AAffffff"));
+        mTextBold = ta.getInt(R.styleable.SlidingTabLayout_tlTextBold, TEXT_BOLD_NONE);
+        mTextAllCaps = ta.getBoolean(R.styleable.SlidingTabLayout_tlTextAllCaps, false);
 
-        mTabSpaceEqual = ta.getBoolean(R.styleable.SlidingTabLayout_tl_tab_space_equal, false);
-        mTabWidth = ta.getDimension(R.styleable.SlidingTabLayout_tl_tab_width, toPixel(-1));
-        mTabPadding = ta.getDimension(R.styleable.SlidingTabLayout_tl_tab_padding, mTabSpaceEqual || mTabWidth > 0 ? toPixel(0) : toPixel(20));
+        mTabSpaceEqual = ta.getBoolean(R.styleable.SlidingTabLayout_tlTabSpaceEqual, false);
+        mTabWidth = ta.getDimension(R.styleable.SlidingTabLayout_tlTabWidth, toPixel(-1));
+        mTabPadding = ta.getDimension(R.styleable.SlidingTabLayout_tlTabPadding, mTabSpaceEqual || mTabWidth > 0 ? toPixel(0) : toPixel(20));
 
         ta.recycle();
     }

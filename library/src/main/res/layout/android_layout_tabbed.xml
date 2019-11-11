@@ -38,18 +38,18 @@
         android:layout_height="@dimen/tabbed"
         android:layout_alignParentBottom="true"
         android:background="@color/foreground"
-        app:tl_iconGravity="bottom"
-        app:tl_iconHeight="20dp"
-        app:tl_iconWidth="20dp"
-        app:tl_indicator_color="@color/colorAccent"
-        app:tl_indicator_height="0dp"
-        app:tl_indicator_style="normal"
-        app:tl_textSelectedColor="@color/colorAccent"
-        app:tl_textSize="12sp"
-        app:tl_textUnselectedColor="@color/hint"
-        app:tl_underline_color="@color/divider"
-        app:tl_underline_gravity="top"
-        app:tl_underline_height="1dp">
+        app:tlIconGravity="bottom"
+        app:tlIconHeight="20dp"
+        app:tlIconWidth="20dp"
+        app:tlIndicatorColor="@color/colorAccent"
+        app:tlIndicatorHeight="0dp"
+        app:tlIndicatorStyle="normal"
+        app:tlTextSelectedColor="@color/colorAccent"
+        app:tlTextSize="12sp"
+        app:tlTextUnselectedColor="@color/hint"
+        app:tlUnderlineColor="@color/divider"
+        app:tlUnderlineGravity="top"
+        app:tlUnderlineHeight="1dp">
 
     </com.uguke.android.widget.CommonTabLayout>
 </RelativeLayout>

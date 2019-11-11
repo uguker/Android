@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
-
-    <attr name="styleLoadingLayout" format="reference" />
 
     <declare-styleable name="LoadingLayout">
         <attr name="llBackground" format="reference" />
@@ -45,7 +42,7 @@
         <item name="llRetryText">加载失败，点击重试</item>
         <item name="llRetryTextColor">@color/tint</item>
         <item name="llRetryTextSize">@dimen/body</item>
-        <item name="llRetryBackground">@drawable/_loading_layout_button</item>
+        <item name="llRetryBackground">@drawable/widget_loading_btn</item>
         <item name="llBackground">@color/background</item>
         <item name="llLoadingText">加载中...</item>
         <item name="llLoadingSize">24dp</item>

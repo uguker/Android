@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/content"
-        android:background="@drawable/_loading_layout_button"
+        android:background="@drawable/widget_loading_btn"
         android:gravity="center"
         android:minWidth="120dp"
         android:paddingLeft="@dimen/content"

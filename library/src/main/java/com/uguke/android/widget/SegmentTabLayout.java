@@ -129,34 +129,34 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
     private void obtainAttributes(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SegmentTabLayout);
 
-        mIndicatorColor = ta.getColor(R.styleable.SegmentTabLayout_tl_indicator_color, Color.parseColor("#222831"));
-        mIndicatorHeight = ta.getDimension(R.styleable.SegmentTabLayout_tl_indicator_height, -1);
-        mIndicatorCornerRadius = ta.getDimension(R.styleable.SegmentTabLayout_tl_indicator_corner_radius, -1);
-        mIndicatorMarginLeft = ta.getDimension(R.styleable.SegmentTabLayout_tl_indicator_margin_left, toPixel(0));
-        mIndicatorMarginTop = ta.getDimension(R.styleable.SegmentTabLayout_tl_indicator_margin_top, 0);
-        mIndicatorMarginRight = ta.getDimension(R.styleable.SegmentTabLayout_tl_indicator_margin_right, toPixel(0));
-        mIndicatorMarginBottom = ta.getDimension(R.styleable.SegmentTabLayout_tl_indicator_margin_bottom, 0);
-        mIndicatorAnimEnable = ta.getBoolean(R.styleable.SegmentTabLayout_tl_indicator_anim_enable, false);
-        mIndicatorBounceEnable = ta.getBoolean(R.styleable.SegmentTabLayout_tl_indicator_bounce_enable, true);
-        mIndicatorAnimDuration = ta.getInt(R.styleable.SegmentTabLayout_tl_indicator_anim_duration, -1);
+        mIndicatorColor = ta.getColor(R.styleable.SegmentTabLayout_tlIndicatorColor, Color.parseColor("#222831"));
+        mIndicatorHeight = ta.getDimension(R.styleable.SegmentTabLayout_tlIndicatorHeight, -1);
+        mIndicatorCornerRadius = ta.getDimension(R.styleable.SegmentTabLayout_tlIndicatorCornerRadius, -1);
+        mIndicatorMarginLeft = ta.getDimension(R.styleable.SegmentTabLayout_tlIndicatorMarginLeft, toPixel(0));
+        mIndicatorMarginTop = ta.getDimension(R.styleable.SegmentTabLayout_tlIndicatorMarginTop, 0);
+        mIndicatorMarginRight = ta.getDimension(R.styleable.SegmentTabLayout_tlIndicatorMarginRight, toPixel(0));
+        mIndicatorMarginBottom = ta.getDimension(R.styleable.SegmentTabLayout_tlIndicatorMarginBottom, 0);
+        mIndicatorAnimEnable = ta.getBoolean(R.styleable.SegmentTabLayout_tlIndicatorAnimEnable, false);
+        mIndicatorBounceEnable = ta.getBoolean(R.styleable.SegmentTabLayout_tlIndicatorBounceEnable, true);
+        mIndicatorAnimDuration = ta.getInt(R.styleable.SegmentTabLayout_tlIndicatorAnimDuration, -1);
 
-        mDividerColor = ta.getColor(R.styleable.SegmentTabLayout_tl_divider_color, mIndicatorColor);
-        mDividerWidth = ta.getDimension(R.styleable.SegmentTabLayout_tl_divider_width, toPixel(1));
-        mDividerPadding = ta.getDimension(R.styleable.SegmentTabLayout_tl_divider_padding, 0);
+        mDividerColor = ta.getColor(R.styleable.SegmentTabLayout_tlDividerColor, mIndicatorColor);
+        mDividerWidth = ta.getDimension(R.styleable.SegmentTabLayout_tlDividerWidth, toPixel(1));
+        mDividerPadding = ta.getDimension(R.styleable.SegmentTabLayout_tlDividerPadding, 0);
 
-        mTextSize = ta.getDimension(R.styleable.SegmentTabLayout_tl_textSize, toPixel(13f));
-        mTextSelectedColor = ta.getColor(R.styleable.SegmentTabLayout_tl_textSelectedColor, Color.parseColor("#ffffff"));
-        mTextUnselectedColor = ta.getColor(R.styleable.SegmentTabLayout_tl_textUnselectedColor, mIndicatorColor);
-        mTextBold = ta.getInt(R.styleable.SegmentTabLayout_tl_textBold, TEXT_BOLD_NONE);
-        mTextAllCaps = ta.getBoolean(R.styleable.SegmentTabLayout_tl_textAllCaps, false);
+        mTextSize = ta.getDimension(R.styleable.SegmentTabLayout_tlTextSize, toPixel(13f));
+        mTextSelectedColor = ta.getColor(R.styleable.SegmentTabLayout_tlTextSelectedColor, Color.parseColor("#ffffff"));
+        mTextUnselectedColor = ta.getColor(R.styleable.SegmentTabLayout_tlTextUnselectedColor, mIndicatorColor);
+        mTextBold = ta.getInt(R.styleable.SegmentTabLayout_tlTextBold, TEXT_BOLD_NONE);
+        mTextAllCaps = ta.getBoolean(R.styleable.SegmentTabLayout_tlTextAllCaps, false);
 
-        mTabSpaceEqual = ta.getBoolean(R.styleable.SegmentTabLayout_tl_tab_space_equal, true);
-        mTabWidth = ta.getDimension(R.styleable.SegmentTabLayout_tl_tab_width, toPixel(-1));
-        mTabPadding = ta.getDimension(R.styleable.SegmentTabLayout_tl_tab_padding, mTabSpaceEqual || mTabWidth > 0 ? toPixel(0) : toPixel(10));
+        mTabSpaceEqual = ta.getBoolean(R.styleable.SegmentTabLayout_tlTabSpaceEqual, true);
+        mTabWidth = ta.getDimension(R.styleable.SegmentTabLayout_tlTabWidth, toPixel(-1));
+        mTabPadding = ta.getDimension(R.styleable.SegmentTabLayout_tlTabPadding, mTabSpaceEqual || mTabWidth > 0 ? toPixel(0) : toPixel(10));
 
-        mBarColor = ta.getColor(R.styleable.SegmentTabLayout_tl_bar_color, Color.TRANSPARENT);
-        mBarStrokeColor = ta.getColor(R.styleable.SegmentTabLayout_tl_bar_stroke_color, mIndicatorColor);
-        mBarStrokeWidth = ta.getDimension(R.styleable.SegmentTabLayout_tl_bar_stroke_width, toPixel(1));
+        mBarColor = ta.getColor(R.styleable.SegmentTabLayout_tlBarColor, Color.TRANSPARENT);
+        mBarStrokeColor = ta.getColor(R.styleable.SegmentTabLayout_tlBarStrokeColor, mIndicatorColor);
+        mBarStrokeWidth = ta.getDimension(R.styleable.SegmentTabLayout_tlBarStrokeWidth, toPixel(1));
         ta.recycle();
     }
 

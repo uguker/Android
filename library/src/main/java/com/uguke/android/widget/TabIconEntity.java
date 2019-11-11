@@ -2,6 +2,10 @@ package com.uguke.android.widget;
 
 import androidx.annotation.DrawableRes;
 
+/**
+ * 带图标Tab
+ * @author LeiJue
+ */
 public interface TabIconEntity extends TabEntity {
 
     /**

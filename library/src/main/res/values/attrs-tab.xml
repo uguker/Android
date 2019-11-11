@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 点控件（角标） -->
+    <declare-styleable name="DotView">
+        <!-- 圆角矩形背景色 -->
+        <attr name="mvBackgroundColor" format="color" />
+        <!-- 圆角弧度,单位dp-->
+        <attr name="mvCornerRadius" format="dimension" />
+        <!-- 圆角弧度,单位dp-->
+        <attr name="mvStrokeWidth" format="dimension" />
+        <!-- 内部间隔 -->
+        <attr name="mvInnerPadding" format="dimension" />
+        <!-- 圆角边框颜色-->
+        <attr name="mvStrokeColor" format="color" />
+        <!-- 圆角弧度是高度一半-->
+        <attr name="mvRadiusHalfHeight" format="boolean" />
+        <!-- 圆角矩形宽高相等,取较宽高中大值-->
+        <attr name="mvWidthHeightEqual" format="boolean" />
+    </declare-styleable>
+
+    <!-- 设置显示器颜色 -->
+    <attr name="tlIndicatorColor" format="color" />
+    <!-- 设置显示器高度 -->
+    <attr name="tlIndicatorHeight" format="dimension" />
+    <!-- 设置显示器固定宽度 -->
+    <attr name="tlIndicatorWidth" format="dimension" />
+    <!-- 设置显示器margin,当indicator_width大于0,无效 -->
+    <attr name="tlIndicatorMarginLeft" format="dimension" />
+    <attr name="tlIndicatorMarginTop" format="dimension" />
+    <attr name="tlIndicatorMarginRight" format="dimension" />
+    <attr name="tlIndicatorMarginBottom" format="dimension" />
+    <!-- 设置显示器圆角弧度-->
+    <attr name="tlIndicatorCornerRadius" format="dimension" />
+    <!-- 设置显示器上方还是下方,只对圆角矩形有用-->
+    <attr name="tlIndicatorGravity" format="enum">
+        <enum name="top" value="48" />
+        <enum name="bottom" value="80" />
+    </attr>
+    <!-- 设置显示器为常规|三角形|背景色块|-->
+    <attr name="tlIndicatorStyle" format="enum">
+        <enum name="normal" value="0" />
+        <enum name="triangle" value="1" />
+        <enum name="block" value="2" />
+    </attr>
+    <!-- 设置显示器长度与title一样长,只有在STYLE_NORMAL并且indicatorWidth小于零有效-->
+    <attr name="tlIndicatorWidthEqualTitle" format="boolean" />
+    <!-- 设置显示器支持动画-->
+    <attr name="tlIndicatorAnimEnable" format="boolean" />
+    <!-- 设置显示器动画时间-->
+    <attr name="tlIndicatorAnimDuration" format="integer" />
+    <!-- 设置显示器支持动画回弹效果-->
+    <attr name="tlIndicatorBounceEnable" format="boolean" />
+
+    <!-- 下划线 -->
+    <!-- 设置下划线颜色 -->
+    <attr name="tlUnderlineColor" format="color" />
+    <!-- 设置下划线高度 -->
+    <attr name="tlUnderlineHeight" format="dimension" />
+    <!-- 设置下划线上方还是下方-->
+    <attr name="tlUnderlineGravity" format="enum">
+        <enum name="top" value="48" />
+        <enum name="bottom" value="80" />
+    </attr>
+
+    <!-- 分割线 -->
+    <!-- 设置分割线颜色 -->
+    <attr name="tlDividerColor" format="color" />
+    <!-- 设置分割线宽度 -->
+    <attr name="tlDividerWidth" format="dimension" />
+    <!-- 设置分割线的paddingTop和paddingBottom -->
+    <attr name="tlDividerPadding" format="dimension" />
+
+    <!-- Tab项 -->
+    <!-- 设置tab的paddingLeft和paddingRight -->
+    <attr name="tlTabPadding" format="dimension" />
+    <!-- 设置tab大小等分 -->
+    <attr name="tlTabSpaceEqual" format="boolean" />
+    <!-- 设置tab固定大小 -->
+    <attr name="tlTabWidth" format="dimension" />
+
+    <!-- 文本 -->
+    <!-- 设置字体大小 -->
+    <attr name="tlTextSize" format="dimension" />
+    <!-- 设置字体选中颜色 -->
+    <attr name="tlTextSelectedColor" format="color" />
+    <!-- 设置字体未选中颜色 -->
+    <attr name="tlTextUnselectedColor" format="color" />
+    <!-- 设置字体加粗 -->
+    <attr name="tlTextBold" format="enum">
+        <enum name="NONE" value="0" />
+        <enum name="SELECT" value="1" />
+        <enum name="BOTH" value="2" />
+    </attr>
+
+    <!-- 设置字体全大写 -->
+    <attr name="tlTextAllCaps" format="boolean" />
+
+    <declare-styleable name="SlidingTabLayout">
+        <!-- 指示器 -->
+        <attr name="tlIndicatorColor" />
+        <attr name="tlIndicatorHeight" />
+        <attr name="tlIndicatorWidth" />
+        <attr name="tlIndicatorMarginLeft" />
+        <attr name="tlIndicatorMarginTop" />
+        <attr name="tlIndicatorMarginRight" />
+        <attr name="tlIndicatorMarginBottom" />
+        <attr name="tlIndicatorCornerRadius" />
+        <attr name="tlIndicatorGravity" />
+        <attr name="tlIndicatorStyle" />
+        <attr name="tlIndicatorWidthEqualTitle" />
+
+        <!-- 下划线 -->
+        <attr name="tlUnderlineColor" />
+        <attr name="tlUnderlineHeight" />
+        <attr name="tlUnderlineGravity" />
+
+        <!-- 分割线 -->
+        <attr name="tlDividerColor" />
+        <attr name="tlDividerWidth" />
+        <attr name="tlDividerPadding" />
+
+        <!-- Tab项 -->
+        <attr name="tlTabPadding" />
+        <attr name="tlTabSpaceEqual" />
+        <attr name="tlTabWidth" />
+
+        <!-- 文本 -->
+        <attr name="tlTextSize" />
+        <attr name="tlTextSelectedColor" />
+        <attr name="tlTextUnselectedColor" />
+        <attr name="tlTextBold" />
+        <attr name="tlTextAllCaps" />
+
+    </declare-styleable>
+
+    <declare-styleable name="CommonTabLayout">
+        <!-- 指示器 -->
+        <attr name="tlIndicatorColor" />
+        <attr name="tlIndicatorHeight" />
+        <attr name="tlIndicatorWidth" />
+        <attr name="tlIndicatorMarginLeft" />
+        <attr name="tlIndicatorMarginTop" />
+        <attr name="tlIndicatorMarginRight" />
+        <attr name="tlIndicatorMarginBottom" />
+        <attr name="tlIndicatorCornerRadius" />
+        <attr name="tlIndicatorGravity" />
+        <attr name="tlIndicatorStyle" />
+        <attr name="tlIndicatorAnimEnable" />
+        <attr name="tlIndicatorAnimDuration" />
+        <attr name="tlIndicatorBounceEnable" />
+
+        <!-- 下划线 -->
+        <attr name="tlUnderlineColor" />
+        <attr name="tlUnderlineHeight" />
+        <attr name="tlUnderlineGravity" />
+
+        <!-- 分割线 -->
+        <attr name="tlDividerColor" />
+        <attr name="tlDividerWidth" />
+        <attr name="tlDividerPadding" />
+
+        <!-- Tab项 -->
+        <attr name="tlTabPadding" />
+        <attr name="tlTabSpaceEqual" />
+        <attr name="tlTabWidth" />
+
+        <!-- 文本 -->
+        <attr name="tlTextSize" />
+        <attr name="tlTextSelectedColor" />
+        <attr name="tlTextUnselectedColor" />
+        <attr name="tlTextBold" />
+        <attr name="tlTextAllCaps" />
+
+        <!-- 设置icon宽度 -->
+        <attr name="tlIconWidth" format="dimension" />
+        <!-- 设置icon高度 -->
+        <attr name="tlIconHeight" format="dimension" />
+        <!-- 设置icon是否可见 -->
+        <attr name="tlIconVisible" format="boolean" />
+        <!-- 设置icon显示位置,对应Gravity中常量值 -->
+        <attr name="tlIconGravity" format="enum">
+            <enum name="left" value="3" />
+            <enum name="top" value="48" />
+            <enum name="right" value="5" />
+            <enum name="bottom" value="80" />
+        </attr>
+        <!-- 设置icon与文字间距 -->
+        <attr name="tlIconMargin" format="dimension" />
+
+    </declare-styleable>
+
+    <declare-styleable name="SegmentTabLayout">
+        <!-- indicator -->
+        <attr name="tlIndicatorColor" />
+        <attr name="tlIndicatorHeight" />
+        <attr name="tlIndicatorMarginLeft" />
+        <attr name="tlIndicatorMarginTop" />
+        <attr name="tlIndicatorMarginRight" />
+        <attr name="tlIndicatorMarginBottom" />
+        <attr name="tlIndicatorCornerRadius" />
+        <attr name="tlIndicatorAnimEnable" />
+        <attr name="tlIndicatorAnimDuration" />
+        <attr name="tlIndicatorBounceEnable" />
+
+        <!-- 分割线 -->
+        <attr name="tlDividerColor" />
+        <attr name="tlDividerWidth" />
+        <attr name="tlDividerPadding" />
+
+        <!-- Tab项 -->
+        <attr name="tlTabPadding" />
+        <attr name="tlTabSpaceEqual" />
+        <attr name="tlTabWidth" />
+
+        <!-- 文本 -->
+        <attr name="tlTextSize" />
+        <attr name="tlTextSelectedColor" />
+        <attr name="tlTextUnselectedColor" />
+        <attr name="tlTextBold" />
+        <attr name="tlTextAllCaps" />
+
+        <attr name="tlBarColor" format="color" />
+        <attr name="tlBarStrokeColor" format="color" />
+        <attr name="tlBarStrokeWidth" format="dimension" />
+
+    </declare-styleable>
+
+</resources>

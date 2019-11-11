@@ -31,8 +31,8 @@
         android:textColor="@color/foreground"
         android:textSize="@dimen/min"
         android:visibility="gone"
-        app:mv_backgroundColor="#FD481F"
-        app:mv_radiusHalfHeight="true"
-        app:mv_strokeColor="@color/foreground"
-        app:mv_strokeWidth="1dp" />
+        app:mvBackgroundColor="#FD481F"
+        app:mvRadiusHalfHeight="true"
+        app:mvStrokeColor="@color/foreground"
+        app:mvStrokeWidth="1dp" />
 </RelativeLayout>

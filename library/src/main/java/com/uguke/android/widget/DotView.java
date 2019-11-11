@@ -54,13 +54,13 @@ public class DotView extends AppCompatTextView {
 
     private void obtainAttributes(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DotView);
-        mBackgroundColor = ta.getColor(R.styleable.DotView_mv_backgroundColor, Color.TRANSPARENT);
-        mCornerRadius = ta.getDimensionPixelSize(R.styleable.DotView_mv_cornerRadius, 0);
-        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.DotView_mv_strokeWidth, 0);
-        mInnerPadding = ta.getDimensionPixelSize(R.styleable.DotView_mv_innerPadding, ResUtils.toPixel(3));
-        mStrokeColor = ta.getColor(R.styleable.DotView_mv_strokeColor, Color.TRANSPARENT);
-        mRadiusHalfHeight = ta.getBoolean(R.styleable.DotView_mv_radiusHalfHeight, false);
-        mWidthHeightEqual = ta.getBoolean(R.styleable.DotView_mv_widthHeightEqual, false);
+        mBackgroundColor = ta.getColor(R.styleable.DotView_mvBackgroundColor, Color.TRANSPARENT);
+        mCornerRadius = ta.getDimensionPixelSize(R.styleable.DotView_mvCornerRadius, 0);
+        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.DotView_mvStrokeWidth, 0);
+        mInnerPadding = ta.getDimensionPixelSize(R.styleable.DotView_mvInnerPadding, ResUtils.toPixel(3));
+        mStrokeColor = ta.getColor(R.styleable.DotView_mvStrokeColor, Color.TRANSPARENT);
+        mRadiusHalfHeight = ta.getBoolean(R.styleable.DotView_mvRadiusHalfHeight, false);
+        mWidthHeightEqual = ta.getBoolean(R.styleable.DotView_mvWidthHeightEqual, false);
         ta.recycle();
     }
 

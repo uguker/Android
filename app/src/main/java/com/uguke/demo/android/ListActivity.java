@@ -42,9 +42,7 @@ public class ListActivity extends SupportActivity {
 //                .setEmptyMargin(16)
 //                .showLoading();
 
-        mLoadingLayout.showError();
-
-        mLoadingLayout.showLoading();
+        mLoadingLayout.showContent();
 
 //        mToolbar.setTitle("测试标题");
 

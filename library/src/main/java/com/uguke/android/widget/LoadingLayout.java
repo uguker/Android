@@ -65,11 +65,11 @@ public class LoadingLayout extends RelativeLayout {
     private View.OnClickListener mRetryListener;
 
     public LoadingLayout(Context context) {
-        this(context, null, R.attr.styleLoadingLayout);
+        this(context, null, 0);
     }
 
     public LoadingLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.styleLoadingLayout);
+        this(context, attrs, 0);
     }
 
     public LoadingLayout(Context context, AttributeSet attrs, int defStyleAttr) {

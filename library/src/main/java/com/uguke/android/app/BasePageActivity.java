@@ -37,14 +37,14 @@ public abstract class BasePageActivity<T> extends SupportActivity {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
         // 初始化刷新工具
-        mRefreshHelper = new RefreshHelper<>(mLayoutDelegate.getRefreshLayout(), mAdapter);
+        mRefreshHelper = new RefreshHelper<>(mRefreshLayout, mAdapter);
         mRefreshHelper.setOnRefreshListener(new RefreshHelper.OnRefreshListener() {
             @Override
             public void onRefresh(int page, int rows) {
                 BasePageActivity.this.onRefresh(mRefreshHelper, page, rows);
             }
         });
-        mLayoutDelegate.getRefreshLayout().setEnablePureScrollMode(false);
+        mRefreshLayout.setEnablePureScrollMode(false);
     }
 
     /**

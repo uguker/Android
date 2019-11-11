@@ -43,7 +43,7 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
 
     final CompositeDisposable mDisposable = new CompositeDisposable();
     /** 界面布局委托 **/
-    final ViewDelegate mLayoutDelegate = new ViewDelegate(this);
+    final ViewDelegate mViewDelegate = new ViewDelegate(this);
     /** Fragment管理委托 **/
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
     /** 是否是首次加载 **/
@@ -53,7 +53,7 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
-        mLayoutDelegate.onCreate(savedInstanceState);
+        mViewDelegate.onCreate(savedInstanceState);
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onCreate(this);
         }
@@ -72,19 +72,19 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
     @Override
     protected void onResume() {
         super.onResume();
-        mLayoutDelegate.onViewVisible();
+        mViewDelegate.onViewVisible();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mLayoutDelegate.onViewInvisible();
+        mViewDelegate.onViewInvisible();
     }
 
     @Override
     protected void onDestroy() {
         mDisposable.dispose();
-        mLayoutDelegate.onDestroy();
+        mViewDelegate.onDestroy();
         mDelegate.onDestroy();
         if (onSwipeBackSupport()) {
             SwipeBackHelper.onDestroy(this);
@@ -164,59 +164,58 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
 
     @Override
     public void setContentView(@LayoutRes int id) {
-        mLayoutDelegate.setContentView(id);
+        mViewDelegate.setContentView(id);
     }
 
     @Override
     public void setContentView(View view) {
-        mLayoutDelegate.setContentView(view);
+        mViewDelegate.setContentView(view);
     }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         view.setLayoutParams(params);
-        mLayoutDelegate.setContentView(view);
+        mViewDelegate.setContentView(view);
     }
 
     @Override
     public void onViewCreated(View view) {
         // 设置布局
         getDelegate().setContentView(view);
-        // 处理头部和底部
-        //onHandleCreators(view);
+        // 设置内容布局
         mContentView = view;
         // 初始化控件
-        mLoadingLayout = mLayoutDelegate.getLoadingLayout();
-        mRefreshLayout = mLayoutDelegate.getRefreshLayout();
-        mToolbar = mLayoutDelegate.getToolbar();
+        mToolbar = mViewDelegate.getToolbar();
+        mLoadingLayout = mViewDelegate.getLoadingLayout();
+        mRefreshLayout = mViewDelegate.getRefreshLayout();
     }
 
-    @Override
-    public void showContent() {
-        mLayoutDelegate.showContent();
-    }
-
-    @Override
-    public void showEmpty(String... texts) {
-        mLayoutDelegate.showEmpty(texts);
-    }
-
-    @Override
-    public void showError(String... texts) {
-        mLayoutDelegate.showError(texts);
-    }
-
-    @Override
-    public void showLoading(String... texts) {
-        mLayoutDelegate.showLoading(texts);
-    }
+//    @Override
+//    public void showContent() {
+//        mViewDelegate.showContent();
+//    }
+//
+//    @Override
+//    public void showEmpty(String... texts) {
+//        mViewDelegate.showEmpty(texts);
+//    }
+//
+//    @Override
+//    public void showError(String... texts) {
+//        mViewDelegate.showError(texts);
+//    }
+//
+//    @Override
+//    public void showLoading(String... texts) {
+//        mViewDelegate.showLoading(texts);
+//    }
 
     public void setNativeContentView(@LayoutRes int id) {
-        mLayoutDelegate.setNativeContentView(id);
+        mViewDelegate.setNativeContentView(id);
     }
 
     public void setNativeContentView(View view) {
-        mLayoutDelegate.setNativeContentView(view);
+        mViewDelegate.setNativeContentView(view);
     }
 
     public ViewCreator onCreateHeader(@NonNull ViewGroup container) {
@@ -228,7 +227,7 @@ public class SupportActivity extends RxAppCompatActivity implements ISupportActi
     }
 
     public void showTips(String tips) {
-        mLayoutDelegate.showTips(tips);
+        mViewDelegate.showTips(tips);
     }
 
     public void hideToolbar() {

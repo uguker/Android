@@ -315,43 +315,43 @@ class ViewDelegate implements ViewProvider {
         }
     }
 
-    @Override
-    public void showContent() {
-        if (mLoadingLayout != null) {
-            mLoadingLayout.showContent();
-        }
-    }
-
-    @Override
-    public void showEmpty(String... texts) {
-        if (mLoadingLayout != null) {
-            if (texts == null || texts.length == 0) {
-                mLoadingLayout.showEmpty();
-            } else {
-                mLoadingLayout.showEmpty(texts[0]);
-            }
-        }
-    }
-
-    @Override
-    public void showError(String... texts) {
-        if (mLoadingLayout != null) {
-            if (texts == null || texts.length == 0) {
-                mLoadingLayout.showError();
-            } else {
-                mLoadingLayout.showError(texts[0]);
-            }
-        }
-    }
-
-    @Override
-    public void showLoading(String... texts) {
-        if (mLoadingLayout != null) {
-            if (texts == null || texts.length == 0) {
-                mLoadingLayout.showLoading();
-            } else {
-                mLoadingLayout.showLoading(texts[0]);
-            }
-        }
-    }
+//    @Override
+//    public void showContent() {
+//        if (mLoadingLayout != null) {
+//            mLoadingLayout.showContent();
+//        }
+//    }
+//
+//    @Override
+//    public void showEmpty(String... texts) {
+//        if (mLoadingLayout != null) {
+//            if (texts == null || texts.length == 0) {
+//                mLoadingLayout.showEmpty();
+//            } else {
+//                mLoadingLayout.showEmpty(texts[0]);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void showError(String... texts) {
+//        if (mLoadingLayout != null) {
+//            if (texts == null || texts.length == 0) {
+//                mLoadingLayout.showError();
+//            } else {
+//                mLoadingLayout.showError(texts[0]);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void showLoading(String... texts) {
+//        if (mLoadingLayout != null) {
+//            if (texts == null || texts.length == 0) {
+//                mLoadingLayout.showLoading();
+//            } else {
+//                mLoadingLayout.showLoading(texts[0]);
+//            }
+//        }
+//    }
 }

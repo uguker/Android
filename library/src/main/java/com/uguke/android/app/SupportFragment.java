@@ -308,32 +308,33 @@ public class SupportFragment extends RxFragment implements ISupportFragment, Vie
 
     @Override
     public void onViewCreated(View view) {
+        // 设置内容布局
         mContentView = view;
         // 初始化控件
+        mToolbar = mViewDelegate.getToolbar();
         mLoadingLayout = mViewDelegate.getLoadingLayout();
         mRefreshLayout = mViewDelegate.getRefreshLayout();
-        mToolbar = mViewDelegate.getToolbar();
     }
 
-    @Override
-    public void showContent() {
-        mViewDelegate.showContent();
-    }
-
-    @Override
-    public void showEmpty(String... texts) {
-        mViewDelegate.showEmpty(texts);
-    }
-
-    @Override
-    public void showError(String... texts) {
-        mViewDelegate.showError(texts);
-    }
-
-    @Override
-    public void showLoading(String... texts) {
-        mViewDelegate.showLoading(texts);
-    }
+//    @Override
+//    public void showContent() {
+//        mViewDelegate.showContent();
+//    }
+//
+//    @Override
+//    public void showEmpty(String... texts) {
+//        mViewDelegate.showEmpty(texts);
+//    }
+//
+//    @Override
+//    public void showError(String... texts) {
+//        mViewDelegate.showError(texts);
+//    }
+//
+//    @Override
+//    public void showLoading(String... texts) {
+//        mViewDelegate.showLoading(texts);
+//    }
 
     public final void setContentView(@LayoutRes int id) {
         mViewDelegate.setContentView(id);

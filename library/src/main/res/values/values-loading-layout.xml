@@ -16,6 +16,7 @@
         <attr name="llErrorImage" format="reference" />
         <attr name="llErrorText" format="string" />
         <attr name="llErrorMargin" format="dimension" />
+        <attr name="llRetryMargin" format="dimension" />
         <attr name="llRetryText" format="string" />
         <attr name="llRetryTextColor" format="color" />
         <attr name="llRetryTextSize" format="dimension" />
@@ -32,18 +33,24 @@
     </declare-styleable>
 
     <style name="LoadingLayoutStyle">
-        <item name="android:id">@id/__android_loading</item>
         <item name="llTextColor">@color/tint</item>
         <item name="llTextSize">@dimen/body</item>
+        <item name="llEmptyImage">@drawable/widget_ic_empty</item>
+        <item name="llEmptyText">暂无数据</item>
+        <item name="llEmptyMargin">@dimen/content</item>
+        <item name="llErrorImage">@drawable/widget_ic_error</item>
+        <item name="llErrorText">无网络连接，请检查您的网络...</item>
+        <item name="llErrorMargin">@dimen/content</item>
+        <item name="llRetryMargin">@dimen/content</item>
+        <item name="llRetryText">加载失败，点击重试</item>
         <item name="llRetryTextColor">@color/tint</item>
         <item name="llRetryTextSize">@dimen/body</item>
         <item name="llRetryBackground">@drawable/_loading_layout_button</item>
-        <item name="llEmptyImage">@null</item>
-        <item name="llEmptyText">暂无数据</item>
-        <item name="llErrorImage">@null</item>
-        <item name="llErrorText">无网络连接，请检查您的网络...</item>
-        <item name="llRetryText">加载失败，点击重试~~</item>
         <item name="llBackground">@color/background</item>
+        <item name="llLoadingText">加载中...</item>
+        <item name="llLoadingSize">24dp</item>
+        <item name="llLoadingMargin">@dimen/small</item>
+        <item name="llLoadingOrientation">horizontal</item>
     </style>
 
 </resources>

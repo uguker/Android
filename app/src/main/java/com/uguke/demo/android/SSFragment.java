@@ -37,7 +37,7 @@ public class SSFragment extends SlidingFragment {
         mToolbar.setRippleEnable(true)
                 .setBackIcon(R.drawable.def_back_material_dark)
                 .setActionIconVisible(0, true)
-                .setActionIcon(1, R.drawable.ic_empty)
+                .setActionIcon(1, R.drawable.widget_ic_empty)
                 .setActionText(0, "你好")
                 .setActionTextBold(true)
                 .setActionTextColor(Color.WHITE)

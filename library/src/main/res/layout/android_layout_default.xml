@@ -27,7 +27,6 @@
 
     <!-- 内容部分 -->
     <com.uguke.android.widget.LoadingLayout
-        android:id="@id/__android_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"

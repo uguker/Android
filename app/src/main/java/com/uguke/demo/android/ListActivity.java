@@ -31,7 +31,20 @@ public class ListActivity extends SupportActivity {
 
 //        new CommonToolbar(this);
 
-        showError();
+//        showError();
+//        mLoadingLayout
+//                .setErrorText("错误信息")
+//                .setErrorImage(R.mipmap.ic_launcher)
+//                .setRetryText("点击");
+
+//        mLoadingLayout
+//                .setEmptyText("暂无充值记录")
+//                .setEmptyMargin(16)
+//                .showLoading();
+
+        mLoadingLayout.showError();
+
+        mLoadingLayout.showLoading();
 
 //        mToolbar.setTitle("测试标题");
 

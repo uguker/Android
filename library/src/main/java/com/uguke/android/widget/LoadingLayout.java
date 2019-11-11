@@ -3,9 +3,9 @@ package com.uguke.android.widget;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -47,11 +47,12 @@ public class LoadingLayout extends RelativeLayout {
     private int mTextSize;
     private int mRetryTextColor;
     private int mRetryTextSize;
-    private Drawable mBackgroud;
+    private Drawable mBackground;
     private Drawable mRetryBackground;
 
     private int mEmptyMargin;
     private int mErrorMargin;
+    private int mRetryMargin;
     private int mLoadingMargin;
 
     private int mLoadingSize;
@@ -79,26 +80,22 @@ public class LoadingLayout extends RelativeLayout {
         }
 
         int color = ContextCompat.getColor(context, R.color.tint);
-        mTextSize = getResources().getDimensionPixelSize(R.dimen.body);
-        mRetryTextSize = getResources().getDimensionPixelSize(R.dimen.body);
-        mEmptyMargin = getResources().getDimensionPixelSize(R.dimen.content);
-        mErrorMargin = getResources().getDimensionPixelSize(R.dimen.content);
-        mLoadingMargin = getResources().getDimensionPixelSize(R.dimen.content);
-        mLoadingSize = toPixel(40);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LoadingLayout, defStyleAttr, R.style.LoadingLayoutStyle);
 
-        mBackgroud = a.getDrawable(R.styleable.LoadingLayout_llBackground);
+        mBackground = a.getDrawable(R.styleable.LoadingLayout_llBackground);
         mTextColor = a.getColor(R.styleable.LoadingLayout_llTextColor, color);
         mTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llTextSize, mTextSize);
         
-        mEmptyImage = a.getResourceId(R.styleable.LoadingLayout_llEmptyImage, R.drawable.ic_empty);
+        mEmptyImage = a.getResourceId(R.styleable.LoadingLayout_llEmptyImage, R.drawable.widget_ic_empty);
         mEmptyText = a.getString(R.styleable.LoadingLayout_llEmptyText);
         mEmptyMargin = a.getDimensionPixelSize(R.styleable.LoadingLayout_llEmptyMargin, mEmptyMargin);
-        
+        // 错误信息
         mErrorMargin = a.getDimensionPixelSize(R.styleable.LoadingLayout_llErrorMargin, mErrorMargin);
-        mErrorImage = a.getResourceId(R.styleable.LoadingLayout_llErrorImage, R.drawable.ic_empty);
+        mErrorImage = a.getResourceId(R.styleable.LoadingLayout_llErrorImage, R.drawable.widget_ic_error);
         mErrorText = a.getString(R.styleable.LoadingLayout_llErrorText);
+        // 重试按钮
+        mRetryMargin = a.getDimensionPixelSize(R.styleable.LoadingLayout_llRetryMargin, mRetryMargin);
         mRetryText = a.getString(R.styleable.LoadingLayout_llRetryText);
         mRetryTextColor = a.getColor(R.styleable.LoadingLayout_llRetryTextColor, color);
         mRetryTextSize = a.getDimensionPixelSize(R.styleable.LoadingLayout_llRetryTextSize, mRetryTextSize);
@@ -125,7 +122,7 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initLoadingLayout() {
         LinearLayout layout = (LinearLayout) LayoutInflater.from(getContext()).inflate(LOADING_RES_ID, this, false);
-        ViewCompat.setBackground(layout, mBackgroud);
+        ViewCompat.setBackground(layout, mBackground);
         layout.setOrientation(mLoadingVertical ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         LoadingView lv = layout.findViewById(R.id.__android_loading_loading_view);
         lv.getLayoutParams().width = mLoadingSize;
@@ -136,14 +133,14 @@ public class LoadingLayout extends RelativeLayout {
         tv.setTextColor(mTextColor);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         ViewGroup.MarginLayoutParams params = (MarginLayoutParams) tv.getLayoutParams();
-        params.topMargin = mLoadingMargin;
+        params.setMargins(mLoadingVertical ? 0 : mLoadingMargin, mLoadingVertical ? mLoadingMargin : 0, 0, 0);
         mLayouts.put(LOADING_RES_ID, layout);
         addView(layout);
     }
 
     private void initErrorLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(ERROR_RES_ID, this, false);
-        ViewCompat.setBackground(layout, mBackgroud);
+        ViewCompat.setBackground(layout, mBackground);
         ImageView iv = layout.findViewById(R.id.__android_loading_error_img);
         iv.setImageResource(mErrorImage);
         TextView tv = layout.findViewById(R.id.__android_loading_error_text);
@@ -165,7 +162,7 @@ public class LoadingLayout extends RelativeLayout {
             }
         });
         params = (MarginLayoutParams) retry.getLayoutParams();
-        params.topMargin = mErrorMargin;
+        params.topMargin = mRetryMargin;
         ViewCompat.setBackground(retry, mRetryBackground);
         mLayouts.put(ERROR_RES_ID, layout);
         addView(layout);
@@ -173,7 +170,7 @@ public class LoadingLayout extends RelativeLayout {
 
     private void initEmptyLayout() {
         View layout = LayoutInflater.from(getContext()).inflate(EMPTY_RES_ID, this, false);
-        ViewCompat.setBackground(layout, mBackgroud);
+        ViewCompat.setBackground(layout, mBackground);
         ImageView iv = layout.findViewById(R.id.__android_loading_empty_img);
         iv.setImageResource(mEmptyImage);
         TextView tv = layout.findViewById(R.id.__android_loading_empty_text);
@@ -207,6 +204,57 @@ public class LoadingLayout extends RelativeLayout {
                 initMaskLayout();
             }
         }
+    }
+
+    public TextView getEmptyTextView() {
+        if (mLayouts.get(EMPTY_RES_ID) == null) {
+            initEmptyLayout();
+        }
+        return mLayouts.get(EMPTY_RES_ID).findViewById(R.id.__android_loading_empty_text);
+    }
+
+    public ImageView getEmptyImageView() {
+        if (mLayouts.get(EMPTY_RES_ID) == null) {
+            initEmptyLayout();
+        }
+        return mLayouts.get(EMPTY_RES_ID).findViewById(R.id.__android_loading_empty_img);
+    }
+
+    public TextView getErrorTextView() {
+        if (mLayouts.get(ERROR_RES_ID) == null) {
+            initEmptyLayout();
+        }
+        return mLayouts.get(ERROR_RES_ID).findViewById(R.id.__android_loading_error_text);
+    }
+
+    public TextView getErrorImageView() {
+        if (mLayouts.get(ERROR_RES_ID) == null) {
+            initEmptyLayout();
+        }
+        return mLayouts.get(ERROR_RES_ID).findViewById(R.id.__android_loading_error_img);
+    }
+
+    public TextView getRetryTextView() {
+        if (mLayouts.get(ERROR_RES_ID) == null) {
+            initEmptyLayout();
+        }
+        return mLayouts.get(ERROR_RES_ID).findViewById(R.id.__android_loading_error_retry);
+    }
+
+    public TextView getLoadingTextView() {
+        View layout = mLayouts.get(LOADING_RES_ID);
+        if (layout != null) {
+            return layout.findViewById(R.id.__android_loading_loading_text);
+        }
+        return null;
+    }
+
+    public LoadingView getLoadingView() {
+        View layout = mLayouts.get(LOADING_RES_ID);
+        if (layout != null) {
+            return layout.findViewById(R.id.__android_loading_loading_view);
+        }
+        return null;
     }
 
 
@@ -258,8 +306,14 @@ public class LoadingLayout extends RelativeLayout {
 
     public LoadingLayout setErrorMargin(float margin) {
         mErrorMargin = toPixel(margin);
-        setTextMargin(ERROR_RES_ID, R.id.__android_loading_error_text, mEmptyMargin);
-        setTextMargin(ERROR_RES_ID, R.id.__android_loading_error_retry, mEmptyMargin);
+        setTextMargin(ERROR_RES_ID, R.id.__android_loading_error_text, mErrorMargin);
+        return this;
+    }
+
+
+    public LoadingLayout setRetryMargin(float margin) {
+        mRetryMargin = toPixel(margin);
+        setTextMargin(ERROR_RES_ID, R.id.__android_loading_error_retry, mRetryMargin);
         return this;
     }
 
@@ -282,25 +336,28 @@ public class LoadingLayout extends RelativeLayout {
     }
 
     public LoadingLayout setRetryBackgroundRes(@DrawableRes int resId) {
-        TextView retry = getRetryTextView();
-        if (retry != null) {
-            retry.setBackgroundResource(resId);
+        mRetryBackground = ContextCompat.getDrawable(getContext(), resId);
+        View layout = mLayouts.get(EMPTY_RES_ID);
+        if (layout != null) {
+            ViewCompat.setBackground(layout.findViewById(R.id.__android_loading_error_retry), mRetryBackground);
         }
         return this;
     }
 
-    public LoadingLayout setretrybackground(Drawable drawable) {
-        TextView retry = getRetryTextView();
-        if (retry != null) {
-            ViewCompat.setBackground(retry, drawable);
+    public LoadingLayout setRetryBackground(Drawable drawable) {
+        mRetryBackground = drawable;
+        View layout = mLayouts.get(EMPTY_RES_ID);
+        if (layout != null) {
+            ViewCompat.setBackground(layout.findViewById(R.id.__android_loading_error_retry), mRetryBackground);
         }
         return this;
     }
 
     public LoadingLayout setRetryBackgroundColor(int color) {
-        TextView retry = getRetryTextView();
-        if (retry != null) {
-            retry.setBackgroundColor(color);
+        mRetryBackground = new ColorDrawable(color);
+        View layout = mLayouts.get(EMPTY_RES_ID);
+        if (layout != null) {
+            ViewCompat.setBackground(layout.findViewById(R.id.__android_loading_error_retry), mRetryBackground);
         }
         return this;
     }
@@ -312,17 +369,18 @@ public class LoadingLayout extends RelativeLayout {
 
     public LoadingLayout setLoadingColor(int ...colors) {
         mLoadingColors = colors;
-        LoadingView lv = getLoadingView();
-        if (lv != null) {
-            lv.setArcColors(colors);
+        View layout = mLayouts.get(LOADING_RES_ID);
+        if (layout != null) {
+            ((LoadingView) layout.findViewById(R.id.__android_loading_loading_view)).setArcColors(colors);
         }
         return this;
     }
 
     public LoadingLayout setLoadingSize(float size) {
         mLoadingSize = toPixel(size);
-        LoadingView lv = getLoadingView();
-        if (lv != null) {
+        View layout = mLayouts.get(LOADING_RES_ID);
+        if (layout != null) {
+            LoadingView lv = layout.findViewById(R.id.__android_loading_loading_view);
             lv.getLayoutParams().width = mLoadingSize;
             lv.getLayoutParams().height = mLoadingSize;
         }
@@ -384,14 +442,18 @@ public class LoadingLayout extends RelativeLayout {
                 view.bringToFront();
             }
         }
-        LoadingView lv = getLoadingView();
-        if (lv != null) {
+
+        // 控制LoadingView的显示与否
+        View layout = mLayouts.get(LOADING_RES_ID);
+        if (layout != null) {
+            LoadingView lv = layout.findViewById(R.id.__android_loading_loading_view);
             if (layoutId == LOADING_RES_ID) {
                 lv.start();
             } else {
                 lv.stop();
             }
         }
+
         // 如果不可点击，则显示遮罩页
         if (!mChildClickable && layoutId != MASK_RES_ID) {
             View view = mLayouts.get(MASK_RES_ID);
@@ -451,22 +513,6 @@ public class LoadingLayout extends RelativeLayout {
                 view.setImageResource(resId);
             }
         }
-    }
-
-    private LoadingView getLoadingView() {
-        View layout = mLayouts.get(LOADING_RES_ID);
-        if (layout != null) {
-            return layout.findViewById(R.id.__android_loading_loading_view);
-        }
-        return null;
-    }
-
-    private TextView getRetryTextView() {
-        View layout = mLayouts.get(ERROR_RES_ID);
-        if (layout != null) {
-            return layout.findViewById(R.id.__android_loading_error_retry);
-        }
-        return null;
     }
 
     private int toPixel(float dip) {

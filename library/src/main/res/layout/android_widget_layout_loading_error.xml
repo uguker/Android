@@ -12,29 +12,34 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/widget_ic_error" />
 
     <TextView
         android:id="@id/__android_loading_error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_marginTop="@dimen/content"
         tools:text="无网络连接，请检查您的网络..."
-        tools:textColor="#666666"
-        tools:textSize="16sp" />
+        tools:textColor="@color/tint"
+        tools:textSize="@dimen/body" />
 
     <TextView
         android:id="@id/__android_loading_error_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/content"
         android:background="@drawable/_loading_layout_button"
         android:gravity="center"
         android:minWidth="120dp"
-        android:padding="10dp"
-        tools:text="加载失败，点击重试~~"
-        tools:textColor="#999999"
-        tools:textSize="16sp" />
+        android:paddingLeft="@dimen/content"
+        android:paddingTop="@dimen/small"
+        android:paddingRight="@dimen/content"
+        android:paddingBottom="@dimen/small"
+        tools:text="加载失败，点击重试"
+        tools:textColor="@color/tint"
+        tools:textSize="@dimen/body" />
 
 </LinearLayout>

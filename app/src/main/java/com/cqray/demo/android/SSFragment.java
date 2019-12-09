@@ -2,7 +2,6 @@ package com.cqray.demo.android;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -11,7 +10,6 @@ import androidx.annotation.Nullable;
 import com.cqray.android.app.FragmentTab;
 import com.cqray.android.app.SlidingFragment;
 import com.cqray.android.app.ViewCreator;
-import com.cqray.android.bus.RxBus;
 import com.cqray.android.widget.CommonToolbar;
 
 /**
@@ -59,23 +57,6 @@ public class SSFragment extends SlidingFragment {
                 new FragmentTab("她的", TestFragment.class)
         );
 
-        RxBus.with(this, int.class)
-                .setCode(1)
-                .subscribe(event -> {
-                    Log.e("数据", "我接到:" + event);
-                }, throwable -> {
-                    Log.e("数据", "失败:" + throwable.getMessage());
-                });
-        RxBus.with(this, CharSequence.class)
-                .setCode(1)
-                .subscribe(event -> {
-                    Log.e("数据", "我接到2:" + event);
-                }, throwable -> {
-                    Log.e("数据", "失败2:" + throwable.getMessage());
-                });
-//
-//        tv = findViewById(R.id.text2);
-//        tv.setText("测试");
 
     }
 
@@ -87,10 +68,4 @@ public class SSFragment extends SlidingFragment {
         return vc;
     }
 
-    //    @OnClick(R.id.tv)
-//    public void onClick() {
-//        Intent intent = new Intent(mActivity, MainActivity.class);
-//        mActivity.startActivity(intent);
-//
-//    }
 }

@@ -6,21 +6,21 @@
     android:background="@color/foreground"
     android:orientation="vertical">
 
-    <com.uguke.android.widget.CommonToolbar
+    <com.cqray.android.widget.CommonToolbar
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
-    </com.uguke.android.widget.CommonToolbar>
+    </com.cqray.android.widget.CommonToolbar>
 
-    <com.uguke.android.widget.SimpleInputLayout
+    <com.cqray.android.widget.SimpleInputLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/line"
         app:inputIcon="@mipmap/ic_launcher"
         app:inputType="password"
         app:inputPadding="8dp">
 
-    </com.uguke.android.widget.SimpleInputLayout>
+    </com.cqray.android.widget.SimpleInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

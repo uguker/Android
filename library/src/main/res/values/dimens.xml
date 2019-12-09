@@ -23,4 +23,6 @@
     <dimen name="caption">12sp</dimen>
     <dimen name="min">10sp</dimen>
 
+    <dimen name="marker">8sp</dimen>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.SupportFragment;
+import com.cqray.android.app.SupportFragment;
 
 import butterknife.BindView;
 import butterknife.Unbinder;

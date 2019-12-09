@@ -1,4 +1,4 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.SDCardUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.uguke.android.app.SupportActivity;
-import com.uguke.android.widget.CommonToolbar;
+import com.cqray.android.app.SupportActivity;
+import com.cqray.android.widget.CommonToolbar;
 
 import java.util.Date;
 import java.util.List;

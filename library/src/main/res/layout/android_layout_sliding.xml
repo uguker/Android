@@ -12,12 +12,12 @@
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
-        <com.uguke.android.widget.CommonToolbar
+        <com.cqray.android.widget.CommonToolbar
             android:id="@id/__android_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar">
 
-        </com.uguke.android.widget.CommonToolbar>
+        </com.cqray.android.widget.CommonToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -27,7 +27,7 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.uguke.android.widget.SlidingTabLayout
+        <com.cqray.android.widget.SlidingTabLayout
             android:id="@id/__android_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tabbed"
@@ -38,7 +38,7 @@
             app:tlTextSize="@dimen/body"
             app:tlTextUnselectedColor="@color/hint">
 
-        </com.uguke.android.widget.SlidingTabLayout>
+        </com.cqray.android.widget.SlidingTabLayout>
 
         <!-- 头部布局 -->
         <FrameLayout

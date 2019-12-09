@@ -43,7 +43,6 @@
         <item name="llRetryTextColor">@color/tint</item>
         <item name="llRetryTextSize">@dimen/body</item>
         <item name="llRetryBackground">@drawable/widget_loading_btn</item>
-        <item name="llBackground">@color/background</item>
         <item name="llLoadingText">加载中...</item>
         <item name="llLoadingSize">24dp</item>
         <item name="llLoadingMargin">@dimen/small</item>

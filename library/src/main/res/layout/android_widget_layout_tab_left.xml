@@ -30,7 +30,7 @@
 
     </LinearLayout>
 
-    <com.uguke.android.widget.DotView
+    <com.cqray.android.widget.DotView
         android:id="@+id/android_tab_dot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

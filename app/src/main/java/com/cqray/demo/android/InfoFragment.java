@@ -1,11 +1,11 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
 import com.allen.library.SuperTextView;
-import com.uguke.android.app.SupportFragment;
+import com.cqray.android.app.SupportFragment;
 
 import butterknife.BindArray;
 import butterknife.BindViews;

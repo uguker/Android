@@ -1,4 +1,4 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.uguke.android.bus.RxBus;
+import com.cqray.android.bus.RxBus;
 /**
  * @author LeiJue
  */

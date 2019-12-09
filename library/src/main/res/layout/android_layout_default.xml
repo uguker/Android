@@ -12,17 +12,17 @@
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
-        <com.uguke.android.widget.CommonToolbar
+        <com.cqray.android.widget.CommonToolbar
             android:id="@id/__android_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar">
 
-        </com.uguke.android.widget.CommonToolbar>
+        </com.cqray.android.widget.CommonToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 内容部分 -->
-    <com.uguke.android.widget.LoadingLayout
+    <com.cqray.android.widget.LoadingLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
@@ -62,6 +62,6 @@
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    </com.uguke.android.widget.LoadingLayout>
+    </com.cqray.android.widget.LoadingLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

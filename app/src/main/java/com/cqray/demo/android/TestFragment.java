@@ -1,10 +1,10 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import com.uguke.android.app.SupportFragment;
+import com.cqray.android.app.SupportFragment;
 
 public class TestFragment extends SupportFragment {
 

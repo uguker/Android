@@ -1,11 +1,11 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.app.Application;
 import android.os.Bundle;
 import android.view.View;
 
-import com.uguke.android.adapter.LifecycleAdapter;
-import com.uguke.android.app.AndroidDelegate;
+import com.cqray.android.adapter.LifecycleAdapter;
+import com.cqray.android.app.AndroidDelegate;
 
 /**
  *

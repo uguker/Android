@@ -1,4 +1,4 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;

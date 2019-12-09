@@ -1,4 +1,4 @@
-package com.uguke.demo.android;
+package com.cqray.demo.android;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.uguke.android.app.FragmentTab;
-import com.uguke.android.app.SlidingFragment;
-import com.uguke.android.app.ViewCreator;
-import com.uguke.android.bus.RxBus;
-import com.uguke.android.widget.CommonToolbar;
+import com.cqray.android.app.FragmentTab;
+import com.cqray.android.app.SlidingFragment;
+import com.cqray.android.app.ViewCreator;
+import com.cqray.android.bus.RxBus;
+import com.cqray.android.widget.CommonToolbar;
 
 /**
  * @author LeiJue

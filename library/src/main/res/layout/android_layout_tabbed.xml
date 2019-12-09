@@ -32,7 +32,7 @@
 
     </FrameLayout>
 
-    <com.uguke.android.widget.CommonTabLayout
+    <com.cqray.android.widget.CommonTabLayout
         android:id="@id/__android_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tabbed"
@@ -51,5 +51,5 @@
         app:tlUnderlineGravity="top"
         app:tlUnderlineHeight="1dp">
 
-    </com.uguke.android.widget.CommonTabLayout>
+    </com.cqray.android.widget.CommonTabLayout>
 </RelativeLayout>

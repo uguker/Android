@@ -8,8 +8,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseViewHolder;
-
 /**
  * @author LeiJue
  */
@@ -20,8 +18,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder(View view) {
         super(view);
         itemView = view;
-        RecyclerView.Adapter adapter;
-        BaseViewHolder e;
     }
 
     public ViewHolder setText(@IdRes int id, CharSequence text) {

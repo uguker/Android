@@ -12,9 +12,6 @@ import com.blankj.utilcode.util.SDCardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.cqray.android.app.SupportActivity;
 import com.cqray.android.widget.CommonToolbar;
-import com.google.gson.reflect.TypeToken;
-
-import org.jsoup.parser.Token;
 
 import java.util.Date;
 import java.util.List;

@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.cqray.android.R;
+import com.cqray.android.adapter.base.BaseQuickAdapter;
+import com.cqray.android.adapter.base.BaseViewHolder;
 import com.cqray.android.helper.RefreshHelper;
 
 /**

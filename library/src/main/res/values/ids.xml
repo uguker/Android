@@ -59,4 +59,8 @@
     <item name="__android_footer" type="id" />
     <item name="__android_parent_container" type="id" />
 
+    <item name="BaseQuickAdapter_viewholder_support" type="id"/>
+    <item name="BaseQuickAdapter_swiping_support" type="id"/>
+    <item name="BaseQuickAdapter_dragging_support" type="id"/>
+    <item name="BaseQuickAdapter_databinding_support" type="id"/>
 </resources>

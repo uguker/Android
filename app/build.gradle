@@ -44,6 +44,8 @@ dependencies {
     api 'com.lzy.net:okgo:3.0.4'
     api 'com.lzy.net:okrx2:2.0.2'
 
+    implementation 'com.google.code.gson:gson:2.8.5'
+
 
     implementation 'com.blankj:utilcodex:1.25.9'
 

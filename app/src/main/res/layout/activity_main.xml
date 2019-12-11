@@ -6,48 +6,12 @@
     android:background="@color/foreground"
     android:orientation="vertical">
 
-    <com.cqray.android.widget.CommonToolbar
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
-
-    </com.cqray.android.widget.CommonToolbar>
-
-    <com.cqray.android.widget.SimpleInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line"
-        app:inputIcon="@mipmap/ic_launcher"
-        app:inputType="password"
-        app:inputPadding="8dp">
-
-    </com.cqray.android.widget.SimpleInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true"
-        android:layout_marginTop="100dp">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
-            android:inputType="textPassword"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <FrameLayout
-        android:id="@+id/content"
-        android:clickable="true"
-        android:focusable="true"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="按钮"
-            android:padding="16dp"
-            android:layout_gravity="bottom|center_horizontal"/>
-    </FrameLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 

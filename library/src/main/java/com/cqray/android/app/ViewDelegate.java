@@ -107,6 +107,7 @@ class ViewDelegate implements ViewProvider {
         // 默认界面，常用的刷新界面
         ViewGroup root = mActivity.findViewById(android.R.id.content);
         mContentView = mInflater.inflate(R.layout.android_layout_default, root, false);
+        mRefreshLayout = mContentView.findViewById(R.id.__android_refresh);
         mInflater.inflate(id, mRefreshLayout, true);
         // 全局处理控件
         onHandleViews();

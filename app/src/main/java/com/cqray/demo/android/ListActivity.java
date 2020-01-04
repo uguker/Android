@@ -2,9 +2,12 @@ package com.cqray.demo.android;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import androidx.annotation.LayoutRes;
@@ -18,6 +21,9 @@ import com.cqray.android.adapter.base.BaseViewHolder;
 import com.cqray.android.adapter.base2.BaseAdapter;
 import com.cqray.android.app.SupportActivity;
 import com.cqray.android.util.RecyclerUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +55,13 @@ public class ListActivity extends SupportActivity {
                 holder.setText(R.id.tv, String.valueOf(item));
             }
         };
+
+        WebView web = findViewById(R.id.web);
+        web.setWebViewClient(new WebViewClient() {
+
+        });
+
+        web.loadUrl("http://www.baidu.com");
 
         recycler.setLayoutManager(new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false));
         recycler.setAdapter(adapter);
@@ -85,12 +98,20 @@ public class ListActivity extends SupportActivity {
                         adapter.addData(adapter.getItemCount());
                         adapter.addData(adapter.getItemCount());
                         adapter.addData(adapter.getItemCount());
-                        adapter.addData(adapter.getItemCount());
                     } else {
                         disposable.dispose();
                     }
                 });
         disposable.add(d);
+
+        OkGo.<String>get("http://www.baidu.com")
+                .execute(new StringCallback() {
+
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e("数据", response.body());
+                    }
+                });
 
     }
 
